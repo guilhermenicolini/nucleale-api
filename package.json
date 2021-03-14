@@ -1,0 +1,20 @@
+{
+  "name": "nucleale-api",
+  "version": "1.0.0",
+  "description": "Official Nucleale API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guilhermenicolini/nucleale-api.git"
+  },
+  "keywords": [],
+  "author": "Guilherme Nicolini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guilhermenicolini/nucleale-api/issues"
+  },
+  "homepage": "https://github.com/guilhermenicolini/nucleale-api#readme"
+}
