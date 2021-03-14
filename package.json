@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/index.ts",
-    "test": "jest --coverage"
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:unit": "npm test -- --watch --config jest-unit.config.js",
+    "test:integration": "npm test -- --watch --config jest-integration.config.js",
+    "test:staged": "npm test -- --findRelatedTests"
   },
   "repository": {
     "type": "git",
