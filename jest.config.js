@@ -6,5 +6,10 @@ module.exports = {
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '@/tests/(.*)': '<rootDir>/tests/$1',
+    '@/(.*)': '<rootDir>/src/$1'
+  },
+  watchPathIgnorePatters: ['globalConfig']
 }
