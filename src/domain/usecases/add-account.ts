@@ -8,5 +8,9 @@ export namespace AddAccount {
     password: string
   }
 
-  export type Result = boolean
+  export type Result = {
+    isValid: boolean
+    accountId: string
+    userId: string
+  }
 }
