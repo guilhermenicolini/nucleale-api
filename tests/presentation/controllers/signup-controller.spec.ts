@@ -1,5 +1,8 @@
 import { SignUpController } from '@/presentation/controllers'
 import { AddAccountSpy } from '@/tests/presentation/mocks'
+import { throwError } from '@/tests/domain/mocks'
+import { serverError } from '@/presentation/helpers'
+import { ServerError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -35,5 +38,12 @@ describe('SignUp Controller', () => {
       email: request.email,
       password: request.password
     })
+  })
+
+  test('Should return 500 if AddAccount throws ', async () => {
+    const { sut, addAccountSpy } = makeSut()
+    jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
