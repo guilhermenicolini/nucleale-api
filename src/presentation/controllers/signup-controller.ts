@@ -1,12 +1,13 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { AddAccount } from '@/domain/usecases'
+import { AddAccount, GenerateToken } from '@/domain/usecases'
 import { EmailInUseError } from '@/presentation/errors'
 import { serverError, badRequest } from '@/presentation/helpers'
 
 export class SignUpController implements Controller {
   constructor (
     private readonly addAccount: AddAccount,
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly generateToken: GenerateToken
   ) { }
 
   async handle (request: SignUpController.Request): Promise<HttpResponse> {
@@ -21,6 +22,10 @@ export class SignUpController implements Controller {
       if (!result.isValid) {
         return badRequest(new EmailInUseError())
       }
+      this.generateToken.generate({
+        accountId: result.accountId,
+        userId: result.userId
+      })
 
       return null
     } catch (error) {
