@@ -1,7 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { AddAccount, GenerateToken } from '@/domain/usecases'
 import { EmailInUseError } from '@/presentation/errors'
-import { serverError, badRequest } from '@/presentation/helpers'
+import { serverError, badRequest, ok } from '@/presentation/helpers'
 
 export class SignUpController implements Controller {
   constructor (
@@ -22,12 +22,12 @@ export class SignUpController implements Controller {
       if (!result.isValid) {
         return badRequest(new EmailInUseError())
       }
-      this.generateToken.generate({
+      const token = this.generateToken.generate({
         accountId: result.accountId,
         userId: result.userId
       })
 
-      return null
+      return ok(token)
     } catch (error) {
       return serverError(error)
     }
