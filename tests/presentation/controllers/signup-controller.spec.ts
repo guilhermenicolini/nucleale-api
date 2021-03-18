@@ -2,7 +2,7 @@ import { SignUpController } from '@/presentation/controllers'
 import { AddAccountSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 import { serverError, badRequest } from '@/presentation/helpers'
-import { ServerError } from '@/presentation/errors'
+import { ServerError, EmailInUseError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -48,6 +48,13 @@ describe('SignUp Controller', () => {
     jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 400 if AddAccount is not valid ', async () => {
+    const { sut, addAccountSpy } = makeSut()
+    addAccountSpy.result.isValid = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new EmailInUseError()))
   })
 
   test('Should call Validation with correct values', async () => {
