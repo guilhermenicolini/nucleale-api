@@ -83,4 +83,11 @@ describe('SignUp Controller', () => {
       userId: addAccountSpy.result.userId
     })
   })
+
+  test('Should return 500 if GenerateToken throws ', async () => {
+    const { sut, generateTokenSpy } = makeSut()
+    jest.spyOn(generateTokenSpy, 'generate').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
 })
