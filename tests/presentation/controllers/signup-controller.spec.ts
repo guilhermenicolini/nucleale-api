@@ -1,5 +1,5 @@
 import { SignUpController } from '@/presentation/controllers'
-import { AddAccountSpy } from '@/tests/presentation/mocks'
+import { AddAccountSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 import { serverError } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
@@ -17,15 +17,18 @@ const mockRequest = (): SignUpController.Request => {
 
 type SutTypes = {
   sut: SignUpController,
-  addAccountSpy: AddAccountSpy
+  addAccountSpy: AddAccountSpy,
+  validationSpy: ValidationSpy
 }
 
 const makeSut = (): SutTypes => {
   const addAccountSpy = new AddAccountSpy()
-  const sut = new SignUpController(addAccountSpy)
+  const validationSpy = new ValidationSpy()
+  const sut = new SignUpController(addAccountSpy, validationSpy)
   return {
     sut,
-    addAccountSpy
+    addAccountSpy,
+    validationSpy
   }
 }
 
@@ -45,5 +48,12 @@ describe('SignUp Controller', () => {
     jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(validationSpy.input).toEqual(request)
   })
 })
