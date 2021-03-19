@@ -1,6 +1,6 @@
 import { TokenAuthentication } from '@/data/usecases'
 import { SignerSpy } from '@/tests/data/mocks'
-import { mockAuthenticationParams } from '@/tests/domain/mocks'
+import { mockAuthenticationParams, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: TokenAuthentication,
@@ -25,5 +25,12 @@ describe('TokenAuthentication Usecase', () => {
       sub: params.userId,
       acc: params.accountId
     })
+  })
+
+  test('Should throw if Signer throws', async () => {
+    const { sut, signerSpy } = makeSut()
+    jest.spyOn(signerSpy, 'sign').mockImplementationOnce(throwError)
+    const promise = sut.auth(mockAuthenticationParams())
+    await expect(promise).rejects.toThrow()
   })
 })
