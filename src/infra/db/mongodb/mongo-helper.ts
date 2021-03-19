@@ -21,6 +21,11 @@ export class MongoHelper {
     })
   }
 
+  async disconnect (): Promise<void> {
+    await this.client.close()
+    this.client = null
+  }
+
   async getCollection (collectionName: string): Promise<Collection> {
     if (!this.client.isConnected()) {
       await this.connect()
