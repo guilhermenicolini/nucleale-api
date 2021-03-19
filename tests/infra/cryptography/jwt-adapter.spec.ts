@@ -20,5 +20,11 @@ describe('Jwt Adapter', () => {
       await sut.sign({ sub: 'any_sub' })
       expect(signSpy).toHaveBeenCalledWith({ sub: 'any_sub' }, 'secret')
     })
+
+    test('Should return a token on sign success', async () => {
+      const sut = makeSut()
+      const accessToken = await sut.sign({ sub: 'any_sub' })
+      expect(accessToken).toBe('any_token')
+    })
   })
 })
