@@ -33,4 +33,10 @@ describe('TokenAuthentication Usecase', () => {
     const promise = sut.auth(mockAuthenticationParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a token on success', async () => {
+    const { sut, signerSpy } = makeSut()
+    const token = await sut.auth(mockAuthenticationParams())
+    expect(token).toBe(signerSpy.result)
+  })
 })
