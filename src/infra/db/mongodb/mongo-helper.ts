@@ -27,7 +27,7 @@ export class MongoHelper {
   }
 
   async getCollection (collectionName: string): Promise<Collection> {
-    if (!this.client.isConnected()) {
+    if (!this.client?.isConnected()) {
       await this.connect()
     }
 
