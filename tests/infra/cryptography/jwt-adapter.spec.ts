@@ -1,4 +1,5 @@
 import { JwtAdapter } from '@/infra/cryptography'
+import { throwError } from '@/tests/domain/mocks'
 
 import jwt from 'jsonwebtoken'
 
@@ -25,6 +26,13 @@ describe('Jwt Adapter', () => {
       const sut = makeSut()
       const accessToken = await sut.sign({ sub: 'any_sub' })
       expect(accessToken).toBe('any_token')
+    })
+
+    test('Should throw if sign throws', async () => {
+      const sut = makeSut()
+      jest.spyOn(jwt, 'sign').mockImplementationOnce(throwError)
+      const promise = sut.sign({ sub: 'any_sub' })
+      await expect(promise).rejects.toThrow()
     })
   })
 })
