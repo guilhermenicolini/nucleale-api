@@ -4,3 +4,4 @@ coverage
 dist
 .eslintcache
 globalConfig.json
+.env
