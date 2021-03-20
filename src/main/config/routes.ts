@@ -1,8 +1,8 @@
 import { Express, Router } from 'express'
-import accountRoutes from '@/main/routes/account-routes'
+import setupAccountRoutes from '@/main/routes/account-routes'
 
 export default (app: Express): void => {
   const router = Router()
-  router.use(accountRoutes)
+  setupAccountRoutes(router)
   app.use('/api', router)
 }
