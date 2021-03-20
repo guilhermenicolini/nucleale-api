@@ -1,7 +1,7 @@
 import { SignUpController } from '@/presentation/controllers'
 import { AddAccountSpy, ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
-import { serverError, badRequest, ok } from '@/presentation/helpers'
+import { serverError, badRequest, conflict, ok } from '@/presentation/helpers'
 import { ServerError, EmailInUseError } from '@/presentation/errors'
 
 import faker from 'faker'
@@ -53,11 +53,11 @@ describe('SignUp Controller', () => {
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 
-  test('Should return 400 if AddAccount is not valid ', async () => {
+  test('Should return 409 if AddAccount is not valid ', async () => {
     const { sut, addAccountSpy } = makeSut()
     addAccountSpy.result.isValid = false
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(badRequest(new EmailInUseError()))
+    expect(httpResponse).toEqual(conflict(new EmailInUseError()))
   })
 
   test('Should call Validation with correct values', async () => {

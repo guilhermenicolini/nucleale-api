@@ -38,13 +38,13 @@ describe('Account Routes', () => {
         .expect(200)
     })
 
-    test('Should return 400 on signup if email was taken', async () => {
+    test('Should return 409 on signup if email was taken', async () => {
       const params = mockRequest()
       await accountCollection.insertOne({ email: params.email })
       await request(app)
         .post('/api/signup')
         .send(params)
-        .expect(400)
+        .expect(409)
     })
   })
 })
