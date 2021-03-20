@@ -5,6 +5,15 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
 
+const mockRequest = () => {
+  const password = faker.internet.password()
+  return {
+    email: faker.internet.email(),
+    password,
+    passwordConfirmation: password
+  }
+}
+
 let accountCollection: Collection
 
 describe('Account Routes', () => {
@@ -23,15 +32,19 @@ describe('Account Routes', () => {
 
   describe('POST /signup', () => {
     test('Should return 200 on signup', async () => {
-      const password = faker.internet.password()
       await request(app)
         .post('/api/signup')
-        .send({
-          email: faker.internet.email(),
-          password,
-          passwordConfirmation: password
-        })
+        .send(mockRequest())
         .expect(200)
+    })
+
+    test('Should return 400 on signup if email was taken', async () => {
+      const params = mockRequest()
+      await accountCollection.insertOne({ email: params.email })
+      await request(app)
+        .post('/api/signup')
+        .send(params)
+        .expect(400)
     })
   })
 })
