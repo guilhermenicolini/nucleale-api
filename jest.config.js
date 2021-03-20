@@ -1,7 +1,11 @@
 module.exports = {
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: ['/node_modules/'],
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/**/index.ts',
+    '!<rootDir>/src/main/server.ts'
+  ],
   coverageProvider: 'babel',
   transform: {
     '.+\\.ts$': 'ts-jest'
