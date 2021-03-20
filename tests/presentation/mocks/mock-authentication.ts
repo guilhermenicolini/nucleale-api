@@ -1,12 +1,12 @@
-import { GenerateToken } from '@/domain/usecases'
+import { Authentication } from '@/domain/usecases'
 
 import faker from 'faker'
 
-export class GenerateTokenSpy implements GenerateToken {
-  params: GenerateToken.Params
-  result: GenerateToken.Result = faker.random.uuid()
+export class AuthenticationSpy implements Authentication {
+  params: Authentication.Params
+  result: Authentication.Result = faker.random.uuid()
 
-  generate (params: GenerateToken.Params): GenerateToken.Result {
+  async auth (params: Authentication.Params): Promise<Authentication.Result> {
     this.params = params
     return this.result
   }
