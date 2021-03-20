@@ -7,7 +7,7 @@ const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
 }
 
-let userCollection: Collection
+let accountCollection: Collection
 
 describe('AccountMongoRepository', () => {
   beforeAll(async () => {
@@ -19,8 +19,8 @@ describe('AccountMongoRepository', () => {
   })
 
   beforeEach(async () => {
-    userCollection = await MongoHelper.instance.getCollection('users')
-    await userCollection.deleteMany({})
+    accountCollection = await MongoHelper.instance.getCollection('accounts')
+    await accountCollection.deleteMany({})
   })
 
   test('Should return an account on success', async () => {

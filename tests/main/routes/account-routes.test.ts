@@ -5,7 +5,7 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
 
-let userCollection: Collection
+let accountCollection: Collection
 
 describe('Account Routes', () => {
   beforeAll(async () => {
@@ -17,8 +17,8 @@ describe('Account Routes', () => {
   })
 
   beforeEach(async () => {
-    userCollection = await MongoHelper.instance.getCollection('users')
-    await userCollection.deleteMany({})
+    accountCollection = await MongoHelper.instance.getCollection('accounts')
+    await accountCollection.deleteMany({})
   })
 
   describe('POST /signup', () => {

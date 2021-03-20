@@ -5,8 +5,8 @@ import { ObjectId } from 'mongodb'
 export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountId = new ObjectId()
-    const userCollection = await MongoHelper.instance.getCollection('users')
-    const cmd = await userCollection.insertOne({ ...data, accountId })
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const cmd = await accountCollection.insertOne({ ...data, accountId })
     return {
       userId: cmd.ops[0]._id.toString(),
       accountId: accountId.toString(),
@@ -15,8 +15,8 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
   }
 
   async check (email: string): Promise<CheckAccountByEmailRepository.Result> {
-    const userCollection = await MongoHelper.instance.getCollection('users')
-    const user = await userCollection.findOne({
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const user = await accountCollection.findOne({
       email
     }, {
       projection: {
