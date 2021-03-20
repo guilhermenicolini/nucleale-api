@@ -1,22 +1,25 @@
 import { DbAddAccount } from '@/data/usecases'
-import { HasherSpy, AddAccountRepositorySpy } from '@/tests/data/mocks'
+import { HasherSpy, AddAccountRepositorySpy, CheckAccountByEmailRepositorySpy } from '@/tests/data/mocks'
 import { mockAddAccountParams, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddAccount,
   hasherSpy: HasherSpy,
-  addAccountRepositorySpy: AddAccountRepositorySpy
+  addAccountRepositorySpy: AddAccountRepositorySpy,
+  checkAccountByEmailRepositorySpy: CheckAccountByEmailRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const hasherSpy = new HasherSpy()
   const addAccountRepositorySpy = new AddAccountRepositorySpy()
-  const sut = new DbAddAccount(hasherSpy, addAccountRepositorySpy)
+  const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
+  const sut = new DbAddAccount(hasherSpy, addAccountRepositorySpy, checkAccountByEmailRepositorySpy)
 
   return {
     sut,
     hasherSpy,
-    addAccountRepositorySpy
+    addAccountRepositorySpy,
+    checkAccountByEmailRepositorySpy
   }
 }
 
@@ -50,6 +53,24 @@ describe('DbAddAccount Usecase', () => {
     jest.spyOn(hasherSpy, 'hash').mockImplementationOnce(throwError)
     const promise = sut.add(mockAddAccountParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CheckAccountByEmailRepository with correct values', async () => {
+    const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+    const params = mockAddAccountParams()
+    await sut.add(params)
+    expect(checkAccountByEmailRepositorySpy.email).toBe(params.email)
+  })
+
+  test('Should return false if CheckAccountByEmailRepository returns true', async () => {
+    const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+    checkAccountByEmailRepositorySpy.result = true
+    const result = await sut.add(mockAddAccountParams())
+    expect(result).toEqual({
+      isValid: false,
+      accountId: null,
+      userId: null
+    })
   })
 
   test('Should return account on success', async () => {
