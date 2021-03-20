@@ -1,5 +1,6 @@
 import { JwtAdapter } from '@/infra/cryptography'
 import { throwError } from '@/tests/domain/mocks'
+import env from '@/main/config/env'
 
 import jwt from 'jsonwebtoken'
 
@@ -19,7 +20,11 @@ describe('Jwt Adapter', () => {
       const sut = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')
       await sut.sign({ sub: 'any_sub' })
-      expect(signSpy).toHaveBeenCalledWith({ sub: 'any_sub' }, 'secret')
+      expect(signSpy).toHaveBeenCalledWith({
+        sub: 'any_sub',
+        iss: env.iss,
+        aud: env.aud
+      }, 'secret', { expiresIn: env.exp })
     })
 
     test('Should return a token on sign success', async () => {
