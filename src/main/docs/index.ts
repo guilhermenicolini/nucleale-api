@@ -1,3 +1,5 @@
+import env from '@/main/config/env'
+
 export default {
   openapi: '3.0.0',
   info: {
@@ -15,13 +17,12 @@ export default {
     }
   },
   servers: [{
-    url: '/api',
-    description: 'Main server'
+    url: env.host
   }],
   tags: [
     {
-      name: 'Login',
-      description: 'Login related APIs'
+      name: 'Authentication',
+      description: 'Authentication related APIs'
     }
   ]
 }
