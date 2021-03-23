@@ -7,6 +7,7 @@ export class PasswordValidation implements Validation {
   validate (input: any): Error {
     const value = input[this.fieldName]
     if (value.length < 8 ||
-      !/[a-z]/.test(value)) return new InvalidParamError(this.fieldName)
+      !/[a-z]/.test(value) ||
+      !/[A-Z]/.test(value)) return new InvalidParamError(this.fieldName)
   }
 }
