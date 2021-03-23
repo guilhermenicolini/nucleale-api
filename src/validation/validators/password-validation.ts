@@ -5,6 +5,7 @@ export class PasswordValidation implements Validation {
   constructor (private readonly fieldName: string) { }
 
   validate (input: any): Error {
-    return new InvalidParamError(this.fieldName)
+    const value = input[this.fieldName]
+    if (value.length < 8) return new InvalidParamError(this.fieldName)
   }
 }
