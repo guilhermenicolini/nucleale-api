@@ -6,7 +6,7 @@ import request from 'supertest'
 import faker from 'faker'
 
 const mockRequest = () => {
-  const password = faker.internet.password()
+  const password = faker.internet.password(20)
   return {
     email: faker.internet.email(),
     password,

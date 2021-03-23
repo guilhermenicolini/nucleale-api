@@ -7,7 +7,7 @@ import { ServerError, EmailInUseError } from '@/presentation/errors'
 import faker from 'faker'
 
 const mockRequest = (): SignUpController.Request => {
-  const password = faker.internet.password()
+  const password = faker.internet.password(20)
   return {
     email: faker.internet.email(),
     password,
