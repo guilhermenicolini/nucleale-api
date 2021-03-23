@@ -17,4 +17,12 @@ describe('PasswordValidation', () => {
     })
     expect(error).toEqual(new InvalidParamError(field))
   })
+
+  test('Should return an error if password does not contains at least 8 characters', () => {
+    const sut = makeSut()
+    const error = sut.validate({
+      [field]: 'pass123'
+    })
+    expect(error).toEqual(new InvalidParamError(field))
+  })
 })
