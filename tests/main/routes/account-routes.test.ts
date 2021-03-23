@@ -31,11 +31,11 @@ describe('Account Routes', () => {
   })
 
   describe('POST /signup', () => {
-    test('Should return 200 on signup', async () => {
+    test('Should return 201 on signup', async () => {
       await request(app)
         .post('/api/signup')
         .send(mockRequest())
-        .expect(200)
+        .expect(201)
     })
 
     test('Should return 400 on signup if body is ivalid', async () => {

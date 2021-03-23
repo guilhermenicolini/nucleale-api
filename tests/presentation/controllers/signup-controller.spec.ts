@@ -1,7 +1,7 @@
 import { SignUpController } from '@/presentation/controllers'
 import { AddAccountSpy, ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
-import { serverError, badRequest, conflict, ok } from '@/presentation/helpers'
+import { serverError, badRequest, conflict, created } from '@/presentation/helpers'
 import { ServerError, EmailInUseError } from '@/presentation/errors'
 
 import faker from 'faker'
@@ -91,10 +91,10 @@ describe('SignUp Controller', () => {
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 
-  test('Should return 200 on success', async () => {
+  test('Should return 201 on success', async () => {
     const { sut, authenticationSpy } = makeSut()
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(ok(authenticationSpy.result))
+    expect(httpResponse).toEqual(created(authenticationSpy.result))
   })
 })

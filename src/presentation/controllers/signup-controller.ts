@@ -1,7 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { AddAccount, Authentication } from '@/domain/usecases'
 import { EmailInUseError } from '@/presentation/errors'
-import { serverError, badRequest, conflict, ok } from '@/presentation/helpers'
+import { serverError, badRequest, conflict, created } from '@/presentation/helpers'
 
 export class SignUpController implements Controller {
   constructor (
@@ -27,7 +27,7 @@ export class SignUpController implements Controller {
         userId: result.userId
       })
 
-      return ok(token)
+      return created(token)
     } catch (error) {
       return serverError(error)
     }
