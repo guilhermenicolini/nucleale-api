@@ -8,6 +8,7 @@ export class PasswordValidation implements Validation {
     const value = input[this.fieldName]
     if (value.length < 8 ||
       !/[a-z]/.test(value) ||
-      !/[A-Z]/.test(value)) return new InvalidParamError(this.fieldName)
+      !/[A-Z]/.test(value) ||
+      !/[0-9]/.test(value)) return new InvalidParamError(this.fieldName)
   }
 }
