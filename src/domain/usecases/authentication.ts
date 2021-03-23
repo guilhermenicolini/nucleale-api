@@ -8,5 +8,7 @@ export namespace Authentication {
     userId: string
   }
 
-  export type Result = string
+  export type Result = {
+    accessToken: string
+  }
 }

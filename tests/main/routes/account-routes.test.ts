@@ -36,6 +36,9 @@ describe('Account Routes', () => {
         .post('/api/signup')
         .send(mockRequest())
         .expect(201)
+        .expect(function (res) {
+          if (!('accessToken' in res.body)) throw new Error('Missing accessToken')
+        })
     })
 
     test('Should return 400 on signup if body is ivalid', async () => {

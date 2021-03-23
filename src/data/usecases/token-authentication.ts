@@ -11,6 +11,9 @@ export class TokenAuthentication implements Authentication {
       sub: params.userId,
       acc: params.accountId
     }
-    return await this.signer.sign(data)
+    const token = await this.signer.sign(data)
+    return {
+      accessToken: token
+    }
   }
 }
