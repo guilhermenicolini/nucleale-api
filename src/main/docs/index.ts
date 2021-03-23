@@ -1,4 +1,5 @@
 import env from '@/main/config/env'
+import { paths, components } from './swagger'
 
 export default {
   openapi: '3.0.0',
@@ -24,5 +25,7 @@ export default {
       name: 'Authentication',
       description: 'Authentication related APIs'
     }
-  ]
+  ],
+  paths,
+  components
 }
