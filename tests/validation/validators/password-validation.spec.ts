@@ -26,6 +26,14 @@ describe('PasswordValidation', () => {
     expect(error).toEqual(new InvalidParamError(field))
   })
 
+  test('Should return an error if password does not contains at least 1 upper case character', () => {
+    const sut = makeSut()
+    const error = sut.validate({
+      [field]: 'p2345678'
+    })
+    expect(error).toEqual(new InvalidParamError(field))
+  })
+
   test('Should not return if validation succeeds', () => {
     const sut = makeSut()
     const error = sut.validate({ [field]: 'P@ssw0rd' })
