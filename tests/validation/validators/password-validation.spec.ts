@@ -21,7 +21,7 @@ describe('PasswordValidation', () => {
   test('Should return an error if password does not contains at least 1 lower case character', () => {
     const sut = makeSut()
     const error = sut.validate({
-      [field]: '12345678'
+      [field]: 'P2345678'
     })
     expect(error).toEqual(new InvalidParamError(field))
   })
@@ -30,6 +30,14 @@ describe('PasswordValidation', () => {
     const sut = makeSut()
     const error = sut.validate({
       [field]: 'p2345678'
+    })
+    expect(error).toEqual(new InvalidParamError(field))
+  })
+
+  test('Should return an error if password does not contains at least 1 numeric character', () => {
+    const sut = makeSut()
+    const error = sut.validate({
+      [field]: 'Password'
     })
     expect(error).toEqual(new InvalidParamError(field))
   })
