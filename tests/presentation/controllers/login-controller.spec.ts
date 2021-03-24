@@ -55,4 +55,11 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
+
+  test('Should call VerifyAccount with correct values', async () => {
+    const { sut, verifyAccountSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(verifyAccountSpy.params).toEqual(request)
+  })
 })
