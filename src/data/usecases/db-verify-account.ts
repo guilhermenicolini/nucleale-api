@@ -8,7 +8,10 @@ export class DbVerifyAccount implements VerifyAccount {
   ) { }
 
   async verify (params: VerifyAccount.Params): Promise<VerifyAccount.Result> {
-    await this.loadAccountByEmailRepository.load(params.email)
+    const account = await this.loadAccountByEmailRepository.load(params.email)
+    if (account) {
+      await this.hasheComparer.compare(params.password, account.password)
+    }
     return null
   }
 }
