@@ -10,7 +10,13 @@ export class DbVerifyAccount implements VerifyAccount {
   async verify (params: VerifyAccount.Params): Promise<VerifyAccount.Result> {
     const account = await this.loadAccountByEmailRepository.load(params.email)
     if (account) {
-      await this.hasheComparer.compare(params.password, account.password)
+      const isValid = await this.hasheComparer.compare(params.password, account.password)
+      if (isValid) {
+        return {
+          accountId: account.accountId,
+          userId: account.userId
+        }
+      }
     }
     return null
   }

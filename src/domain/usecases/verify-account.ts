@@ -10,7 +10,6 @@ export namespace VerifyAccount {
 
   export type Result = {
     accountId: string
-    userId: string,
-    password: string
+    userId: string
   }
 }
