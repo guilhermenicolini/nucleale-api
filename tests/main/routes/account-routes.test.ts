@@ -5,12 +5,20 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
 
-const mockRequest = () => {
+const mockAddRequest = () => {
   const password = 'P@ssw0rd'
   return {
     email: faker.internet.email(),
     password,
     passwordConfirmation: password
+  }
+}
+
+const mockLoginRequest = () => {
+  const password = 'P@ssw0rd'
+  return {
+    email: faker.internet.email(),
+    password
   }
 }
 
@@ -34,7 +42,7 @@ describe('Account Routes', () => {
     test('Should return 201 on signup', async () => {
       await request(app)
         .post('/api/signup')
-        .send(mockRequest())
+        .send(mockAddRequest())
         .expect(201)
         .expect(function (res) {
           if (!('accessToken' in res.body)) throw new Error('Missing accessToken')
@@ -42,7 +50,7 @@ describe('Account Routes', () => {
     })
 
     test('Should return 400 on signup if body is ivalid', async () => {
-      const params = mockRequest()
+      const params = mockAddRequest()
       await accountCollection.insertOne({ email: params.email })
       await request(app)
         .post('/api/signup')
@@ -51,7 +59,7 @@ describe('Account Routes', () => {
     })
 
     test('Should return 409 on signup if email was taken', async () => {
-      const params = mockRequest()
+      const params = mockAddRequest()
       await accountCollection.insertOne({ email: params.email })
       await request(app)
         .post('/api/signup')
@@ -62,12 +70,17 @@ describe('Account Routes', () => {
 
   describe('POST /login', () => {
     test('Should return 400 on login if body is ivalid', async () => {
-      const params = mockRequest()
-      await accountCollection.insertOne({ email: params.email })
       await request(app)
         .post('/api/login')
         .send({})
         .expect(400)
+    })
+
+    test('Should return 401 on login if invalid email or password', async () => {
+      await request(app)
+        .post('/api/login')
+        .send(mockLoginRequest())
+        .expect(401)
     })
   })
 })
