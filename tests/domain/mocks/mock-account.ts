@@ -4,5 +4,10 @@ import faker from 'faker'
 
 export const mockAddAccountParams = (): AddAccount.Params => ({
   email: faker.internet.email(),
-  password: faker.internet.password(20)
+  password: 'P@ssw0rd'
+})
+
+export const mockVerifyAccountParams = (): AddAccount.Params => ({
+  email: faker.internet.email(),
+  password: 'P@ssw0rd'
 })
