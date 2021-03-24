@@ -63,4 +63,11 @@ describe('DbVerifyAccount Usecase', () => {
     const result = await sut.verify(mockVerifyAccountParams())
     expect(result).toBeNull()
   })
+
+  test('Should return an account on success', async () => {
+    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
+    const result = await sut.verify(mockVerifyAccountParams())
+    expect(result.accountId).toBe(loadAccountByEmailRepositorySpy.result.accountId)
+    expect(result.userId).toBe(loadAccountByEmailRepositorySpy.result.userId)
+  })
 })
