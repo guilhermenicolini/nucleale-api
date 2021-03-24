@@ -1,10 +1,10 @@
 language: node_js
 node_js:
-  - 14.16.0
+- 14.16.0
 deploy:
   provider: heroku
   api_key:
-    secure: $SECURE_KEY
-  app: $APP
+    secure: UZY7Pr10zjyosKW31gqLSBAsinVaUWslzePuhECC57sxhC2fMZAL9+neWKXtAG1Be3Zg6xmoYHl6wU7JBhFikRlqXykjCb5LHjzia3kRLox8+MBHYQmkdcPN515k1PzWFg+AvjBSPBp2QipHlKtMHE5Xjklgcljz/lUNBDBI9zwJBwr7tnR6tp5V6zkWgwQzHNQ0SqsMgwZ1FUsX8iWoBHnkLwaEEi9mtFA1/kVCBC+KqwS76C1DG/QT2kt4XRWqxTGublnQynKSJpJf5zfGBdToaf1Eli3S7/uI3nx7QdS60GABscptKTTlHiljJiZXCLFuHAqYE1gM5Wk2x9/ucJcQt8YaSHplVWinu15zJygSnHWDeeXi4v+Bzvf8d6zfFInS/DFkMy8ANfYDNj+Ljm2RmURtLpyXnaisU+GaTav8jtAfEyKJp6sIwY2jgvTAdGD4bPpyXj0h+0A5jgN3W63o3/tB2YfJa8ap+iCTGHaL9aQOfykn2xX4R2gA0J/FNLyQ9il3KiZhLBCIFCO69u6DlCaDwBde4hTOhZmgw+ad9AUGbl2Wuj3zU+XXQB64DdiWOOp5fT30BKsxfxfRX3hRs8vWn4e1ShfA/f/QMJwf6f7cvtzTZlfWqarORxAVFEaO2DzaxbQ9lbokoOScaAf3JZ6oNHI9lcZFEmz4fwc=
+  app: nucleale-api
   on:
     branch: main
