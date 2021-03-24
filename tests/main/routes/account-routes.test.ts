@@ -59,4 +59,15 @@ describe('Account Routes', () => {
         .expect(409)
     })
   })
+
+  describe('POST /login', () => {
+    test('Should return 400 on login if body is ivalid', async () => {
+      const params = mockRequest()
+      await accountCollection.insertOne({ email: params.email })
+      await request(app)
+        .post('/api/login')
+        .send({})
+        .expect(400)
+    })
+  })
 })
