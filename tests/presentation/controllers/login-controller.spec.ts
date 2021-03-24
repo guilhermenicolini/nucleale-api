@@ -1,6 +1,6 @@
 import { LoginController } from '@/presentation/controllers'
 import { VerifyAccountSpy, ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
-import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
 import { ServerError, InvalidCredentialsError } from '@/presentation/errors'
 
@@ -92,5 +92,12 @@ describe('SignUp Controller', () => {
     jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, authenticationSpy } = makeSut()
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(ok(authenticationSpy.result))
   })
 })
