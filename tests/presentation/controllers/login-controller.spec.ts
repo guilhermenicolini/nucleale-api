@@ -76,4 +76,14 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(unauthorized(new InvalidCredentialsError()))
   })
+
+  test('Should call Authentication with correct values', async () => {
+    const { sut, verifyAccountSpy, authenticationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(authenticationSpy.params).toEqual({
+      accountId: verifyAccountSpy.result.accountId,
+      userId: verifyAccountSpy.result.userId
+    })
+  })
 })
