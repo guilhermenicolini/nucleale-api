@@ -1,6 +1,6 @@
 import { DbVerifyAccount } from '@/data/usecases'
 import { HashComparerSpy, LoadAccountByEmailRepositorySpy } from '@/tests/data/mocks'
-import { mockVerifyccountParams } from '@/tests/domain/mocks'
+import { mockVerifyccountParams, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbVerifyAccount,
@@ -21,10 +21,17 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbVerifyAccount Usecase', () => {
-  test('Should call LoadAccountByEmail with correct values', async () => {
+  test('Should call LoadAccountByEmailRepository with correct values', async () => {
     const { sut, loadAccountByEmailRepositorySpy } = makeSut()
     const params = mockVerifyccountParams()
     await sut.verify(params)
     expect(loadAccountByEmailRepositorySpy.email).toBe(params.email)
+  })
+
+  test('Should throw if LoadAccountByEmailRepository throws', async () => {
+    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
+    jest.spyOn(loadAccountByEmailRepositorySpy, 'load').mockImplementationOnce(throwError)
+    const promise = sut.verify(mockVerifyccountParams())
+    await expect(promise).rejects.toThrow()
   })
 })
