@@ -1,5 +1,5 @@
 import { MongoHelper } from '@/infra/db'
-import { AddAccountRepository, CheckAccountByEmailRepository } from '@/data/protocols'
+import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
 export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository {
@@ -24,5 +24,19 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
       }
     })
     return user !== null
+  }
+
+  async load (email: string): Promise<LoadAccountByEmailRepository.Result> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const user = await accountCollection.findOne({
+      email
+    }, {
+      projection: {
+        _id: 1,
+        accountId: 1,
+        password: 1
+      }
+    })
+    return user
   }
 }
