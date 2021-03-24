@@ -1,6 +1,8 @@
 import { LoginController } from '@/presentation/controllers'
 import { VerifyAccountSpy, ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { throwError } from '@/tests/domain/mocks'
+import { ServerError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -45,5 +47,12 @@ describe('SignUp Controller', () => {
     validationSpy.error = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
+  })
+
+  test('Should return 500 if Validation throws ', async () => {
+    const { sut, validationSpy } = makeSut()
+    jest.spyOn(validationSpy, 'validate').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
