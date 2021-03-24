@@ -30,7 +30,8 @@ export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailReposi
   email: string
   result: LoadAccountByEmailRepository.Result = {
     accountId: faker.random.uuid(),
-    userId: faker.random.uuid()
+    userId: faker.random.uuid(),
+    password: faker.internet.password()
   }
 
   async load (email: string): Promise<LoadAccountByEmailRepository.Result> {

@@ -7,7 +7,7 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
   password: 'P@ssw0rd'
 })
 
-export const mockVerifyccountParams = (): AddAccount.Params => ({
+export const mockVerifyAccountParams = (): AddAccount.Params => ({
   email: faker.internet.email(),
   password: 'P@ssw0rd'
 })

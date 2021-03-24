@@ -1,4 +1,4 @@
-import { Hasher, Signer } from '@/data/protocols'
+import { Hasher, Signer, HashComparer } from '@/data/protocols'
 
 import faker from 'faker'
 
@@ -18,6 +18,18 @@ export class SignerSpy implements Signer {
 
   async sign (data: any): Promise<string> {
     this.data = data
+    return this.result
+  }
+}
+
+export class HashComparerSpy implements HashComparer {
+  plainText: string
+  digest: string
+  result = true
+
+  async compare (plainText: string, digest: string): Promise<boolean> {
+    this.plainText = plainText
+    this.digest = digest
     return this.result
   }
 }
