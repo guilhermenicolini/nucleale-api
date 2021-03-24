@@ -59,5 +59,12 @@ describe('AccountMongoRepository', () => {
       expect(account.userId).toBe(inserted.userId)
       expect(account.password).toBe(data.password)
     })
+
+    test('Should return null if account does not exists', async () => {
+      const sut = makeSut()
+      const data = mockAddAccountParams()
+      const account = await sut.load(data.email)
+      expect(account).toBeFalsy()
+    })
   })
 })

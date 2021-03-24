@@ -37,10 +37,13 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
         password: 1
       }
     })
-    return {
-      accountId: user.accountId.toString(),
-      userId: user._id.toString(),
-      password: user.password
+    if (user) {
+      return {
+        accountId: user.accountId.toString(),
+        userId: user._id.toString(),
+        password: user.password
+      }
     }
+    return null
   }
 }
