@@ -95,6 +95,9 @@ describe('Account Routes', () => {
         .post('/api/login')
         .send(data)
         .expect(200)
+        .expect(function (res) {
+          if (!('accessToken' in res.body)) throw new Error('Missing accessToken')
+        })
     })
   })
 })
