@@ -48,4 +48,16 @@ describe('AccountMongoRepository', () => {
       expect(exists).toBe(false)
     })
   })
+
+  describe('load()', () => {
+    test('Should return an account if exists', async () => {
+      const sut = makeSut()
+      const data = mockAddAccountParams()
+      const inserted = await sut.add(data)
+      const account = await sut.load(data.email)
+      expect(account.accountId).toBe(inserted.accountId)
+      expect(account.userId).toBe(inserted.userId)
+      expect(account.password).toBe(data.password)
+    })
+  })
 })
