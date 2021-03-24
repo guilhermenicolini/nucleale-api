@@ -1,26 +1,31 @@
-import { signUpPath } from './paths'
+import { signUpPath, loginPath } from './paths'
 import {
   signupSchema,
   tokenSchema,
   errorSchema,
   badRequestError,
   conflictError,
-  serverError
+  serverError,
+  loginSchema,
+  unauthorizedError
 } from './components'
 
 export const paths = {
-  '/signup': signUpPath
+  '/signup': signUpPath,
+  '/login': loginPath
 }
 
 export const components = {
   schemas: {
     signUp: signupSchema,
     token: tokenSchema,
-    error: errorSchema
+    error: errorSchema,
+    login: loginSchema
   },
   errors: {
     badRequest: badRequestError,
     conflict: conflictError,
-    serverError: serverError
+    serverError: serverError,
+    unauthorized: unauthorizedError
   }
 }
