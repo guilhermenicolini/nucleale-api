@@ -40,5 +40,12 @@ describe('AccountMongoRepository', () => {
       const exists = await sut.check(data.email)
       expect(exists).toBe(true)
     })
+
+    test('Should return false if account does not exists', async () => {
+      const sut = makeSut()
+      const data = mockAddAccountParams()
+      const exists = await sut.check(data.email)
+      expect(exists).toBe(false)
+    })
   })
 })
