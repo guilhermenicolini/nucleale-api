@@ -1,8 +1,8 @@
 import { LoginController } from '@/presentation/controllers'
 import { VerifyAccountSpy, ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
-import { ServerError } from '@/presentation/errors'
+import { ServerError, InvalidCredentialsError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -63,10 +63,17 @@ describe('SignUp Controller', () => {
     expect(verifyAccountSpy.params).toEqual(request)
   })
 
-  test('Should return 500 if VerifyAccount throws ', async () => {
+  test('Should return 500 if VerifyAccount throws', async () => {
     const { sut, verifyAccountSpy } = makeSut()
     jest.spyOn(verifyAccountSpy, 'verify').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 401 if VerifyAccount not returns', async () => {
+    const { sut, verifyAccountSpy } = makeSut()
+    verifyAccountSpy.result = null
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(unauthorized(new InvalidCredentialsError()))
   })
 })

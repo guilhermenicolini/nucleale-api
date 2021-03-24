@@ -1,6 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { VerifyAccount, Authentication } from '@/domain/usecases'
-import { UserNotFoundError } from '@/presentation/errors'
+import { InvalidCredentialsError } from '@/presentation/errors'
 import { serverError, badRequest, unauthorized, ok } from '@/presentation/helpers'
 
 export class LoginController implements Controller {
@@ -20,7 +20,7 @@ export class LoginController implements Controller {
       const { email, password } = request
       const result = await this.verifyAccount.verify({ email, password })
       if (!result) {
-        return unauthorized(new UserNotFoundError())
+        return unauthorized(new InvalidCredentialsError())
       }
       const token = await this.authentication.auth({
         accountId: result.accountId,

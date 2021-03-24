@@ -9,7 +9,6 @@ export namespace VerifyAccount {
   }
 
   export type Result = {
-    isValid: boolean
     accountId: string
     userId: string
   }

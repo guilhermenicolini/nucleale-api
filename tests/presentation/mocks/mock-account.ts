@@ -19,7 +19,6 @@ export class AddAccountSpy implements AddAccount {
 export class VerifyAccountSpy implements VerifyAccount {
   params: VerifyAccount.Params
   result: VerifyAccount.Result = {
-    isValid: true,
     accountId: faker.random.uuid(),
     userId: faker.random.uuid()
   }
