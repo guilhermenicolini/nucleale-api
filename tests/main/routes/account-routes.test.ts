@@ -4,6 +4,7 @@ import { MongoHelper } from '@/infra/db'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
+import { hash } from 'bcrypt'
 
 const mockAddRequest = () => {
   const password = 'P@ssw0rd'
@@ -81,6 +82,19 @@ describe('Account Routes', () => {
         .post('/api/login')
         .send(mockLoginRequest())
         .expect(401)
+    })
+
+    test('Should return 200 on login', async () => {
+      const data = mockLoginRequest()
+      await accountCollection.insertOne({
+        accountId: faker.random.uuid(),
+        email: data.email,
+        password: await hash(data.password, 12)
+      })
+      await request(app)
+        .post('/api/login')
+        .send(data)
+        .expect(200)
     })
   })
 })
