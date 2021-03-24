@@ -34,7 +34,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('SignUp Controller', () => {
+describe('Login Controller', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockRequest()
