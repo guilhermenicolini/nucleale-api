@@ -62,4 +62,11 @@ describe('SignUp Controller', () => {
     await sut.handle(request)
     expect(verifyAccountSpy.params).toEqual(request)
   })
+
+  test('Should return 500 if VerifyAccount throws ', async () => {
+    const { sut, verifyAccountSpy } = makeSut()
+    jest.spyOn(verifyAccountSpy, 'verify').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
 })
