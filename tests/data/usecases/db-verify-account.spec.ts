@@ -35,6 +35,13 @@ describe('DbVerifyAccount Usecase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should return null if LoadAccountByEmailRepository returns null', async () => {
+    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
+    loadAccountByEmailRepositorySpy.result = null
+    const result = await sut.verify(mockVerifyAccountParams())
+    expect(result).toBeNull()
+  })
+
   test('Should call HashComparer with correct values', async () => {
     const { sut, hashComparerSpy, loadAccountByEmailRepositorySpy } = makeSut()
     const params = mockVerifyAccountParams()
