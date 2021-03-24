@@ -56,4 +56,11 @@ describe('DbVerifyAccount Usecase', () => {
     const promise = sut.verify(mockVerifyAccountParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if HashComparer returns false', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    hashComparerSpy.result = false
+    const result = await sut.verify(mockVerifyAccountParams())
+    expect(result).toBeNull()
+  })
 })
