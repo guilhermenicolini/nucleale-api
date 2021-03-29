@@ -8,9 +8,5 @@ export const loginSchema = {
       type: 'string'
     }
   },
-  example: {
-    email: 'john.doe@inbox.com',
-    password: 'ZD7!_Mmd'
-  },
   required: ['email', 'password']
 }

@@ -4,8 +4,14 @@ export interface AddAccount {
 
 export namespace AddAccount {
   export type Params = {
+    accountId: string
+    taxId: string
+    name: string
     email: string
     password: string
+    mobileCountry: string
+    mobilePhone: string
+    birth: number
   }
 
   export type Result = {

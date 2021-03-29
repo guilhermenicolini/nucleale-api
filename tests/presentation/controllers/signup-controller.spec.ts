@@ -1,18 +1,12 @@
 import { SignUpController } from '@/presentation/controllers'
 import { AddAccountSpy, ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
-import { throwError } from '@/tests/domain/mocks'
+import { throwError, mockAddAccountParams } from '@/tests/domain/mocks'
 import { serverError, badRequest, conflict, created } from '@/presentation/helpers'
 import { ServerError, EmailInUseError } from '@/presentation/errors'
 
-import faker from 'faker'
-
 const mockRequest = (): SignUpController.Request => {
-  const password = 'P@ssw0rd'
-  return {
-    email: faker.internet.email(),
-    password,
-    passwordConfirmation: password
-  }
+  const params = mockAddAccountParams()
+  return { ...params, passwordConfirmation: params.password }
 }
 
 type SutTypes = {
@@ -40,10 +34,8 @@ describe('SignUp Controller', () => {
     const { sut, addAccountSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(addAccountSpy.params).toEqual({
-      email: request.email,
-      password: request.password
-    })
+    const { passwordConfirmation, ...obj } = request
+    expect(addAccountSpy.params).toEqual({ ...obj, accountId: null })
   })
 
   test('Should return 500 if AddAccount throws ', async () => {

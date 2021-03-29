@@ -1,6 +1,12 @@
 export const signupSchema = {
   type: 'object',
   properties: {
+    taxId: {
+      type: 'string'
+    },
+    name: {
+      type: 'string'
+    },
     email: {
       type: 'string'
     },
@@ -9,12 +15,17 @@ export const signupSchema = {
     },
     passwordConfirmation: {
       type: 'string'
+    },
+    mobileCountry: {
+      type: 'string'
+    },
+    mobilePhone: {
+      type: 'string'
+    },
+    birth: {
+      type: 'number',
+      format: 'int32'
     }
   },
-  example: {
-    email: 'john.doe@inbox.com',
-    password: 'ZD7!_Mmd',
-    passwordConfirmation: 'ZD7!_Mmd'
-  },
-  required: ['email', 'password', 'passwordConfirmation']
+  required: ['taxId', 'name', 'email', 'password', 'passwordConfirmation', 'mobileCountry', 'mobilePhone', 'birth']
 }
