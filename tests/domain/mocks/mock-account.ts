@@ -1,5 +1,4 @@
 import { AddAccount, VerifyAccount } from '@/domain/usecases'
-
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
@@ -14,7 +13,8 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
   birth: faker.random.number({
     min: 315543600000,
     max: 631159200000
-  })
+  }),
+  status: 'awaitingVerification'
 })
 
 export const mockVerifyAccountParams = (): VerifyAccount.Params => ({

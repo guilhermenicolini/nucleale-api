@@ -26,7 +26,8 @@ export class SignUpController implements Controller {
         password,
         mobileCountry,
         mobilePhone,
-        birth
+        birth,
+        status: 'awaitingVerification'
       })
       if (!result.isValid) {
         return conflict(new EmailInUseError())
