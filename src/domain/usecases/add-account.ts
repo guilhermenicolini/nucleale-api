@@ -12,7 +12,6 @@ export namespace AddAccount {
     name: string
     email: string
     password: string
-    mobileCountry: string
     mobilePhone: string
     birth: number
     status: Status

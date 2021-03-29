@@ -17,14 +17,13 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
 
-      const { taxId, name, email, password, mobileCountry, mobilePhone, birth } = request
+      const { taxId, name, email, password, mobilePhone, birth } = request
       const result = await this.addAccount.add({
         accountId: null,
         taxId,
         name,
         email,
         password,
-        mobileCountry,
         mobilePhone,
         birth,
         status: 'awaitingVerification'
@@ -51,7 +50,6 @@ export namespace SignUpController {
     email: string
     password: string
     passwordConfirmation: string
-    mobileCountry: string
     mobilePhone: string
     birth: number
   }

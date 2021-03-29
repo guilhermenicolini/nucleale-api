@@ -8,8 +8,7 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
   name: faker.name.findName(),
   email: faker.internet.email(),
   password: 'P@ssw0rd',
-  mobileCountry: `+${faker.random.number(99)}`,
-  mobilePhone: faker.phone.phoneNumber('###########'),
+  mobilePhone: faker.phone.phoneNumber('+55##9########'),
   birth: faker.random.number({
     min: 315543600000,
     max: 631159200000

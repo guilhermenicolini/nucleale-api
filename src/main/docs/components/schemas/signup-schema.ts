@@ -16,9 +16,6 @@ export const signupSchema = {
     passwordConfirmation: {
       type: 'string'
     },
-    mobileCountry: {
-      type: 'string'
-    },
     mobilePhone: {
       type: 'string'
     },
@@ -27,5 +24,5 @@ export const signupSchema = {
       format: 'int32'
     }
   },
-  required: ['taxId', 'name', 'email', 'password', 'passwordConfirmation', 'mobileCountry', 'mobilePhone', 'birth']
+  required: ['taxId', 'name', 'email', 'password', 'passwordConfirmation', 'mobilePhone', 'birth']
 }
