@@ -1,2 +1,2 @@
 export * from './email-validator'
-export * from './phone-validator'
+export * from './mobile-phone-validator'
