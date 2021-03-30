@@ -15,7 +15,7 @@ const mockAddRequest = () => {
     email: faker.internet.email(),
     password,
     passwordConfirmation: password,
-    mobilePhone: faker.phone.phoneNumber('+55##9########'),
+    mobilePhone: faker.phone.phoneNumber('+55199########'),
     birth: faker.random.number({
       min: 315543600000,
       max: 631159200000
