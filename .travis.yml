@@ -3,5 +3,6 @@ node_js:
   - 14.16.0
 deploy:
   provider: heroku:git
-  edge:
+  edge: true
+  on:
     branch: main
