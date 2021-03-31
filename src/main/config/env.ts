@@ -5,5 +5,6 @@ export default {
   iss: process.env.JWT_ISS || 'Issuer',
   exp: process.env.JWT_EXP || '1h',
   aud: process.env.JWT_AUD || 'https://issuer.com',
-  host: process.env.HOST || 'http://localhost:5050/api'
+  host: process.env.HOST || 'http://localhost:5050/api',
+  certbot: process.env.CERTBOT_RESPONSE || 'certbot_response'
 }
