@@ -4,12 +4,12 @@ import { ObjectId } from 'mongodb'
 
 export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
-    const accountId = new ObjectId()
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
-    const cmd = await accountCollection.insertOne({ ...data, accountId })
+    const { accountId, ...obj } = data
+    const cmd = await accountCollection.insertOne({ ...obj, accountId: new ObjectId(accountId) })
     return {
       userId: cmd.ops[0]._id.toString(),
-      accountId: accountId.toString(),
+      accountId,
       isValid: cmd.result.ok === 1
     }
   }

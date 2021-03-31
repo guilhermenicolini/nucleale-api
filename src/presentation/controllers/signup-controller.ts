@@ -17,8 +17,17 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
 
-      const { email, password } = request
-      const result = await this.addAccount.add({ email, password })
+      const { taxId, name, email, password, mobilePhone, birth } = request
+      const result = await this.addAccount.add({
+        accountId: null,
+        taxId,
+        name,
+        email,
+        password,
+        mobilePhone,
+        birth,
+        status: 'awaitingVerification'
+      })
       if (!result.isValid) {
         return conflict(new EmailInUseError())
       }
@@ -36,8 +45,12 @@ export class SignUpController implements Controller {
 
 export namespace SignUpController {
   export type Request = {
+    taxId: string
+    name: string
     email: string
     password: string
     passwordConfirmation: string
+    mobilePhone: string
+    birth: number
   }
 }

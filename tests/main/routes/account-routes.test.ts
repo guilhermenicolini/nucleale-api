@@ -8,10 +8,18 @@ import { hash } from 'bcrypt'
 
 const mockAddRequest = () => {
   const password = 'P@ssw0rd'
+
   return {
+    taxId: '30638954070',
+    name: faker.name.findName(),
     email: faker.internet.email(),
     password,
-    passwordConfirmation: password
+    passwordConfirmation: password,
+    mobilePhone: faker.phone.phoneNumber('+55199########'),
+    birth: faker.random.number({
+      min: 315543600000,
+      max: 631159200000
+    })
   }
 }
 

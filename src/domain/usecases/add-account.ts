@@ -3,9 +3,18 @@ export interface AddAccount {
 }
 
 export namespace AddAccount {
+
+  export type Status = 'active' | 'awaitingVerification'
+
   export type Params = {
+    accountId: string
+    taxId: string
+    name: string
     email: string
     password: string
+    mobilePhone: string
+    birth: number
+    status: Status
   }
 
   export type Result = {
