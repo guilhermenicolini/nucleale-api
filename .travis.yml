@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - 14.16.0
+script:
+  - eslint 'src/**'
+  - npm run test:coveralls
 deploy:
   provider: heroku:git
   edge: true
