@@ -50,7 +50,7 @@ describe('Account Routes', () => {
   describe('POST /signup', () => {
     test('Should return 201 on signup', async () => {
       await request(app)
-        .post('/api/signup')
+        .post('/signup')
         .send(mockAddRequest())
         .expect(201)
         .expect(function (res) {
@@ -62,7 +62,7 @@ describe('Account Routes', () => {
       const params = mockAddRequest()
       await accountCollection.insertOne({ email: params.email })
       await request(app)
-        .post('/api/signup')
+        .post('/signup')
         .send({})
         .expect(400)
     })
@@ -71,7 +71,7 @@ describe('Account Routes', () => {
       const params = mockAddRequest()
       await accountCollection.insertOne({ email: params.email })
       await request(app)
-        .post('/api/signup')
+        .post('/signup')
         .send(params)
         .expect(409)
     })
@@ -80,14 +80,14 @@ describe('Account Routes', () => {
   describe('POST /login', () => {
     test('Should return 400 on login if body is ivalid', async () => {
       await request(app)
-        .post('/api/login')
+        .post('/login')
         .send({})
         .expect(400)
     })
 
     test('Should return 401 on login if invalid email or password', async () => {
       await request(app)
-        .post('/api/login')
+        .post('/login')
         .send(mockLoginRequest())
         .expect(401)
     })
@@ -100,7 +100,7 @@ describe('Account Routes', () => {
         password: await hash(data.password, 12)
       })
       await request(app)
-        .post('/api/login')
+        .post('/login')
         .send(data)
         .expect(200)
         .expect(function (res) {

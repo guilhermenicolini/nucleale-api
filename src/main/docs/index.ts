@@ -1,4 +1,3 @@
-import env from '@/main/config/env'
 import { paths, components } from './swagger'
 
 export default {
@@ -18,7 +17,16 @@ export default {
     }
   },
   servers: [{
-    url: env.host
+    url: 'https://api.nucleale.com',
+    description: 'Main server'
+  },
+  {
+    url: 'https://nucleale-api.herokuapp.com',
+    description: 'Heroku server'
+  },
+  {
+    url: 'http:/localhost:5050',
+    description: 'Local server'
   }],
   tags: [
     {

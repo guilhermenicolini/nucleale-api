@@ -4,5 +4,5 @@ import setupAccountRoutes from '@/main/routes/account-routes'
 export default (app: Express): void => {
   const router = Router()
   setupAccountRoutes(router)
-  app.use('/api', router)
+  app.use('', router)
 }
