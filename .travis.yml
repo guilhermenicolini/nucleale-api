@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - 14.16.0
 deploy:
-  provider: heroku
+  provider: heroku:git
   edge: true
   on:
     branch: main
