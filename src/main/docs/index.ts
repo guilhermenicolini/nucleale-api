@@ -25,7 +25,7 @@ export default {
     description: 'Heroku server'
   },
   {
-    url: 'http:/localhost:5050',
+    url: 'http://localhost:5050',
     description: 'Local server'
   }],
   tags: [

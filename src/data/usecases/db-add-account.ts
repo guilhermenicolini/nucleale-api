@@ -18,8 +18,19 @@ export class DbAddAccount implements AddAccount {
       }
     }
     const hashedPassword = await this.hasher.hash(params.password)
-    const { password, ...obj } = params
-    const account = await this.addAccountRepository.add({ ...obj, password: hashedPassword })
+
+    const data = {
+      accountId: params.accountId,
+      taxId: params.taxId,
+      name: params.name,
+      email: params.email,
+      password: hashedPassword,
+      mobilePhone: params.mobilePhone,
+      birth: params.birth,
+      status: params.status
+    }
+
+    const account = await this.addAccountRepository.add(data)
     return account
   }
 }
