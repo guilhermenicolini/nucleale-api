@@ -1,4 +1,11 @@
-import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '@/data/protocols'
+import {
+  AddAccountRepository,
+  CheckAccountByEmailRepository,
+  LoadAccountByEmailRepository,
+  LoadAccountsByStatusRepository
+} from '@/data/protocols'
+import { LoadAccountsByStatus } from '@/domain/usecases'
+import { mockAccountModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -36,6 +43,19 @@ export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailReposi
 
   async load (email: string): Promise<LoadAccountByEmailRepository.Result> {
     this.email = email
+    return this.result
+  }
+}
+
+export class LoadAccountsByStatusRepositorySpy implements LoadAccountsByStatus {
+  params: LoadAccountsByStatusRepository.Params
+  result: LoadAccountsByStatusRepository.Result = [
+    mockAccountModel(),
+    mockAccountModel()
+  ]
+
+  async load (params: LoadAccountsByStatusRepository.Params): Promise<LoadAccountsByStatusRepository.Result> {
+    this.params = params
     return this.result
   }
 }

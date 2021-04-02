@@ -8,6 +8,6 @@ export class DbLoadAccountsByStatus implements LoadAccountsByStatus {
 
   async load (params: LoadAccountsByStatus.Params): Promise<LoadAccountsByStatus.Result> {
     const accounts = await this.loadAccountsByStatusRepository.load(params)
-    return accounts
+    return accounts || []
   }
 }
