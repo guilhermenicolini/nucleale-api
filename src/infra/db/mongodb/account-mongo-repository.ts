@@ -1,8 +1,13 @@
 import { MongoHelper } from '@/infra/db'
-import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '@/data/protocols'
+import {
+  AddAccountRepository,
+  CheckAccountByEmailRepository,
+  LoadAccountByEmailRepository,
+  LoadAccountsByStatusRepository
+} from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
-export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository {
+export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountsByStatusRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const { accountId, ...obj } = data
@@ -16,19 +21,19 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
 
   async check (email: string): Promise<CheckAccountByEmailRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
-    const user = await accountCollection.findOne({
+    const account = await accountCollection.findOne({
       email
     }, {
       projection: {
         _id: 1
       }
     })
-    return user !== null
+    return account !== null
   }
 
   async load (email: string): Promise<LoadAccountByEmailRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
-    const user = await accountCollection.findOne({
+    const account = await accountCollection.findOne({
       email
     }, {
       projection: {
@@ -37,13 +42,21 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
         password: 1
       }
     })
-    if (user) {
+    if (account) {
       return {
-        accountId: user.accountId.toString(),
-        userId: user._id.toString(),
-        password: user.password
+        accountId: account.accountId.toString(),
+        userId: account._id.toString(),
+        password: account.password
       }
     }
     return null
+  }
+
+  async loadByStatus (params: LoadAccountsByStatusRepository.Params): Promise<LoadAccountsByStatusRepository.Result> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const accounts = accountCollection.find({
+      status: params
+    }).toArray()
+    return accounts
   }
 }

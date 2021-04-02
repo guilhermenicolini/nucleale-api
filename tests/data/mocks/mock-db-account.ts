@@ -54,7 +54,7 @@ export class LoadAccountsByStatusRepositorySpy implements LoadAccountsByStatus {
     mockAccountModel()
   ]
 
-  async load (params: LoadAccountsByStatusRepository.Params): Promise<LoadAccountsByStatusRepository.Result> {
+  async loadByStatus (params: LoadAccountsByStatusRepository.Params): Promise<LoadAccountsByStatusRepository.Result> {
     this.params = params
     return this.result
   }

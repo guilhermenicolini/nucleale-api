@@ -1,7 +1,7 @@
 import { AccountModel, AccountStatus } from '@/domain/models'
 
 export interface LoadAccountsByStatus {
-  load: (params: LoadAccountsByStatus.Params) => Promise<LoadAccountsByStatus.Result>
+  loadByStatus: (params: LoadAccountsByStatus.Params) => Promise<LoadAccountsByStatus.Result>
 }
 
 export namespace LoadAccountsByStatus {

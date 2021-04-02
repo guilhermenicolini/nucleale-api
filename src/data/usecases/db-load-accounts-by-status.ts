@@ -6,8 +6,8 @@ export class DbLoadAccountsByStatus implements LoadAccountsByStatus {
     private readonly loadAccountsByStatusRepository: LoadAccountsByStatusRepository
   ) { }
 
-  async load (params: LoadAccountsByStatus.Params): Promise<LoadAccountsByStatus.Result> {
-    const accounts = await this.loadAccountsByStatusRepository.load(params)
+  async loadByStatus (params: LoadAccountsByStatus.Params): Promise<LoadAccountsByStatus.Result> {
+    const accounts = await this.loadAccountsByStatusRepository.loadByStatus(params)
     return accounts || []
   }
 }
