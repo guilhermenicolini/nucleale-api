@@ -1,4 +1,4 @@
-import { MongoHelper } from '@/infra/db'
+import { MongoHelper, accountMapper } from '@/infra/db'
 import {
   AddAccountRepository,
   CheckAccountByEmailRepository,
@@ -54,9 +54,14 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
 
   async loadByStatus (params: LoadAccountsByStatusRepository.Params): Promise<LoadAccountsByStatusRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
-    const accounts = accountCollection.find({
+    const accounts = await accountCollection.find({
       status: params
+    }, {
+      projection: {
+        password: 0
+      }
     }).toArray()
-    return accounts
+
+    return MongoHelper.instance.mapCollection(accounts, accountMapper())
   }
 }
