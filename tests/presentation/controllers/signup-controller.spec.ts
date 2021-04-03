@@ -72,7 +72,8 @@ describe('SignUp Controller', () => {
     await sut.handle(request)
     expect(authenticationSpy.params).toEqual({
       accountId: addAccountSpy.result.accountId,
-      userId: addAccountSpy.result.userId
+      userId: addAccountSpy.result.userId,
+      role: addAccountSpy.result.role
     })
   })
 
