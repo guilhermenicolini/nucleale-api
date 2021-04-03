@@ -33,9 +33,9 @@ describe('SignUp Controller', () => {
   test('Should call AddAccount with correct values', async () => {
     const { sut, addAccountSpy } = makeSut()
     const request = mockRequest()
+    delete request.passwordConfirmation
     await sut.handle(request)
-    const { passwordConfirmation, ...obj } = request
-    expect(addAccountSpy.params).toEqual({ ...obj, accountId: null })
+    expect(addAccountSpy.params).toEqual({ ...request, accountId: null })
   })
 
   test('Should return 500 if AddAccount throws ', async () => {

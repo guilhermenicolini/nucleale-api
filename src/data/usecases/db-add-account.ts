@@ -14,7 +14,8 @@ export class DbAddAccount implements AddAccount {
       return {
         isValid: false,
         accountId: null,
-        userId: null
+        userId: null,
+        role: null
       }
     }
     const hashedPassword = await this.hasher.hash(params.password)
@@ -27,7 +28,8 @@ export class DbAddAccount implements AddAccount {
       password: hashedPassword,
       mobilePhone: params.mobilePhone,
       birth: params.birth,
-      status: params.status
+      status: params.status,
+      role: params.role
     }
 
     const account = await this.addAccountRepository.add(data)

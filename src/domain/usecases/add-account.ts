@@ -14,12 +14,14 @@ export namespace AddAccount {
     password: string
     mobilePhone: string
     birth: number
-    status: Status
+    status: Status,
+    role: string
   }
 
   export type Result = {
     isValid: boolean
     accountId: string
     userId: string
+    role: string
   }
 }

@@ -2,6 +2,7 @@ import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { AddAccount, Authentication } from '@/domain/usecases'
 import { EmailInUseError } from '@/presentation/errors'
 import { serverError, badRequest, conflict, created } from '@/presentation/helpers'
+import { AccountStatus, AccountRoles } from '@/domain/models'
 
 export class SignUpController implements Controller {
   constructor (
@@ -26,14 +27,16 @@ export class SignUpController implements Controller {
         password,
         mobilePhone,
         birth,
-        status: 'awaitingVerification'
+        status: AccountStatus.awaitingVerification,
+        role: AccountRoles.user
       })
       if (!result.isValid) {
         return conflict(new EmailInUseError())
       }
       const token = await this.authentication.auth({
         accountId: result.accountId,
-        userId: result.userId
+        userId: result.userId,
+        role: result.role
       })
 
       return created(token)

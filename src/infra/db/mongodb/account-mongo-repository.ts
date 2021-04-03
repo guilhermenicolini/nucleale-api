@@ -14,7 +14,8 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
     const cmd = await accountCollection.insertOne({ ...obj, accountId: new ObjectId(accountId) })
     return {
       userId: cmd.ops[0]._id.toString(),
-      accountId,
+      accountId: cmd.ops[0].accountId.toString(),
+      role: cmd.ops[0].role,
       isValid: cmd.result.ok === 1
     }
   }
@@ -39,14 +40,16 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
       projection: {
         _id: 1,
         accountId: 1,
-        password: 1
+        password: 1,
+        role: 1
       }
     })
     if (account) {
       return {
         accountId: account.accountId.toString(),
         userId: account._id.toString(),
-        password: account.password
+        password: account.password,
+        role: account.role
       }
     }
     return null

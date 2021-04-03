@@ -9,7 +9,8 @@ export class TokenAuthentication implements Authentication {
   async auth (params: Authentication.Params): Promise<Authentication.Result> {
     const data = {
       sub: params.userId,
-      acc: params.accountId
+      acc: params.accountId,
+      role: params.role
     }
     const token = await this.signer.sign(data)
     return {

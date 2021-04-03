@@ -7,5 +7,6 @@ export namespace LoadAccountByEmailRepository {
     accountId: string
     userId: string
     password: string
+    role: string
   }
 }

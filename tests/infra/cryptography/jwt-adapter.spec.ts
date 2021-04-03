@@ -19,24 +19,25 @@ describe('Jwt Adapter', () => {
     test('Should call sign with correct values', async () => {
       const sut = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')
-      await sut.sign({ sub: 'any_sub' })
+      await sut.sign({ sub: 'any_sub', role: 'any_role' })
       expect(signSpy).toHaveBeenCalledWith({
         sub: 'any_sub',
         iss: env.iss,
-        aud: env.aud
+        aud: env.aud,
+        role: 'any_role'
       }, 'secret', { expiresIn: env.exp })
     })
 
     test('Should return a token on sign success', async () => {
       const sut = makeSut()
-      const accessToken = await sut.sign({ sub: 'any_sub' })
+      const accessToken = await sut.sign({ sub: 'any_sub', role: 'any_role' })
       expect(accessToken).toBe('any_token')
     })
 
     test('Should throw if sign throws', async () => {
       const sut = makeSut()
       jest.spyOn(jwt, 'sign').mockImplementationOnce(throwError)
-      const promise = sut.sign({ sub: 'any_sub' })
+      const promise = sut.sign({ sub: 'any_sub', role: 'any_role' })
       await expect(promise).rejects.toThrow()
     })
   })

@@ -23,7 +23,8 @@ describe('TokenAuthentication Usecase', () => {
     await sut.auth(params)
     expect(signerSpy.data).toEqual({
       sub: params.userId,
-      acc: params.accountId
+      acc: params.accountId,
+      role: params.role
     })
   })
 

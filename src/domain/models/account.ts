@@ -1,4 +1,4 @@
-import { AccountStatus } from './account-status'
+import { AccountStatus, AccountRoles } from './enums'
 export type AccountModel = {
   id: string
   accountId: string
@@ -9,4 +9,5 @@ export type AccountModel = {
   birth: number
   status: AccountStatus
   password: string
+  role: AccountRoles
 }
