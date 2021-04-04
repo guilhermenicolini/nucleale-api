@@ -11,13 +11,13 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
       const data = await this.decrypter.decrypt(accessToken)
       const token = {
         isValid: true,
-        id: data.sub,
+        userId: data.sub,
         accountId: data.acc
       }
       if (role && role !== data.role) {
         return {
           isValid: false,
-          id: null,
+          userId: null,
           accountId: null
         }
       }

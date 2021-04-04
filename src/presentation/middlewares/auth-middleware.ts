@@ -1,6 +1,6 @@
 import { Middleware, HttpResponse } from '@/presentation/protocols'
-import { forbidden, ok, serverError } from '@/presentation/helpers'
-import { AccessDeniedError } from '@/presentation/errors'
+import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers'
+import { AccessDeniedError, InsufficientPermissionError } from '@/presentation/errors'
 import { LoadAccountByToken } from '@/domain/usecases'
 
 export class AuthMiddleware implements Middleware {
@@ -11,14 +11,19 @@ export class AuthMiddleware implements Middleware {
 
   async handle (request: AuthMiddleware.Request): Promise<HttpResponse> {
     try {
-      const { accessToken } = request
-      if (accessToken) {
+      const { authorization } = request
+      if (authorization && authorization.startsWith('Bearer')) {
+        const accessToken = authorization.substring(7)
         const account = await this.loadAccountByToken.load(accessToken, this.role)
         if (account) {
-          return ok({ userId: account.id, accountId: account.id })
+          if (account.isValid) {
+            return ok({ userId: account.userId, accountId: account.accountId })
+          } else {
+            return forbidden(new InsufficientPermissionError())
+          }
         }
       }
-      return forbidden(new AccessDeniedError())
+      return unauthorized(new AccessDeniedError())
     } catch (error) {
       return serverError(error)
     }
@@ -27,6 +32,6 @@ export class AuthMiddleware implements Middleware {
 
 export namespace AuthMiddleware {
   export type Request = {
-    accessToken?: string
+    authorization?: string
   }
 }

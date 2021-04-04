@@ -52,7 +52,7 @@ describe('DbLoadAccountByToken Usecase', () => {
     const account = await sut.load(token, null)
     expect(account).toEqual({
       isValid: true,
-      id: decrypterSpy.result.sub,
+      userId: decrypterSpy.result.sub,
       accountId: decrypterSpy.result.acc
     })
   })
@@ -62,7 +62,7 @@ describe('DbLoadAccountByToken Usecase', () => {
     const account = await sut.load(token, decrypterSpy.result.role)
     expect(account).toEqual({
       isValid: true,
-      id: decrypterSpy.result.sub,
+      userId: decrypterSpy.result.sub,
       accountId: decrypterSpy.result.acc
     })
   })
@@ -72,7 +72,7 @@ describe('DbLoadAccountByToken Usecase', () => {
     const account = await sut.load(token, role)
     expect(account).toEqual({
       isValid: false,
-      id: null,
+      userId: null,
       accountId: null
     })
   })
