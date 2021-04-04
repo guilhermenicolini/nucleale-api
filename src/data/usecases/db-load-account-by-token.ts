@@ -10,10 +10,18 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
     try {
       const data = await this.decrypter.decrypt(accessToken)
       const token = {
+        isValid: true,
         id: data.sub,
         accountId: data.acc
       }
-      return role && role === data.role ? token : null
+      if (role && role !== data.role) {
+        return {
+          isValid: false,
+          id: null,
+          accountId: null
+        }
+      }
+      return token
     } catch (error) {
       return null
     }

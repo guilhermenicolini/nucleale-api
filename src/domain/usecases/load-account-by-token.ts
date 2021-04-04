@@ -4,6 +4,7 @@ export interface LoadAccountByToken {
 
 export namespace LoadAccountByToken {
   export type Result = {
+    isValid: boolean
     id: string
     accountId: string
   }
