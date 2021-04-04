@@ -1,4 +1,4 @@
-import { signUpPath, loginPath } from './paths'
+import { signUpPath, loginPath, accountsPaths } from './paths'
 import {
   signupSchema,
   tokenSchema,
@@ -7,12 +7,15 @@ import {
   conflictError,
   serverError,
   loginSchema,
-  unauthorizedError
+  unauthorizedError,
+  accountSchema,
+  accountsSchema
 } from './components'
 
 export const paths = {
   '/signup': signUpPath,
-  '/login': loginPath
+  '/login': loginPath,
+  ...accountsPaths
 }
 
 export const components = {
@@ -20,7 +23,9 @@ export const components = {
     signUp: signupSchema,
     token: tokenSchema,
     error: errorSchema,
-    login: loginSchema
+    login: loginSchema,
+    account: accountSchema,
+    accounts: accountsSchema
   },
   errors: {
     badRequest: badRequestError,
