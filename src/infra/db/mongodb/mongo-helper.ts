@@ -1,4 +1,5 @@
 import { MongoClient, Collection } from 'mongodb'
+import { Mapper } from '@/infra/db/protocols'
 import env from '@/main/config/env'
 
 export class MongoHelper {
@@ -32,5 +33,9 @@ export class MongoHelper {
     }
 
     return this.client.db().collection(collectionName)
+  }
+
+  mapCollection (collection: any[], mapper: Mapper): any[] {
+    return collection.map(c => mapper.map(c))
   }
 }

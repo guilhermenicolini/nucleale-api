@@ -1,3 +1,4 @@
+import { AccountStatus } from '@/domain/models'
 import { AccountMongoRepository, MongoHelper } from '@/infra/db'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 
@@ -66,5 +67,28 @@ describe('AccountMongoRepository', () => {
       const account = await sut.load(data.email)
       expect(account).toBeFalsy()
     })
+  })
+
+  describe('loadByStatus()', () => {
+    test('Should return account with correct values', async () => {
+      const sut = makeSut()
+      const data = mockAddAccountParams()
+      await sut.add(data)
+      const accounts = await sut.loadByStatus(AccountStatus.awaitingVerification)
+      expect(accounts.length).toBe(1)
+      expect(accounts[0].accountId).toBe(data.accountId)
+      expect(accounts[0].birth).toBe(data.birth)
+      expect(accounts[0].email).toBe(data.email)
+      expect(accounts[0].mobilePhone).toBe(data.mobilePhone)
+      expect(accounts[0].name).toBe(data.name)
+      expect(accounts[0].status).toBe(data.status)
+      expect(accounts[0].taxId).toBe(data.taxId)
+    })
+  })
+
+  test('Should return empty array if no records found', async () => {
+    const sut = makeSut()
+    const accounts = await sut.loadByStatus(AccountStatus.awaitingVerification)
+    expect(accounts.length).toBe(0)
   })
 })

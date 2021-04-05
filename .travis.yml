@@ -9,3 +9,6 @@ deploy:
   edge: true
   on:
     branch: main
+branches:
+  only:
+  - main

@@ -83,7 +83,8 @@ describe('Login Controller', () => {
     await sut.handle(request)
     expect(authenticationSpy.params).toEqual({
       accountId: verifyAccountSpy.result.accountId,
-      userId: verifyAccountSpy.result.userId
+      userId: verifyAccountSpy.result.userId,
+      role: verifyAccountSpy.result.role
     })
   })
 

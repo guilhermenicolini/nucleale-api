@@ -1,4 +1,5 @@
 import { paths, components } from './swagger'
+import env from '@/main/config/env'
 
 export default {
   openapi: '3.0.0',
@@ -16,22 +17,20 @@ export default {
       url: 'https://spdx.org/licenses/MIT.html'
     }
   },
-  servers: [{
-    url: 'https://api.nucleale.com',
-    description: 'Main server'
-  },
-  {
-    url: 'https://nucleale-api.herokuapp.com',
-    description: 'Heroku server'
-  },
-  {
-    url: 'http:/localhost:5050',
-    description: 'Local server'
-  }],
+  servers: [
+    {
+      url: env.serverUrl,
+      description: env.serverName
+    }
+  ],
   tags: [
     {
       name: 'Authentication',
       description: 'Authentication related APIs'
+    },
+    {
+      name: 'Accounts',
+      description: 'Accounts related APIPs'
     }
   ],
   paths,

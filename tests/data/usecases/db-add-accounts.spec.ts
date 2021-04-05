@@ -66,7 +66,8 @@ describe('DbAddAccount Usecase', () => {
     expect(result).toEqual({
       isValid: false,
       accountId: null,
-      userId: null
+      userId: null,
+      role: null
     })
   })
 

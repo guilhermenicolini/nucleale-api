@@ -24,7 +24,8 @@ export class LoginController implements Controller {
       }
       const token = await this.authentication.auth({
         accountId: result.accountId,
-        userId: result.userId
+        userId: result.userId,
+        role: result.role
       })
 
       return ok(token)

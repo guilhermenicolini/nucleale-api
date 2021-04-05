@@ -11,5 +11,6 @@ export namespace VerifyAccount {
   export type Result = {
     accountId: string
     userId: string
+    role: string
   }
 }

@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 
 export const redirect = (url: string) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, res: Response): void => {
     res.redirect(url)
   }
 }
