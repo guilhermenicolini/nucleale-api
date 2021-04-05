@@ -14,7 +14,8 @@ export class AddAccountRepositorySpy implements AddAccountRepository {
   result: AddAccountRepository.Result = ({
     isValid: true,
     accountId: faker.random.uuid(),
-    userId: faker.random.uuid()
+    userId: faker.random.uuid(),
+    role: faker.random.word()
   })
 
   async add (params: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
@@ -38,7 +39,8 @@ export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailReposi
   result: LoadAccountByEmailRepository.Result = {
     accountId: faker.random.uuid(),
     userId: faker.random.uuid(),
-    password: faker.internet.password()
+    password: faker.internet.password(),
+    role: faker.random.word()
   }
 
   async load (email: string): Promise<LoadAccountByEmailRepository.Result> {
