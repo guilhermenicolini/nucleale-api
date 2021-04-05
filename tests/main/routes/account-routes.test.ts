@@ -7,7 +7,7 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
 import { hash } from 'bcrypt'
-import { decode } from 'jsonwebtoken'
+import { decode, sign } from 'jsonwebtoken'
 
 const mockAddRequest = () => {
   const password = 'P@ssw0rd'
@@ -32,6 +32,26 @@ const mockLoginRequest = () => {
     email: faker.internet.email(),
     password
   }
+}
+
+const mockAccessToken = () => {
+  return sign({
+    sub: faker.random.uuid(),
+    acc: faker.random.uuid(),
+    role: 'user',
+    iss: env.iss,
+    aud: env.aud
+  }, env.secret, { expiresIn: env.exp })
+}
+
+const mockAdminAccessToken = () => {
+  return sign({
+    sub: faker.random.uuid(),
+    acc: faker.random.uuid(),
+    role: 'admin',
+    iss: env.iss,
+    aud: env.aud
+  }, env.secret, { expiresIn: env.exp })
 }
 
 let accountCollection: Collection
@@ -122,15 +142,30 @@ describe('Account Routes', () => {
   })
 
   describe('GET /accounts/status/:status', () => {
-    test('Should return 400 if status is ivalid', async () => {
+    test('Should return 401 if no token is provided', async () => {
       await request(app)
         .get('/accounts/status/wrong_status')
+        .expect(401)
+    })
+
+    test('Should return 403 token is not admin', async () => {
+      await request(app)
+        .get('/accounts/status/wrong_status')
+        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .expect(403)
+    })
+
+    test('Should return 400 if status is invalid', async () => {
+      await request(app)
+        .get('/accounts/status/wrong_status')
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(400)
     })
 
     test('Should return 200 with empty array if no records was found', async () => {
       await request(app)
         .get('/accounts/status/awaitingVerification')
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(200, [])
     })
 
@@ -140,6 +175,7 @@ describe('Account Routes', () => {
       await accountCollection.insertOne({ ...obj, _id: id })
       await request(app)
         .get('/accounts/status/active')
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(200)
         .expect(function (res) {
           if (res.body.length !== 1) throw new Error('Body must have 1 item')
