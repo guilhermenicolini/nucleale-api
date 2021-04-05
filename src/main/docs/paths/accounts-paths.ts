@@ -2,6 +2,9 @@ export const accountsPaths = {
   '/accounts/status/{status}': {
     get: {
       tags: ['Accounts'],
+      security: [{
+        bearerAuth: []
+      }],
       summary: 'API to find users by status',
       description: 'This API is closed and can be executed to **admins**',
       operationId: 'getAccountsByStatus',
@@ -31,6 +34,12 @@ export const accountsPaths = {
         },
         400: {
           $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        403: {
+          $ref: '#/components/errors/forbidden'
         },
         500: {
           $ref: '#/components/errors/serverError'

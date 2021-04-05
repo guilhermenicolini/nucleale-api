@@ -9,7 +9,9 @@ import {
   loginSchema,
   unauthorizedError,
   accountSchema,
-  accountsSchema
+  accountsSchema,
+  bearerSchema,
+  forbiddenError
 } from './components'
 
 export const paths = {
@@ -31,6 +33,8 @@ export const components = {
     badRequest: badRequestError,
     conflict: conflictError,
     serverError: serverError,
-    unauthorized: unauthorizedError
-  }
+    unauthorized: unauthorizedError,
+    forbidden: forbiddenError
+  },
+  securitySchemes: bearerSchema
 }
