@@ -3,11 +3,12 @@ import {
   AddAccountRepository,
   CheckAccountByEmailRepository,
   LoadAccountByEmailRepository,
-  LoadAccountsByStatusRepository
+  LoadAccountsByStatusRepository,
+  LoadInvitationRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
-export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountsByStatusRepository {
+export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountsByStatusRepository, LoadInvitationRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const { accountId, ...obj } = data
@@ -66,5 +67,14 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
     }).toArray()
 
     return MongoHelper.instance.mapCollection(accounts, accountMapper())
+  }
+
+  async loadInvitation (email: string): Promise<string> {
+    const invitationCollection = await MongoHelper.instance.getCollection('invitations')
+    const invite = await invitationCollection.findOne({ email })
+    if (invite) {
+      return invite.accountId.toString()
+    }
+    return null
   }
 }

@@ -1,5 +1,5 @@
 import { SignUpController } from '@/presentation/controllers'
-import { AddAccountSpy, ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
+import { AddAccountSpy, ValidationSpy, AuthenticationSpy, LoadInvitationSpy } from '@/tests/presentation/mocks'
 import { throwError, mockAddAccountParams } from '@/tests/domain/mocks'
 import { serverError, badRequest, conflict, created } from '@/presentation/helpers'
 import { ServerError, EmailInUseError } from '@/presentation/errors'
@@ -13,29 +13,46 @@ type SutTypes = {
   sut: SignUpController,
   addAccountSpy: AddAccountSpy,
   validationSpy: ValidationSpy,
-  authenticationSpy: AuthenticationSpy
+  authenticationSpy: AuthenticationSpy,
+  loadInvitationSpy: LoadInvitationSpy
 }
 
 const makeSut = (): SutTypes => {
   const addAccountSpy = new AddAccountSpy()
   const validationSpy = new ValidationSpy()
   const authenticationSpy = new AuthenticationSpy()
-  const sut = new SignUpController(addAccountSpy, validationSpy, authenticationSpy)
+  const loadInvitationSpy = new LoadInvitationSpy()
+  const sut = new SignUpController(addAccountSpy, validationSpy, authenticationSpy, loadInvitationSpy)
   return {
     sut,
     addAccountSpy,
     validationSpy,
-    authenticationSpy
+    authenticationSpy,
+    loadInvitationSpy
   }
 }
 
 describe('SignUp Controller', () => {
+  test('Should call LoadInvitation with correct values', async () => {
+    const { sut, loadInvitationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(loadInvitationSpy.email).toBe(request.email)
+  })
+
+  test('Should return 500 if LoadInvitation throws ', async () => {
+    const { sut, loadInvitationSpy } = makeSut()
+    jest.spyOn(loadInvitationSpy, 'load').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
   test('Should call AddAccount with correct values', async () => {
-    const { sut, addAccountSpy } = makeSut()
+    const { sut, addAccountSpy, loadInvitationSpy } = makeSut()
     const request = mockRequest()
     delete request.passwordConfirmation
     await sut.handle(request)
-    expect(addAccountSpy.params).toEqual({ ...request, accountId: null })
+    expect(addAccountSpy.params).toEqual({ ...request, accountId: loadInvitationSpy.result })
   })
 
   test('Should return 500 if AddAccount throws ', async () => {

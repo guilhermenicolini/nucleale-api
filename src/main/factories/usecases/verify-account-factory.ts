@@ -1,11 +1,8 @@
-import { DbVerifyAccount } from '@/data/usecases'
-import { VerifyAccount } from '@/domain/usecases'
+import { DbLoadInvitation } from '@/data/usecases'
+import { LoadInvitation } from '@/domain/usecases'
 import { AccountMongoRepository } from '@/infra/db'
-import { BCryptAdapter } from '@/infra/cryptography'
 
-export const makeDbVerifyAccount = (): VerifyAccount => {
-  const salt = 12
-  const bcryptAdapter = new BCryptAdapter(salt)
+export const makeDbLoadInvitation = (): LoadInvitation => {
   const accountMongoRepository = new AccountMongoRepository()
-  return new DbVerifyAccount(bcryptAdapter, accountMongoRepository)
+  return new DbLoadInvitation(accountMongoRepository)
 }

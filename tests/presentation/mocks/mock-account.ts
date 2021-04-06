@@ -1,4 +1,4 @@
-import { AddAccount, VerifyAccount, LoadAccountsByStatus, LoadAccountByToken } from '@/domain/usecases'
+import { AddAccount, VerifyAccount, LoadAccountsByStatus, LoadAccountByToken, LoadInvitation } from '@/domain/usecases'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -57,6 +57,16 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
   async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
     this.accessToken = accessToken
     this.role = role
+    return this.result
+  }
+}
+
+export class LoadInvitationSpy implements LoadInvitation {
+  email: string
+  result = faker.random.uuid()
+
+  async load (email: string): Promise<string> {
+    this.email = email
     return this.result
   }
 }
