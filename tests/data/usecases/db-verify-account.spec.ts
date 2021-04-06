@@ -1,73 +1,49 @@
-import { DbVerifyAccount } from '@/data/usecases'
-import { HashComparerSpy, LoadAccountByEmailRepositorySpy } from '@/tests/data/mocks'
-import { mockVerifyAccountParams, throwError } from '@/tests/domain/mocks'
+import { DbLoadInvitation } from '@/data/usecases'
+import { LoadInvitationRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
+
+import faker from 'faker'
 
 type SutTypes = {
-  sut: DbVerifyAccount,
-  hashComparerSpy: HashComparerSpy,
-  loadAccountByEmailRepositorySpy: LoadAccountByEmailRepositorySpy
+  sut: DbLoadInvitation,
+  loadInvitationRepositorySpy: LoadInvitationRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const hashComparerSpy = new HashComparerSpy()
-  const loadAccountByEmailRepositorySpy = new LoadAccountByEmailRepositorySpy()
-  const sut = new DbVerifyAccount(hashComparerSpy, loadAccountByEmailRepositorySpy)
+  const loadInvitationRepositorySpy = new LoadInvitationRepositorySpy()
+  const sut = new DbLoadInvitation(loadInvitationRepositorySpy)
 
   return {
     sut,
-    hashComparerSpy,
-    loadAccountByEmailRepositorySpy
+    loadInvitationRepositorySpy
   }
 }
 
-describe('DbVerifyAccount Usecase', () => {
-  test('Should call LoadAccountByEmailRepository with correct values', async () => {
-    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
-    const params = mockVerifyAccountParams()
-    await sut.verify(params)
-    expect(loadAccountByEmailRepositorySpy.email).toBe(params.email)
+describe('DbLoadInvitation Usecase', () => {
+  test('Should call LoadInvitationRepository with correct values', async () => {
+    const { sut, loadInvitationRepositorySpy } = makeSut()
+    const email = faker.internet.email()
+    await sut.load(email)
+    expect(loadInvitationRepositorySpy.email).toBe(email)
   })
 
-  test('Should throw if LoadAccountByEmailRepository throws', async () => {
-    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositorySpy, 'load').mockImplementationOnce(throwError)
-    const promise = sut.verify(mockVerifyAccountParams())
+  test('Should throw if LoadInvitationRepository throws', async () => {
+    const { sut, loadInvitationRepositorySpy } = makeSut()
+    jest.spyOn(loadInvitationRepositorySpy, 'loadInvitation').mockImplementationOnce(throwError)
+    const promise = sut.load(faker.internet.email())
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return null if LoadAccountByEmailRepository returns null', async () => {
-    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
-    loadAccountByEmailRepositorySpy.result = null
-    const result = await sut.verify(mockVerifyAccountParams())
-    expect(result).toBeNull()
-  })
-
-  test('Should call HashComparer with correct values', async () => {
-    const { sut, hashComparerSpy, loadAccountByEmailRepositorySpy } = makeSut()
-    const params = mockVerifyAccountParams()
-    await sut.verify(params)
-    expect(hashComparerSpy.plainText).toBe(params.password)
-    expect(hashComparerSpy.digest).toBe(loadAccountByEmailRepositorySpy.result.password)
-  })
-
-  test('Should throw if HashComparer throws', async () => {
-    const { sut, hashComparerSpy } = makeSut()
-    jest.spyOn(hashComparerSpy, 'compare').mockImplementationOnce(throwError)
-    const promise = sut.verify(mockVerifyAccountParams())
-    await expect(promise).rejects.toThrow()
-  })
-
-  test('Should return null if HashComparer returns false', async () => {
-    const { sut, hashComparerSpy } = makeSut()
-    hashComparerSpy.result = false
-    const result = await sut.verify(mockVerifyAccountParams())
+  test('Should return null if LoadInvitationRepository returns null', async () => {
+    const { sut, loadInvitationRepositorySpy } = makeSut()
+    loadInvitationRepositorySpy.result = null
+    const result = await sut.load(faker.internet.email())
     expect(result).toBeNull()
   })
 
   test('Should return an account on success', async () => {
-    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
-    const result = await sut.verify(mockVerifyAccountParams())
-    expect(result.accountId).toBe(loadAccountByEmailRepositorySpy.result.accountId)
-    expect(result.userId).toBe(loadAccountByEmailRepositorySpy.result.userId)
+    const { sut, loadInvitationRepositorySpy } = makeSut()
+    const result = await sut.load(faker.internet.email())
+    expect(result).toBe(loadInvitationRepositorySpy.result)
   })
 })

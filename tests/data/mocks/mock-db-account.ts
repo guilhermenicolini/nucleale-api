@@ -2,7 +2,8 @@ import {
   AddAccountRepository,
   CheckAccountByEmailRepository,
   LoadAccountByEmailRepository,
-  LoadAccountsByStatusRepository
+  LoadAccountsByStatusRepository,
+  LoadInvitationRepository
 } from '@/data/protocols'
 import { LoadAccountsByStatus } from '@/domain/usecases'
 import { mockAccountModel } from '@/tests/domain/mocks'
@@ -58,6 +59,16 @@ export class LoadAccountsByStatusRepositorySpy implements LoadAccountsByStatus {
 
   async loadByStatus (params: LoadAccountsByStatusRepository.Params): Promise<LoadAccountsByStatusRepository.Result> {
     this.params = params
+    return this.result
+  }
+}
+
+export class LoadInvitationRepositorySpy implements LoadInvitationRepository {
+  email: string
+  result = faker.random.uuid()
+
+  async loadInvitation (email: string): Promise<string> {
+    this.email = email
     return this.result
   }
 }

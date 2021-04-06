@@ -1,6 +1,6 @@
 import { AccountStatus } from '@/domain/models'
 import { AccountMongoRepository, MongoHelper } from '@/infra/db'
-import { mockAddAccountParams } from '@/tests/domain/mocks'
+import { mockAddAccountParams, mockInvitation } from '@/tests/domain/mocks'
 
 import { Collection } from 'mongodb'
 
@@ -9,6 +9,7 @@ const makeSut = (): AccountMongoRepository => {
 }
 
 let accountCollection: Collection
+let invitationCollection: Collection
 
 describe('AccountMongoRepository', () => {
   beforeAll(async () => {
@@ -21,7 +22,9 @@ describe('AccountMongoRepository', () => {
 
   beforeEach(async () => {
     accountCollection = await MongoHelper.instance.getCollection('accounts')
+    invitationCollection = await MongoHelper.instance.getCollection('invitations')
     await accountCollection.deleteMany({})
+    await invitationCollection.deleteMany({})
   })
 
   describe('add()', () => {
@@ -90,5 +93,21 @@ describe('AccountMongoRepository', () => {
     const sut = makeSut()
     const accounts = await sut.loadByStatus(AccountStatus.awaitingVerification)
     expect(accounts.length).toBe(0)
+  })
+
+  describe('loadInvitation()', () => {
+    test('Should return an account if invitation exists', async () => {
+      const sut = makeSut()
+      const data = mockInvitation()
+      invitationCollection.insertOne(data)
+      const accountId = await sut.loadInvitation(data.email)
+      expect(accountId).toBe(data.accountId)
+    })
+
+    test('Should return null if invitation does not exists', async () => {
+      const sut = makeSut()
+      const accountId = await sut.loadInvitation('any_email@mail.com')
+      expect(accountId).toBeFalsy()
+    })
   })
 })

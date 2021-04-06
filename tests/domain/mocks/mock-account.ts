@@ -40,3 +40,8 @@ export const mockAccountModel = (): AccountModel => ({
   status: AccountStatus.active,
   role: AccountRoles.user
 })
+
+export const mockInvitation = (): any => ({
+  accountId: faker.random.uuid(),
+  email: faker.internet.email()
+})
