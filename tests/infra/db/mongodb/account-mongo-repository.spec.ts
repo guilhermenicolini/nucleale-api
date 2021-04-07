@@ -34,6 +34,16 @@ describe('AccountMongoRepository', () => {
       const result = await sut.add(data)
       expect(result.isValid).toBe(true)
     })
+
+    test('Should delete invitation and return an account on success', async () => {
+      const sut = makeSut()
+      const data = mockAddAccountParams()
+      await invitationCollection.insertOne({ accountId: 'any_id', email: data.email })
+      const result = await sut.add(data)
+      const total = await invitationCollection.find({}).toArray()
+      expect(result.isValid).toBe(true)
+      expect(total.length).toBe(0)
+    })
   })
 
   describe('check()', () => {

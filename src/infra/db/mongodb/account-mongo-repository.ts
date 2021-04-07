@@ -11,8 +11,10 @@ import { ObjectId } from 'mongodb'
 export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountsByStatusRepository, LoadInvitationRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const invitationCollection = await MongoHelper.instance.getCollection('invitations')
     const { accountId, ...obj } = data
     const cmd = await accountCollection.insertOne({ ...obj, accountId: new ObjectId(accountId) })
+    await invitationCollection.findOneAndDelete({ email: data.email })
     return {
       userId: cmd.ops[0]._id.toString(),
       accountId: cmd.ops[0].accountId.toString(),
