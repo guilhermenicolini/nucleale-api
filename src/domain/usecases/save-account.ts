@@ -1,7 +1,7 @@
 import { AccountModel } from '@/domain/models'
 
 export interface SaveAccount {
-  save: (id: string, data: SaveAccount.Params) => Promise<void>
+  save: (userId: string, data: SaveAccount.Params) => Promise<void>
 }
 
 export namespace SaveAccount {

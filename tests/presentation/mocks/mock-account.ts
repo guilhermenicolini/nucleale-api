@@ -1,4 +1,12 @@
-import { AddAccount, VerifyAccount, LoadAccountsByStatus, LoadAccountByToken, LoadInvitation } from '@/domain/usecases'
+import {
+  AddAccount,
+  VerifyAccount,
+  LoadAccountsByStatus,
+  LoadAccountByToken,
+  LoadInvitation,
+  LoadAccount,
+  SaveAccount
+} from '@/domain/usecases'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -68,5 +76,25 @@ export class LoadInvitationSpy implements LoadInvitation {
   async load (email: string): Promise<string> {
     this.email = email
     return this.result
+  }
+}
+
+export class LoadAccountSpy implements LoadAccount {
+  userId: string
+  result: LoadAccount.Result = mockAccountModel()
+
+  async load (userId: string): Promise<LoadAccount.Result> {
+    this.userId = userId
+    return this.result
+  }
+}
+
+export class SaveAccountSpy implements SaveAccount {
+  userId: string
+  data: SaveAccount.Params
+
+  async save (userId: string, data: SaveAccount.Params): Promise<void> {
+    this.userId = userId
+    this.data = data
   }
 }
