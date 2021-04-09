@@ -5,11 +5,18 @@ import {
   LoadAccountByEmailRepository,
   LoadAccountsByStatusRepository,
   LoadInvitationRepository,
-  LoadAccountRepository
+  LoadAccountRepository,
+  SaveAccountRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
+import { SaveAccount } from '@/domain/usecases'
 
-export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountsByStatusRepository, LoadInvitationRepository {
+export class AccountMongoRepository implements
+  AddAccountRepository,
+  CheckAccountByEmailRepository,
+  LoadAccountsByStatusRepository,
+  LoadInvitationRepository,
+  SaveAccountRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const invitationCollection = await MongoHelper.instance.getCollection('invitations')
@@ -92,5 +99,12 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
     })
 
     return account ? MongoHelper.instance.map(account, accountMapper()) : null
+  }
+
+  async save (userId: string, data: SaveAccount.Params): Promise<void> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    await accountCollection.findOneAndUpdate({
+      _id: new ObjectId(userId)
+    }, { $set: data })
   }
 }

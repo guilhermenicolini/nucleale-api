@@ -1,6 +1,6 @@
 import { AccountStatus } from '@/domain/models'
 import { AccountMongoRepository, MongoHelper } from '@/infra/db'
-import { mockAddAccountParams, mockInvitation } from '@/tests/domain/mocks'
+import { mockAddAccountParams, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 
@@ -149,5 +149,21 @@ describe('AccountMongoRepository', () => {
       const promise = sut.loadById('any_id')
       expect(promise).rejects.toThrow()
     })
+  })
+
+  test('Should update all fields', async () => {
+    const sut = makeSut()
+    const inserted = await sut.add(mockAddAccountParams())
+    const update = mockSaveAccountParams()
+    await sut.save(inserted.userId, update)
+    const account = await sut.loadById(inserted.userId)
+    expect(account.id).toBe(inserted.userId)
+    expect(account.accountId).toBe(update.accountId)
+    expect(account.birth).toBe(update.birth)
+    expect(account.email).toBe(update.email)
+    expect(account.mobilePhone).toBe(update.mobilePhone)
+    expect(account.name).toBe(update.name)
+    expect(account.status).toBe(update.status)
+    expect(account.taxId).toBe(update.taxId)
   })
 })

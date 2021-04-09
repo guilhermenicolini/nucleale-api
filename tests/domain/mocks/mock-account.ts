@@ -1,5 +1,5 @@
 import { AccountStatus, AccountModel, AccountRoles } from '@/domain/models'
-import { AddAccount, VerifyAccount, LoadAccountsByStatus } from '@/domain/usecases'
+import { AddAccount, VerifyAccount, LoadAccountsByStatus, SaveAccount } from '@/domain/usecases'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
@@ -14,8 +14,22 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
     min: 315543600000,
     max: 631159200000
   }),
-  status: 'awaitingVerification',
+  status: AccountStatus.awaitingVerification,
   role: 'user'
+})
+
+export const mockSaveAccountParams = (): SaveAccount.Params => ({
+  accountId: new ObjectId().toString(),
+  taxId: faker.address.zipCode('###########'),
+  name: faker.name.findName(),
+  email: faker.internet.email(),
+  mobilePhone: faker.phone.phoneNumber('+55##9########'),
+  birth: faker.random.number({
+    min: 315543600000,
+    max: 631159200000
+  }),
+  status: AccountStatus.active,
+  role: AccountRoles.admin
 })
 
 export const mockVerifyAccountParams = (): VerifyAccount.Params => ({
