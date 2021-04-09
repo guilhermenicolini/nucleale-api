@@ -4,7 +4,8 @@ import {
   CheckAccountByEmailRepository,
   LoadAccountByEmailRepository,
   LoadAccountsByStatusRepository,
-  LoadInvitationRepository
+  LoadInvitationRepository,
+  LoadAccountRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
@@ -78,5 +79,18 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
       return invite.accountId.toString()
     }
     return null
+  }
+
+  async loadById (userId: string): Promise<LoadAccountRepository.Result> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const account = await accountCollection.findOne({
+      _id: new ObjectId(userId)
+    }, {
+      projection: {
+        password: 0
+      }
+    })
+
+    return account ? MongoHelper.instance.map(account, accountMapper()) : null
   }
 }
