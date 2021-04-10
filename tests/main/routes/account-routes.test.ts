@@ -56,7 +56,7 @@ const mockAdminAccessToken = () => {
 }
 
 const mockId = () => {
-  return new ObjectId()
+  return new ObjectId().toString()
 }
 
 let accountCollection: Collection
@@ -218,11 +218,11 @@ describe('Account Routes', () => {
         .expect(404)
     })
 
-    test('Should return 500 if id is invalid', async () => {
+    test('Should return 400 if id is invalid', async () => {
       await request(app)
         .post('/accounts/any_id/approve')
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
-        .expect(500)
+        .expect(400)
     })
 
     test('Should return 400 if account is not in awaiting verification', async () => {
