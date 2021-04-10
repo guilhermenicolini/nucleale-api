@@ -1,6 +1,7 @@
 export * from './compare-fields-validation'
 export * from './email-validation'
 export * from './enum-validation'
+export * from './id-validation'
 export * from './mobile-phone-validation-composite'
 export * from './password-validation'
 export * from './required-field-validation'
