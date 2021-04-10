@@ -50,6 +50,9 @@ export const accountsPaths = {
   '/accounts/{id}/approve': {
     post: {
       tags: ['Accounts'],
+      security: [{
+        bearerAuth: []
+      }],
       summary: 'API to approve an account',
       description: 'This API is closed and can only be executed by **admins**',
       operationId: 'approveAccount',
