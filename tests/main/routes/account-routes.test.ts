@@ -3,11 +3,12 @@ import { MongoHelper } from '@/infra/db'
 import { mockAccountModel } from '@/tests/domain/mocks'
 import env from '@/main/config/env'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
 import { hash } from 'bcrypt'
 import { decode, sign } from 'jsonwebtoken'
+import { AccountStatus } from '@/domain/models'
 
 const mockAddRequest = () => {
   const password = 'P@ssw0rd'
@@ -52,6 +53,10 @@ const mockAdminAccessToken = () => {
     iss: env.iss,
     aud: env.aud
   }, env.secret, { expiresIn: env.exp })
+}
+
+const mockId = () => {
+  return new ObjectId().toString()
 }
 
 let accountCollection: Collection
@@ -144,13 +149,13 @@ describe('Account Routes', () => {
   describe('GET /accounts/status/:status', () => {
     test('Should return 401 if no token is provided', async () => {
       await request(app)
-        .get('/accounts/status/wrong_status')
+        .get('/accounts/status/any_status')
         .expect(401)
     })
 
     test('Should return 403 token is not admin', async () => {
       await request(app)
-        .get('/accounts/status/wrong_status')
+        .get('/accounts/status/any_status')
         .set('authorization', `Bearer ${mockAccessToken()}`)
         .expect(403)
     })
@@ -172,9 +177,9 @@ describe('Account Routes', () => {
     test('Should return 200 with item if record was found', async () => {
       const data = mockAccountModel()
       const { id, ...obj } = data
-      await accountCollection.insertOne({ ...obj, _id: id })
+      await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
       await request(app)
-        .get('/accounts/status/active')
+        .get(`/accounts/status/${AccountStatus.awaitingVerification}`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(200)
         .expect(function (res) {
@@ -189,6 +194,58 @@ describe('Account Routes', () => {
           if (item.role !== data.role) throw new Error('Invalid role')
           if (item.id !== data.id) throw new Error('Invalid id')
         })
+    })
+  })
+
+  describe('POST /accounts/:id/approve', () => {
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .post('/accounts/any_id/approve')
+        .expect(401)
+    })
+
+    test('Should return 403 token is not admin', async () => {
+      await request(app)
+        .post('/accounts/any_id/approve')
+        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .expect(403)
+    })
+
+    test('Should return 404 if record was not found', async () => {
+      await request(app)
+        .post(`/accounts/${mockId()}/approve`)
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
+        .expect(404)
+    })
+
+    test('Should return 400 if id is invalid', async () => {
+      await request(app)
+        .post('/accounts/any_id/approve')
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
+        .expect(400)
+    })
+
+    test('Should return 400 if account is not in awaiting verification', async () => {
+      const data = mockAccountModel()
+      data.status = AccountStatus.active
+      const { id, ...obj } = data
+      await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
+
+      await request(app)
+        .post(`/accounts/${id}/approve`)
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
+        .expect(400)
+    })
+
+    test('Should return 204 on success', async () => {
+      const data = mockAccountModel()
+      const { id, ...obj } = data
+      await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
+
+      await request(app)
+        .post(`/accounts/${id}/approve`)
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
+        .expect(204)
     })
   })
 })

@@ -4,15 +4,25 @@ import {
   CheckAccountByEmailRepository,
   LoadAccountByEmailRepository,
   LoadAccountsByStatusRepository,
-  LoadInvitationRepository
+  LoadInvitationRepository,
+  LoadAccountRepository,
+  SaveAccountRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
+import { SaveAccount } from '@/domain/usecases'
 
-export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountsByStatusRepository, LoadInvitationRepository {
+export class AccountMongoRepository implements
+  AddAccountRepository,
+  CheckAccountByEmailRepository,
+  LoadAccountsByStatusRepository,
+  LoadInvitationRepository,
+  SaveAccountRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const invitationCollection = await MongoHelper.instance.getCollection('invitations')
     const { accountId, ...obj } = data
     const cmd = await accountCollection.insertOne({ ...obj, accountId: new ObjectId(accountId) })
+    await invitationCollection.findOneAndDelete({ email: data.email })
     return {
       userId: cmd.ops[0]._id.toString(),
       accountId: cmd.ops[0].accountId.toString(),
@@ -76,5 +86,25 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
       return invite.accountId.toString()
     }
     return null
+  }
+
+  async loadById (userId: string): Promise<LoadAccountRepository.Result> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const account = await accountCollection.findOne({
+      _id: new ObjectId(userId)
+    }, {
+      projection: {
+        password: 0
+      }
+    })
+
+    return account ? MongoHelper.instance.map(account, accountMapper()) : null
+  }
+
+  async save (userId: string, data: SaveAccount.Params): Promise<void> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    await accountCollection.findOneAndUpdate({
+      _id: new ObjectId(userId)
+    }, { $set: data })
   }
 }

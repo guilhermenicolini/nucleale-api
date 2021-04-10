@@ -3,9 +3,11 @@ import {
   CheckAccountByEmailRepository,
   LoadAccountByEmailRepository,
   LoadAccountsByStatusRepository,
-  LoadInvitationRepository
+  LoadInvitationRepository,
+  LoadAccountRepository,
+  SaveAccountRepository
 } from '@/data/protocols'
-import { LoadAccountsByStatus } from '@/domain/usecases'
+import { LoadAccountsByStatus, SaveAccount } from '@/domain/usecases'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -70,5 +72,25 @@ export class LoadInvitationRepositorySpy implements LoadInvitationRepository {
   async loadInvitation (email: string): Promise<string> {
     this.email = email
     return this.result
+  }
+}
+
+export class LoadAccountRepositorySpy implements LoadAccountRepository {
+  userId: string
+  result: LoadAccountRepository.Result = mockAccountModel()
+
+  async loadById (userId: string): Promise<LoadAccountRepository.Result> {
+    this.userId = userId
+    return this.result
+  }
+}
+
+export class SaveAccountRepositorySpy implements SaveAccountRepository {
+  userId: string
+  data: SaveAccount.Params
+
+  async save (userId: string, data: SaveAccount.Params): Promise<void> {
+    this.userId = userId
+    this.data = data
   }
 }

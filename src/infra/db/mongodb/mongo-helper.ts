@@ -35,6 +35,10 @@ export class MongoHelper {
     return this.client.db().collection(collectionName)
   }
 
+  map (object: any, mapper: Mapper): any {
+    return mapper.map(object)
+  }
+
   mapCollection (collection: any[], mapper: Mapper): any[] {
     return collection.map(c => mapper.map(c))
   }

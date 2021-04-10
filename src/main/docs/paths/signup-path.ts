@@ -2,7 +2,7 @@ export const signUpPath = {
   post: {
     tags: ['Authentication'],
     summary: 'API to create an user account',
-    description: 'This API is open and can be executed to **anyone**',
+    description: 'This API is open and can be executed by **anyone**',
     operationId: 'signUp',
     requestBody: {
       description: 'User object to be created',

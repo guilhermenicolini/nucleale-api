@@ -11,7 +11,8 @@ import {
   accountSchema,
   accountsSchema,
   bearerSchema,
-  forbiddenError
+  forbiddenError,
+  notFoundError
 } from './components'
 
 export const paths = {
@@ -34,7 +35,8 @@ export const components = {
     conflict: conflictError,
     serverError: serverError,
     unauthorized: unauthorizedError,
-    forbidden: forbiddenError
+    forbidden: forbiddenError,
+    notFound: notFoundError
   },
   securitySchemes: bearerSchema
 }

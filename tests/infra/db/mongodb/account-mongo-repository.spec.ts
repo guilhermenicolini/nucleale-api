@@ -1,8 +1,8 @@
 import { AccountStatus } from '@/domain/models'
 import { AccountMongoRepository, MongoHelper } from '@/infra/db'
-import { mockAddAccountParams, mockInvitation } from '@/tests/domain/mocks'
+import { mockAddAccountParams, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -33,6 +33,16 @@ describe('AccountMongoRepository', () => {
       const data = mockAddAccountParams()
       const result = await sut.add(data)
       expect(result.isValid).toBe(true)
+    })
+
+    test('Should delete invitation and return an account on success', async () => {
+      const sut = makeSut()
+      const data = mockAddAccountParams()
+      await invitationCollection.insertOne({ accountId: 'any_id', email: data.email })
+      const result = await sut.add(data)
+      const total = await invitationCollection.find({}).toArray()
+      expect(result.isValid).toBe(true)
+      expect(total.length).toBe(0)
     })
   })
 
@@ -76,9 +86,10 @@ describe('AccountMongoRepository', () => {
     test('Should return account with correct values', async () => {
       const sut = makeSut()
       const data = mockAddAccountParams()
-      await sut.add(data)
+      const inserted = await sut.add(data)
       const accounts = await sut.loadByStatus(AccountStatus.awaitingVerification)
       expect(accounts.length).toBe(1)
+      expect(accounts[0].id).toBe(inserted.userId)
       expect(accounts[0].accountId).toBe(data.accountId)
       expect(accounts[0].birth).toBe(data.birth)
       expect(accounts[0].email).toBe(data.email)
@@ -109,5 +120,50 @@ describe('AccountMongoRepository', () => {
       const accountId = await sut.loadInvitation('any_email@mail.com')
       expect(accountId).toBeFalsy()
     })
+  })
+
+  describe('loadById()', () => {
+    test('Should return account if exists', async () => {
+      const sut = makeSut()
+      const data = mockAddAccountParams()
+      const inserted = await sut.add(data)
+      const account = await sut.loadById(inserted.userId)
+      expect(account.id).toBe(inserted.userId)
+      expect(account.accountId).toBe(data.accountId)
+      expect(account.birth).toBe(data.birth)
+      expect(account.email).toBe(data.email)
+      expect(account.mobilePhone).toBe(data.mobilePhone)
+      expect(account.name).toBe(data.name)
+      expect(account.status).toBe(data.status)
+      expect(account.taxId).toBe(data.taxId)
+    })
+
+    test('Should return null if not exists', async () => {
+      const sut = makeSut()
+      const account = await sut.loadById(new ObjectId().toString())
+      expect(account).toBeFalsy()
+    })
+
+    test('Should throw if userId is mongo id', async () => {
+      const sut = makeSut()
+      const promise = sut.loadById('any_id')
+      expect(promise).rejects.toThrow()
+    })
+  })
+
+  test('Should update all fields', async () => {
+    const sut = makeSut()
+    const inserted = await sut.add(mockAddAccountParams())
+    const update = mockSaveAccountParams()
+    await sut.save(inserted.userId, update)
+    const account = await sut.loadById(inserted.userId)
+    expect(account.id).toBe(inserted.userId)
+    expect(account.accountId).toBe(update.accountId)
+    expect(account.birth).toBe(update.birth)
+    expect(account.email).toBe(update.email)
+    expect(account.mobilePhone).toBe(update.mobilePhone)
+    expect(account.name).toBe(update.name)
+    expect(account.status).toBe(update.status)
+    expect(account.taxId).toBe(update.taxId)
   })
 })
