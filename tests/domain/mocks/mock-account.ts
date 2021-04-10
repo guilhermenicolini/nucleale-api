@@ -51,7 +51,7 @@ export const mockAccountModel = (): AccountModel => ({
     max: 631159200000
   }),
   password: faker.internet.password(),
-  status: AccountStatus.active,
+  status: AccountStatus.awaitingVerification,
   role: AccountRoles.user
 })
 

@@ -8,6 +8,7 @@ import request from 'supertest'
 import faker from 'faker'
 import { hash } from 'bcrypt'
 import { decode, sign } from 'jsonwebtoken'
+import { AccountStatus } from '@/domain/models'
 
 const mockAddRequest = () => {
   const password = 'P@ssw0rd'
@@ -178,7 +179,7 @@ describe('Account Routes', () => {
       const { id, ...obj } = data
       await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
       await request(app)
-        .get('/accounts/status/active')
+        .get(`/accounts/status/${AccountStatus.awaitingVerification}`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(200)
         .expect(function (res) {
@@ -196,32 +197,44 @@ describe('Account Routes', () => {
     })
   })
 
-  describe('GET /accounts/:id', () => {
+  describe('GET /accounts/:id/approve', () => {
     test('Should return 401 if no token is provided', async () => {
       await request(app)
-        .get('/accounts/any_id')
+        .get('/accounts/any_id/approve')
         .expect(401)
     })
 
     test('Should return 403 token is not admin', async () => {
       await request(app)
-        .get('/accounts/any_id')
+        .get('/accounts/any_id/approve')
         .set('authorization', `Bearer ${mockAccessToken()}`)
         .expect(403)
     })
 
+    test('Should return 404 if record was not found', async () => {
+      await request(app)
+        .get(`/accounts/${mockId()}/approve`)
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
+        .expect(404)
+    })
+
     test('Should return 500 if id is invalid', async () => {
       await request(app)
-        .get('/accounts/any_id')
+        .get('/accounts/any_id/approve')
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(500)
     })
 
-    test('Should return 404 if record was not found', async () => {
+    test('Should return 400 if account is not in awaiting verification', async () => {
+      const data = mockAccountModel()
+      data.status = AccountStatus.active
+      const { id, ...obj } = data
+      await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
+
       await request(app)
-        .get(`/accounts/${mockId()}`)
+        .get(`/accounts/${id}/approve`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
-        .expect(404)
+        .expect(400)
     })
 
     test('Should return 204 on success', async () => {
@@ -230,7 +243,7 @@ describe('Account Routes', () => {
       await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
 
       await request(app)
-        .get(`/accounts/${id}`)
+        .get(`/accounts/${id}/approve`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(204)
     })

@@ -1,7 +1,7 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { LoadAccount, SaveAccount } from '@/domain/usecases'
-import { notFound, noContent, serverError } from '@/presentation/helpers'
-import { RecordNotFoundError } from '@/presentation/errors'
+import { notFound, noContent, serverError, badRequest } from '@/presentation/helpers'
+import { RecordNotFoundError, InvalidStatusError } from '@/presentation/errors'
 import { AccountStatus } from '@/domain/models'
 
 export class ApproveAccountController implements Controller {
@@ -17,6 +17,10 @@ export class ApproveAccountController implements Controller {
       const account = await this.loadAccount.load(id)
       if (!account) {
         return notFound(new RecordNotFoundError('Account'))
+      }
+
+      if (account.status !== AccountStatus.awaitingVerification) {
+        return badRequest(new InvalidStatusError())
       }
 
       await this.saveAccount.save(id, {

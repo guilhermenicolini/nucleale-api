@@ -14,5 +14,5 @@ export default (router: Router): void => {
   router.post('/login', adaptRoute(makeLoginController()))
 
   router.get('/accounts/status/:status', adminAuth, adaptRoute(makeLoadAccountsByStatusController()))
-  router.get('/accounts/:id', adminAuth, adaptRoute(makeApproveAccountController()))
+  router.get('/accounts/:id/approve', adminAuth, adaptRoute(makeApproveAccountController()))
 }

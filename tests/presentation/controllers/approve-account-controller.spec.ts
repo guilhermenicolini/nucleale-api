@@ -1,8 +1,8 @@
 import { ApproveAccountController } from '@/presentation/controllers'
 import { LoadAccountSpy, SaveAccountSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
-import { serverError, notFound, noContent } from '@/presentation/helpers'
-import { ServerError, RecordNotFoundError } from '@/presentation/errors'
+import { serverError, notFound, noContent, badRequest } from '@/presentation/helpers'
+import { ServerError, RecordNotFoundError, InvalidStatusError } from '@/presentation/errors'
 import { AccountStatus } from '@/domain/models'
 
 import faker from 'faker'
@@ -60,6 +60,13 @@ describe('ApproveAccount Controller', () => {
     expect(saveAccountSpy.data).toEqual({
       status: AccountStatus.active
     })
+  })
+
+  test('Should return 400 if account is not awaiting verification ', async () => {
+    const { sut, loadAccountSpy } = makeSut()
+    loadAccountSpy.result.status = AccountStatus.active
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new InvalidStatusError()))
   })
 
   test('Should return 500 if SaveAccount throws ', async () => {
