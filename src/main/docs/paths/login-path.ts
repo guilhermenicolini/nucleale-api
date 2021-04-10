@@ -2,7 +2,7 @@ export const loginPath = {
   post: {
     tags: ['Authentication'],
     summary: 'API to authenticate an user',
-    description: 'This API is open and can be executed to **anyone**',
+    description: 'This API is open and can be executed by **anyone**',
     operationId: 'login',
     requestBody: {
       description: 'User object to be authenticated',

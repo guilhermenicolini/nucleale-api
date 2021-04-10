@@ -197,30 +197,30 @@ describe('Account Routes', () => {
     })
   })
 
-  describe('GET /accounts/:id/approve', () => {
+  describe('POST /accounts/:id/approve', () => {
     test('Should return 401 if no token is provided', async () => {
       await request(app)
-        .get('/accounts/any_id/approve')
+        .post('/accounts/any_id/approve')
         .expect(401)
     })
 
     test('Should return 403 token is not admin', async () => {
       await request(app)
-        .get('/accounts/any_id/approve')
+        .post('/accounts/any_id/approve')
         .set('authorization', `Bearer ${mockAccessToken()}`)
         .expect(403)
     })
 
     test('Should return 404 if record was not found', async () => {
       await request(app)
-        .get(`/accounts/${mockId()}/approve`)
+        .post(`/accounts/${mockId()}/approve`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(404)
     })
 
     test('Should return 500 if id is invalid', async () => {
       await request(app)
-        .get('/accounts/any_id/approve')
+        .post('/accounts/any_id/approve')
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(500)
     })
@@ -232,7 +232,7 @@ describe('Account Routes', () => {
       await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
 
       await request(app)
-        .get(`/accounts/${id}/approve`)
+        .post(`/accounts/${id}/approve`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(400)
     })
@@ -243,7 +243,7 @@ describe('Account Routes', () => {
       await accountCollection.insertOne({ ...obj, _id: new ObjectId(id) })
 
       await request(app)
-        .get(`/accounts/${id}/approve`)
+        .post(`/accounts/${id}/approve`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(204)
     })

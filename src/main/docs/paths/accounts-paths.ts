@@ -6,7 +6,7 @@ export const accountsPaths = {
         bearerAuth: []
       }],
       summary: 'API to find users by status',
-      description: 'This API is closed and can be executed to **admins**',
+      description: 'This API is closed and can only be executed by **admins**',
       operationId: 'getAccountsByStatus',
       parameters: [{
         in: 'path',
@@ -40,6 +40,43 @@ export const accountsPaths = {
         },
         403: {
           $ref: '#/components/errors/forbidden'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
+  },
+  '/accounts/{id}/approve': {
+    post: {
+      tags: ['Accounts'],
+      summary: 'API to approve an account',
+      description: 'This API is closed and can only be executed by **admins**',
+      operationId: 'approveAccount',
+      parameters: [{
+        in: 'path',
+        name: 'id',
+        description: 'Account id to be approved',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      responses: {
+        204: {
+          description: 'No Content'
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        403: {
+          $ref: '#/components/errors/forbidden'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
         },
         500: {
           $ref: '#/components/errors/serverError'
