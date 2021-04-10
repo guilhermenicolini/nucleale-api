@@ -12,14 +12,14 @@ export class ApproveAccountController implements Controller {
 
   async handle (request: ApproveAccountController.Request): Promise<HttpResponse> {
     try {
-      const { userId } = request
+      const { id } = request
 
-      const account = await this.loadAccount.load(userId)
+      const account = await this.loadAccount.load(id)
       if (!account) {
         return notFound(new RecordNotFoundError('Account'))
       }
 
-      await this.saveAccount.save(userId, {
+      await this.saveAccount.save(id, {
         status: AccountStatus.active
       })
 
@@ -32,6 +32,6 @@ export class ApproveAccountController implements Controller {
 
 export namespace ApproveAccountController {
   export type Request = {
-    userId: string
+    id: string
   }
 }

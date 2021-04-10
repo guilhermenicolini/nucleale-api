@@ -9,7 +9,7 @@ import faker from 'faker'
 
 const mockRequest = (): ApproveAccountController.Request => {
   return {
-    userId: faker.random.uuid()
+    id: faker.random.uuid()
   }
 }
 
@@ -35,7 +35,7 @@ describe('ApproveAccount Controller', () => {
     const { sut, loadAccountSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadAccountSpy.userId).toBe(request.userId)
+    expect(loadAccountSpy.userId).toBe(request.id)
   })
 
   test('Should return 500 if LoadAccount throws ', async () => {
@@ -56,7 +56,7 @@ describe('ApproveAccount Controller', () => {
     const { sut, saveAccountSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(saveAccountSpy.userId).toBe(request.userId)
+    expect(saveAccountSpy.userId).toBe(request.id)
     expect(saveAccountSpy.data).toEqual({
       status: AccountStatus.active
     })

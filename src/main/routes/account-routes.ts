@@ -2,7 +2,8 @@ import { adaptRoute } from '@/main/adapters'
 import {
   makeSignUpController,
   makeLoginController,
-  makeLoadAccountsByStatusController
+  makeLoadAccountsByStatusController,
+  makeApproveAccountController
 } from '@/main/factories'
 import { adminAuth } from '@/main/middlewares'
 
@@ -13,4 +14,5 @@ export default (router: Router): void => {
   router.post('/login', adaptRoute(makeLoginController()))
 
   router.get('/accounts/status/:status', adminAuth, adaptRoute(makeLoadAccountsByStatusController()))
+  router.get('/accounts/:id', adminAuth, adaptRoute(makeApproveAccountController()))
 }
