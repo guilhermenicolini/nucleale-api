@@ -1,7 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { InviteAccount } from '@/domain/usecases'
 import { badRequest, serverError, noContent } from '@/presentation/helpers'
-import { } from '@/presentation/errors'
+import { EmailInUseError } from '@/presentation/errors'
 
 export class InviteAccountController implements Controller {
   constructor (
@@ -16,7 +16,11 @@ export class InviteAccountController implements Controller {
         return badRequest(error)
       }
       const { accountId, email } = request
-      await this.inviteAccount.invite(accountId, email)
+      const result = await this.inviteAccount.invite(accountId, email)
+      if (!result) {
+        return badRequest(new EmailInUseError())
+      }
+
       return noContent()
     } catch (error) {
       return serverError(error)
