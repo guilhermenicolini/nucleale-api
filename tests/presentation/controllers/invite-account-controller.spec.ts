@@ -1,6 +1,6 @@
 import { InviteAccountController } from '@/presentation/controllers'
 import { InviteAccountSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, serverError, noContent } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
 import { ServerError } from '@/presentation/errors'
 
@@ -59,5 +59,11 @@ describe('ApproveAccount Controller', () => {
     jest.spyOn(inviteAccountSpy, 'invite').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
