@@ -43,4 +43,12 @@ describe('ApproveAccount Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
+
+  test('Should call InviteAccount with correct values', async () => {
+    const { sut, inviteAccountSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(inviteAccountSpy.accountId).toBe(request.accountId)
+    expect(inviteAccountSpy.email).toBe(request.email)
+  })
 })
