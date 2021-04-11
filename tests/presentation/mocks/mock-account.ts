@@ -103,9 +103,11 @@ export class SaveAccountSpy implements SaveAccount {
 export class InviteAccountSpy implements InviteAccount {
   accountId: string
   email: string
+  result = true
 
-  async invite (accountId: string, email: string): Promise<void> {
+  async invite (accountId: string, email: string): Promise<boolean> {
     this.accountId = accountId
     this.email = email
+    return this.result
   }
 }

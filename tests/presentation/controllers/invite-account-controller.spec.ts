@@ -2,7 +2,7 @@ import { InviteAccountController } from '@/presentation/controllers'
 import { InviteAccountSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { badRequest, serverError, noContent } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
-import { ServerError } from '@/presentation/errors'
+import { ServerError, EmailInUseError } from '@/presentation/errors'
 
 import { ObjectId } from 'mongodb'
 import faker from 'faker'
@@ -59,6 +59,13 @@ describe('ApproveAccount Controller', () => {
     jest.spyOn(inviteAccountSpy, 'invite').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 400 if InviteAccount returns false ', async () => {
+    const { sut, inviteAccountSpy } = makeSut()
+    inviteAccountSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new EmailInUseError()))
   })
 
   test('Should return 204 on success', async () => {
