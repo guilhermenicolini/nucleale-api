@@ -99,7 +99,7 @@ export class SaveAccountRepositorySpy implements SaveAccountRepository {
 export class InviteAccountRepositorySpy implements InviteAccountRepository {
   accountId: string
   email: string
-  result: true
+  result = true
 
   async inviteAccount (accountId: string, email: string): Promise<boolean> {
     this.accountId = accountId
