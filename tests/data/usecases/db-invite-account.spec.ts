@@ -41,4 +41,11 @@ describe('DbInviteAccount Usecase', () => {
     const result = await sut.invite(params.accountId, params.email)
     expect(result).toBe(false)
   })
+
+  test('Should return true if InviteAccountRepository returns true', async () => {
+    const { sut } = makeSut()
+    const params = mockInvitation()
+    const result = await sut.invite(params.accountId, params.email)
+    expect(result).toBe(true)
+  })
 })
