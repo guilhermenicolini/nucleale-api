@@ -1,13 +1,12 @@
-import { LoadAccount } from '@/domain/usecases'
-import { LoadAccountRepository } from '@/data/protocols'
+import { SaveAccount } from '@/domain/usecases'
+import { SaveAccountRepository } from '@/data/protocols'
 
-export class DbLoadAccount implements LoadAccount {
+export class DbSaveAccount implements SaveAccount {
   constructor (
-    private readonly loadAccountRepository: LoadAccountRepository
+    private readonly saveAccountRepository: SaveAccountRepository
   ) { }
 
-  async load (userId: string): Promise<LoadAccount.Result> {
-    const account = await this.loadAccountRepository.loadById(userId)
-    return account
+  async save (userId: string, data: SaveAccount.Params): Promise<void> {
+    await this.saveAccountRepository.save(userId, data)
   }
 }
