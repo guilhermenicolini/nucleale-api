@@ -1,6 +1,8 @@
 import { InviteAccountController } from '@/presentation/controllers'
 import { InviteAccountSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { throwError } from '@/tests/domain/mocks'
+import { ServerError } from '@/presentation/errors'
 
 import { ObjectId } from 'mongodb'
 import faker from 'faker'
@@ -50,5 +52,12 @@ describe('ApproveAccount Controller', () => {
     await sut.handle(request)
     expect(inviteAccountSpy.accountId).toBe(request.accountId)
     expect(inviteAccountSpy.email).toBe(request.email)
+  })
+
+  test('Should return 500 if InviteAccount throws ', async () => {
+    const { sut, inviteAccountSpy } = makeSut()
+    jest.spyOn(inviteAccountSpy, 'invite').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
