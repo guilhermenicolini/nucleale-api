@@ -1,5 +1,6 @@
 export * from './approve-account-controller-factory'
 export * from './approve-account-validation-factory'
+export * from './invite-account-validation-factory'
 export * from './load-accounts-by-status-controller-factory'
 export * from './load-accounts-by-status-validation-factory'
 export * from './login-controller-factory'
