@@ -6,7 +6,8 @@ import {
   LoadAccountsByStatusRepository,
   LoadInvitationRepository,
   LoadAccountRepository,
-  SaveAccountRepository
+  SaveAccountRepository,
+  InviteAccountRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 import { SaveAccount } from '@/domain/usecases'
@@ -16,7 +17,8 @@ export class AccountMongoRepository implements
   CheckAccountByEmailRepository,
   LoadAccountsByStatusRepository,
   LoadInvitationRepository,
-  SaveAccountRepository {
+  SaveAccountRepository,
+  InviteAccountRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const invitationCollection = await MongoHelper.instance.getCollection('invitations')
@@ -106,5 +108,25 @@ export class AccountMongoRepository implements
     await accountCollection.findOneAndUpdate({
       _id: new ObjectId(userId)
     }, { $set: data })
+  }
+
+  async inviteAccount (accountId: string, email: string): Promise<boolean> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const account = await accountCollection.findOne({
+      email
+    }, {
+      projection: {
+        _id: 1
+      }
+    })
+    if (account) {
+      return false
+    }
+
+    const invitationCollection = await MongoHelper.instance.getCollection('invitations')
+    await invitationCollection.replaceOne({ email }, {
+      accountId: new ObjectId(accountId)
+    }, { upsert: true })
+    return true
   }
 }
