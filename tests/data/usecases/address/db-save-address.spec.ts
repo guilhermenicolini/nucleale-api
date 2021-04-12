@@ -1,6 +1,6 @@
 import { DbSaveAddress } from '@/data/usecases'
 import { SaveAddressRepositorySpy } from '@/tests/data/mocks'
-import { mockAddressModel } from '@/tests/domain/mocks'
+import { mockAddressModel, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbSaveAddress
@@ -23,5 +23,12 @@ describe('DbSaveAddress Usecase', () => {
     const params = mockAddressModel()
     await sut.save(params)
     expect(saveAddressRepositorySpy.params).toEqual(params)
+  })
+
+  test('Should throw if SaveAddressRepository throws', async () => {
+    const { sut, saveAddressRepositorySpy } = makeSut()
+    jest.spyOn(saveAddressRepositorySpy, 'save').mockImplementationOnce(throwError)
+    const promise = sut.save(mockAddressModel())
+    await expect(promise).rejects.toThrow()
   })
 })
