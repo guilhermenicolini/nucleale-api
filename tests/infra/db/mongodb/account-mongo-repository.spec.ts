@@ -3,6 +3,7 @@ import { AccountMongoRepository, MongoHelper } from '@/infra/db'
 import { mockAddAccountParams, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
+import faker from 'faker'
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -165,5 +166,15 @@ describe('AccountMongoRepository', () => {
     expect(account.name).toBe(update.name)
     expect(account.status).toBe(update.status)
     expect(account.taxId).toBe(update.taxId)
+  })
+
+  describe('inviteAccount()', () => {
+    test('Should return true on success', async () => {
+      const sut = makeSut()
+      const result = await sut.inviteAccount(new ObjectId().toString(), faker.internet.email())
+      const total = await invitationCollection.find({}).toArray()
+      expect(result).toBe(true)
+      expect(total.length).toBe(1)
+    })
   })
 })
