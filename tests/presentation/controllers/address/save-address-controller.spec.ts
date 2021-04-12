@@ -1,7 +1,7 @@
 import { SaveAddressController } from '@/presentation/controllers'
 import { SaveAddressSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { mockAddressModel, throwError } from '@/tests/domain/mocks'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, serverError, noContent } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
 
 type SutTypes = {
@@ -48,5 +48,11 @@ describe('SaveAddress Controller', () => {
     jest.spyOn(saveAddressSpy, 'save').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockAddressModel())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockAddressModel())
+    expect(httpResponse).toEqual(noContent())
   })
 })
