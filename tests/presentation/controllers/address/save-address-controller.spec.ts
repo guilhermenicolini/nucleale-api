@@ -1,6 +1,7 @@
 import { SaveAddressController } from '@/presentation/controllers'
 import { SaveAddressSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { mockAddressModel } from '@/tests/domain/mocks'
+import { badRequest } from '@/presentation/helpers'
 
 type SutTypes = {
   sut: SaveAddressController,
@@ -25,5 +26,12 @@ describe('SaveAddress Controller', () => {
     const request = mockAddressModel()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 if Validation returns an error ', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.error = new Error()
+    const httpResponse = await sut.handle(mockAddressModel())
+    expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 })
