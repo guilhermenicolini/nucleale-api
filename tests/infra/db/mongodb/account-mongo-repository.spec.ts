@@ -3,6 +3,7 @@ import { AccountMongoRepository, MongoHelper } from '@/infra/db'
 import { mockAddAccountParams, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
+import faker from 'faker'
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -165,5 +166,43 @@ describe('AccountMongoRepository', () => {
     expect(account.name).toBe(update.name)
     expect(account.status).toBe(update.status)
     expect(account.taxId).toBe(update.taxId)
+  })
+
+  describe('inviteAccount()', () => {
+    test('Should return true on success', async () => {
+      const sut = makeSut()
+      const accountId = new ObjectId().toString()
+      const email = faker.internet.email()
+      const result = await sut.inviteAccount(accountId, email)
+      const invitations = await invitationCollection.find({}).toArray()
+      expect(result).toBe(true)
+      expect(invitations.length).toBe(1)
+      expect(invitations[0].accountId.toString()).toBe(accountId)
+      expect(invitations[0].email).toBe(email)
+    })
+
+    test('Should return false if email exists', async () => {
+      const sut = makeSut()
+      const email = faker.internet.email()
+      await accountCollection.insertOne({ email })
+      const result = await sut.inviteAccount(new ObjectId().toString(), email)
+      const invitations = await invitationCollection.find({}).toArray()
+      expect(result).toBe(false)
+      expect(invitations.length).toBe(0)
+    })
+
+    test('Should update accountId if invitation already exists', async () => {
+      const sut = makeSut()
+      const oldAccountId = new ObjectId().toString()
+      const accountId = new ObjectId().toString()
+      const email = faker.internet.email()
+      await invitationCollection.insertOne({ oldAccountId, email })
+      const result = await sut.inviteAccount(accountId, email)
+      const invitations = await invitationCollection.find({}).toArray()
+      expect(result).toBe(true)
+      expect(invitations.length).toBe(1)
+      expect(invitations[0].accountId.toString()).toBe(accountId)
+      expect(invitations[0].email).toBe(email)
+    })
   })
 })

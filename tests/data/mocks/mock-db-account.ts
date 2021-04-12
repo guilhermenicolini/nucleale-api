@@ -5,7 +5,8 @@ import {
   LoadAccountsByStatusRepository,
   LoadInvitationRepository,
   LoadAccountRepository,
-  SaveAccountRepository
+  SaveAccountRepository,
+  InviteAccountRepository
 } from '@/data/protocols'
 import { LoadAccountsByStatus, SaveAccount } from '@/domain/usecases'
 import { mockAccountModel } from '@/tests/domain/mocks'
@@ -92,5 +93,17 @@ export class SaveAccountRepositorySpy implements SaveAccountRepository {
   async save (userId: string, data: SaveAccount.Params): Promise<void> {
     this.userId = userId
     this.data = data
+  }
+}
+
+export class InviteAccountRepositorySpy implements InviteAccountRepository {
+  accountId: string
+  email: string
+  result = true
+
+  async inviteAccount (accountId: string, email: string): Promise<boolean> {
+    this.accountId = accountId
+    this.email = email
+    return this.result
   }
 }

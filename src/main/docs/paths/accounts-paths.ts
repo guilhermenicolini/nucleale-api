@@ -86,5 +86,43 @@ export const accountsPaths = {
         }
       }
     }
+  },
+  '/accounts/invite/{email}': {
+    post: {
+      tags: ['Accounts'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to invite an account',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'inviteAccount',
+      parameters: [{
+        in: 'path',
+        name: 'email',
+        description: 'Email to be invited',
+        required: true,
+        schema: {
+          type: 'string',
+          format: 'email'
+        }
+      }],
+      responses: {
+        204: {
+          description: 'No Content'
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        403: {
+          $ref: '#/components/errors/forbidden'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }

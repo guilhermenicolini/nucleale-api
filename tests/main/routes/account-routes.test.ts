@@ -37,18 +37,28 @@ const mockLoginRequest = () => {
 
 const mockAccessToken = () => {
   return sign({
-    sub: faker.random.uuid(),
-    acc: faker.random.uuid(),
+    sub: new ObjectId().toString(),
+    acc: new ObjectId().toString(),
     role: 'user',
     iss: env.iss,
     aud: env.aud
   }, env.secret, { expiresIn: env.exp })
 }
 
+const mockInvalidAccessToken = () => {
+  return sign({
+    sub: new ObjectId().toString(),
+    acc: new ObjectId().toString(),
+    role: 'user',
+    iss: env.iss,
+    aud: env.aud
+  }, env.secret, { expiresIn: 0 })
+}
+
 const mockAdminAccessToken = () => {
   return sign({
-    sub: faker.random.uuid(),
-    acc: faker.random.uuid(),
+    sub: new ObjectId().toString(),
+    acc: new ObjectId().toString(),
     role: 'admin',
     iss: env.iss,
     aud: env.aud
@@ -246,6 +256,42 @@ describe('Account Routes', () => {
         .post(`/accounts/${id}/approve`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(204)
+    })
+  })
+
+  describe('POST /accounts/invite/:email', () => {
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .post(`/accounts/invite/${faker.internet.email()}`)
+        .expect(401)
+    })
+
+    test('Should return 401 token is not valid', async () => {
+      await request(app)
+        .post(`/accounts/invite/${faker.internet.email()}`)
+        .set('authorization', `Bearer ${mockInvalidAccessToken()}`)
+        .expect(401)
+    })
+
+    test('Should return 403 if token is invalid', async () => {
+      await request(app)
+        .post(`/accounts/invite/${faker.internet.email()}`)
+        .set('authorization', `Bearer ${mockInvalidAccessToken()}`)
+        .expect(401)
+    })
+
+    test('Should return 400 if email is invalid', async () => {
+      await request(app)
+        .post(`/accounts/invite/${faker.random.word()}`)
+        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .expect(400)
+    })
+
+    test('Should return 204 on success', async () => {
+      await request(app)
+        .post(`/accounts/invite/${faker.internet.email()}`)
+        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .expect({})
     })
   })
 })

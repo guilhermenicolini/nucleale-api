@@ -5,7 +5,8 @@ import {
   LoadAccountByToken,
   LoadInvitation,
   LoadAccount,
-  SaveAccount
+  SaveAccount,
+  InviteAccount
 } from '@/domain/usecases'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
@@ -96,5 +97,17 @@ export class SaveAccountSpy implements SaveAccount {
   async save (userId: string, data: SaveAccount.Params): Promise<void> {
     this.userId = userId
     this.data = data
+  }
+}
+
+export class InviteAccountSpy implements InviteAccount {
+  accountId: string
+  email: string
+  result = true
+
+  async invite (accountId: string, email: string): Promise<boolean> {
+    this.accountId = accountId
+    this.email = email
+    return this.result
   }
 }
