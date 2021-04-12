@@ -34,4 +34,11 @@ describe('SaveAddress Controller', () => {
     const httpResponse = await sut.handle(mockAddressModel())
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
+
+  test('Should call SaveAddress with correct values', async () => {
+    const { sut, saveAddressSpy } = makeSut()
+    const request = mockAddressModel()
+    await sut.handle(request)
+    expect(saveAddressSpy.params).toEqual(request)
+  })
 })
