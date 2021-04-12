@@ -125,6 +125,7 @@ export class AccountMongoRepository implements
 
     const invitationCollection = await MongoHelper.instance.getCollection('invitations')
     await invitationCollection.replaceOne({ email }, {
+      email,
       accountId: new ObjectId(accountId)
     }, { upsert: true })
     return true
