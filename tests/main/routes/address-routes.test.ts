@@ -30,5 +30,13 @@ describe('Address Routes', () => {
         .set('authorization', `Bearer ${mockAccessToken()}`)
         .expect(204)
     })
+
+    test('Should return 400 on invalid body', async () => {
+      await request(app)
+        .put('/address')
+        .send({})
+        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .expect(400)
+    })
   })
 })
