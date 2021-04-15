@@ -1,4 +1,4 @@
-import { signUpPath, loginPath, accountsPaths } from './paths'
+import { signUpPath, loginPath, accountsPaths, addressesPaths } from './paths'
 import {
   signupSchema,
   tokenSchema,
@@ -12,13 +12,17 @@ import {
   accountsSchema,
   bearerSchema,
   forbiddenError,
-  notFoundError
+  notFoundError,
+  addressSchema
 } from './components'
+
+import map from './utils/mapper'
 
 export const paths = {
   '/signup': signUpPath,
   '/login': loginPath,
-  ...accountsPaths
+  ...accountsPaths,
+  ...addressesPaths
 }
 
 export const components = {
@@ -28,7 +32,8 @@ export const components = {
     error: errorSchema,
     login: loginSchema,
     account: accountSchema,
-    accounts: accountsSchema
+    accounts: accountsSchema,
+    address: map(addressSchema, ['id', 'accountId'])
   },
   errors: {
     badRequest: badRequestError,

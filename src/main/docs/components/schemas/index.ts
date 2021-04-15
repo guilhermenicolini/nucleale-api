@@ -1,5 +1,6 @@
 export * from './account-schema'
 export * from './accounts-schema'
+export * from './address-schema'
 export * from './bearer-schema'
 export * from './error-schema'
 export * from './login-schema'
