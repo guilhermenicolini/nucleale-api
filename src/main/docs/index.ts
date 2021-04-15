@@ -31,6 +31,10 @@ export default {
     {
       name: 'Accounts',
       description: 'Accounts related APIPs'
+    },
+    {
+      name: 'Addresses',
+      description: 'Addresses related APIPs'
     }
   ],
   paths,
