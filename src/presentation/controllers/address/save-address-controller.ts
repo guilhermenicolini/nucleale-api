@@ -1,8 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { SaveAddress } from '@/domain/usecases'
 import { badRequest, serverError, noContent } from '@/presentation/helpers'
-import { } from '@/presentation/errors'
-import { AddressModel } from '@/domain/models'
 
 export class SaveAddressController implements Controller {
   constructor (
@@ -50,5 +48,16 @@ export class SaveAddressController implements Controller {
 }
 
 export namespace SaveAddressController {
-  export type Request = AddressModel
+  export type Request = {
+    accountId: string
+    address: string
+    number: string
+    complement?: string
+    district: string
+    city: string
+    cityId: number
+    state: string
+    zip: string
+    country: string
+  }
 }
