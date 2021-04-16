@@ -35,4 +35,10 @@ describe('DbLoadAddress Usecase', () => {
     const promise = sut.load(mockAccountId())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return an address on success', async () => {
+    const { sut, loadAddressRepositorySpy } = makeSut()
+    const address = await sut.load(mockAccountId())
+    expect(address).toEqual(loadAddressRepositorySpy.result)
+  })
 })
