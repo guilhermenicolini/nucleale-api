@@ -1,5 +1,8 @@
 import { LoadAddressController } from '@/presentation/controllers'
 import { LoadAddressSpy } from '@/tests/presentation/mocks'
+import { throwError } from '@/tests/domain/mocks'
+import { serverError } from '@/presentation/helpers'
+import { ServerError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -27,5 +30,12 @@ describe('LoadAddress Controller', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(loadAddressSpy.accountId).toEqual(request.accountId)
+  })
+
+  test('Should return 500 if LoadAddress throws ', async () => {
+    const { sut, loadAddressSpy } = makeSut()
+    jest.spyOn(loadAddressSpy, 'load').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
