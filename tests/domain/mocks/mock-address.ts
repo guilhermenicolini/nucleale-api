@@ -3,6 +3,7 @@ import faker, { random } from 'faker'
 import { ObjectId } from 'mongodb'
 
 export const mockAddressModel = (accountId?: string): AddressModel => ({
+  id: new ObjectId().toString(),
   accountId: accountId || new ObjectId().toString(),
   address: faker.address.streetName(),
   number: random.number(1000).toString(),
