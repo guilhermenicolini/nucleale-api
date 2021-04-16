@@ -1,5 +1,6 @@
 import { DbLoadAddress } from '@/data/usecases'
 import { LoadAddressRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -26,5 +27,12 @@ describe('DbLoadAddress Usecase', () => {
     const accountId = mockAccountId()
     await sut.load(accountId)
     expect(loadAddressRepositorySpy.accountId).toBe(accountId)
+  })
+
+  test('Should throw if LoadAddressRepository throws', async () => {
+    const { sut, loadAddressRepositorySpy } = makeSut()
+    jest.spyOn(loadAddressRepositorySpy, 'load').mockImplementationOnce(throwError)
+    const promise = sut.load(mockAccountId())
+    await expect(promise).rejects.toThrow()
   })
 })
