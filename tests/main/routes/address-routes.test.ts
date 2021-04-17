@@ -31,6 +31,13 @@ describe('Address Routes', () => {
         .expect(204)
     })
 
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .put('/address')
+        .send({})
+        .expect(401)
+    })
+
     test('Should return 400 on invalid body', async () => {
       await request(app)
         .put('/address')
@@ -67,6 +74,12 @@ describe('Address Routes', () => {
         .get('/address')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(200, null)
+    })
+
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/address')
+        .expect(401)
     })
   })
 })
