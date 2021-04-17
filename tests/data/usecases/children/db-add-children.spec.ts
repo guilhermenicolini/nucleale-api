@@ -31,4 +31,10 @@ describe('DbAddChildren Usecase', () => {
     const promise = sut.add(mockAddChildrenModel())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return an id on success', async () => {
+    const { sut, addChildrenRepositorySpy } = makeSut()
+    const id = await sut.add(mockAddChildrenModel())
+    expect(id).toEqual(addChildrenRepositorySpy.result)
+  })
 })
