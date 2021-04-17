@@ -1,7 +1,7 @@
 import { AddressMongoRepository, MongoHelper } from '@/infra/db'
 import { mockAddressModel } from '@/tests/domain/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 const makeSut = (): AddressMongoRepository => {
   return new AddressMongoRepository()
@@ -81,6 +81,12 @@ describe('AddressMongoRepository', () => {
       expect(address.state).toBe(data.state)
       expect(address.country).toBe(data.country)
       expect(address.zip).toBe(data.zip)
+    })
+
+    test('Should return null if address does not exists', async () => {
+      const sut = makeSut()
+      const address = await sut.load(new ObjectId().toString())
+      expect(address).toBeFalsy()
     })
   })
 })
