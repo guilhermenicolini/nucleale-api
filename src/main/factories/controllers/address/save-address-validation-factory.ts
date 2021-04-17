@@ -1,14 +1,11 @@
 import {
   ValidationComposite,
-  IdValidation,
   RequiredFieldValidation
 } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
-import { IdValidatorAdapter } from '@/infra/validators'
 
 export const makeSaveAddressValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  validations.push(new IdValidation('accountId', new IdValidatorAdapter()))
   validations.push(new RequiredFieldValidation('address'))
   validations.push(new RequiredFieldValidation('number'))
   validations.push(new RequiredFieldValidation('district'))

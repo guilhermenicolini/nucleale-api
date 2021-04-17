@@ -1,7 +1,7 @@
 import { AddressMongoRepository, MongoHelper } from '@/infra/db'
 import { mockAddressModel } from '@/tests/domain/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 const makeSut = (): AddressMongoRepository => {
   return new AddressMongoRepository()
@@ -62,6 +62,31 @@ describe('AddressMongoRepository', () => {
       expect(addresses[0].state).toBe(data.state)
       expect(addresses[0].country).toBe(data.country)
       expect(addresses[0].zip).toBe(data.zip)
+    })
+  })
+
+  describe('load()', () => {
+    test('Should load an address on success', async () => {
+      const sut = makeSut()
+      const data = mockAddressModel()
+      await sut.save(data)
+      const address = await sut.load(data.accountId)
+      expect(address).toBeTruthy()
+      expect(address.address).toBe(data.address)
+      expect(address.number).toBe(data.number)
+      expect(address.complement).toBe(data.complement)
+      expect(address.district).toBe(data.district)
+      expect(address.city).toBe(data.city)
+      expect(address.cityId).toBe(data.cityId)
+      expect(address.state).toBe(data.state)
+      expect(address.country).toBe(data.country)
+      expect(address.zip).toBe(data.zip)
+    })
+
+    test('Should return null if address does not exists', async () => {
+      const sut = makeSut()
+      const address = await sut.load(new ObjectId().toString())
+      expect(address).toBeFalsy()
     })
   })
 })

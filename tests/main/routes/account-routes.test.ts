@@ -106,14 +106,14 @@ describe('Account Routes', () => {
     test('Should return 400 if email is invalid', async () => {
       await request(app)
         .post(`/accounts/invite/${faker.random.word()}`)
-        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
     })
 
     test('Should return 204 on success', async () => {
       await request(app)
         .post(`/accounts/invite/${faker.internet.email()}`)
-        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect({})
     })
   })

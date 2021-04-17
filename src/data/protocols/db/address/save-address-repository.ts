@@ -1,9 +1,9 @@
-import { SaveAddress } from '@/domain/usecases'
+import { LoadAddress } from '@/domain/usecases'
 
-export interface SaveAddressRepository {
-  save: (data: SaveAddressRepository.Params) => Promise<void>
+export interface LoadAddressRepository {
+  load: (accountId: string) => Promise<LoadAddressRepository.Result>
 }
 
-export namespace SaveAddressRepository {
-  export type Params = SaveAddress.Params
+export namespace LoadAddressRepository {
+  export type Result = LoadAddress.Result
 }

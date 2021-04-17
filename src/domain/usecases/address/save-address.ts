@@ -5,5 +5,5 @@ export interface SaveAddress {
 }
 
 export namespace SaveAddress {
-  export type Params = AddressModel
+  export type Params = Omit<AddressModel, 'id'>
 }

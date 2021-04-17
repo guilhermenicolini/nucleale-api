@@ -4,15 +4,10 @@ const omit = (obj: any, field: string): any => {
   return obj
 }
 
-export default (obj: any, fields: string | string[]): any => {
+export default (obj: any, fields: string[]): any => {
   const data = JSON.parse(JSON.stringify(obj))
-  if (Array.isArray(fields)) {
-    for (const field of fields) {
-      omit(data, field)
-    }
-  } else {
-    omit(data, fields)
+  for (const field of fields) {
+    omit(data, field)
   }
-
   return data
 }
