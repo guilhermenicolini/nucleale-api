@@ -1,7 +1,8 @@
 import { AddChildrenController } from '@/presentation/controllers'
 import { ValidationSpy, AddChildrenSpy } from '@/tests/presentation/mocks'
-import { mockAddChildrenModel } from '@/tests/domain/mocks'
-import { badRequest } from '@/presentation/helpers'
+import { mockAddChildrenModel, throwError } from '@/tests/domain/mocks'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { ServerError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: AddChildrenController,
@@ -40,5 +41,12 @@ describe('AddChildren Controller', () => {
     const request = mockAddChildrenModel()
     await sut.handle(request)
     expect(addChildrenSpy.params).toEqual(request)
+  })
+
+  test('Should return 500 if AddChildren throws ', async () => {
+    const { sut, addChildrenSpy } = makeSut()
+    jest.spyOn(addChildrenSpy, 'add').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockAddChildrenModel())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
