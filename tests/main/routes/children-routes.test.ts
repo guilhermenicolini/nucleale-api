@@ -1,5 +1,6 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
+import { mockAccessToken } from '@/tests/main/mocks'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
@@ -26,6 +27,14 @@ describe('Children Routes', () => {
         .post('/childrens')
         .send({})
         .expect(401)
+    })
+
+    test('Should return 400 on invalid body', async () => {
+      await request(app)
+        .post('/childrens')
+        .send({})
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(400)
     })
   })
 })
