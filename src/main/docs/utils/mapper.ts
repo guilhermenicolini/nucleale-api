@@ -6,11 +6,8 @@ const omit = (obj: any, field: string): any => {
 
 export default (obj: any, fields: string[]): any => {
   const data = JSON.parse(JSON.stringify(obj))
-  if (Array.isArray(fields)) {
-    for (const field of fields) {
-      omit(data, field)
-    }
+  for (const field of fields) {
+    omit(data, field)
   }
-
   return data
 }
