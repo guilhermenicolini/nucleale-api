@@ -61,5 +61,12 @@ describe('Address Routes', () => {
           zip: data.zip
         })
     })
+
+    test('Should return 200 with no body on success if not exists', async () => {
+      await request(app)
+        .get('/address')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(200, null)
+    })
   })
 })
