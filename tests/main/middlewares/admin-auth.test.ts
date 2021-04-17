@@ -55,7 +55,7 @@ describe('Auth Middleware', () => {
 
     await request(app)
       .get('/admin-auth')
-      .set('authorization', `Bearer ${mockAccessToken()}`)
+      .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
       .expect(403)
   })
 })

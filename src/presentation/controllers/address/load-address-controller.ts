@@ -10,7 +10,6 @@ export class LoadAddressController implements Controller {
   async handle (request: LoadAddressController.Request): Promise<HttpResponse> {
     try {
       const { accountId } = request
-
       const address = await this.loadAddress.load(accountId)
       return ok(address)
     } catch (error) {

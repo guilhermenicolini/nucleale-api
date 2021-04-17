@@ -1,9 +1,9 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
-import { mockAddressModel } from '@/tests/domain/mocks'
+import { mockAddressModel, mockAddAddressModel } from '@/tests/domain/mocks'
 import { mockAccessToken } from '@/tests/main/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
 
 let addressesCollection: Collection
@@ -27,7 +27,7 @@ describe('Address Routes', () => {
       await request(app)
         .put('/address')
         .send(mockAddressModel())
-        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(204)
     })
 
@@ -35,8 +35,31 @@ describe('Address Routes', () => {
       await request(app)
         .put('/address')
         .send({})
-        .set('authorization', `Bearer ${mockAccessToken()}`)
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
+    })
+  })
+
+  describe('GET /address', () => {
+    test('Should return 200 with address on success', async () => {
+      const token = mockAccessToken()
+      const data = mockAddAddressModel(token.accoundId)
+      const { accountId, ...obj } = data
+      await addressesCollection.insertOne({ ...obj, accountId: new ObjectId(accountId) })
+      await request(app)
+        .get('/address')
+        .set('authorization', `Bearer ${token.accessToken}`)
+        .expect(200, {
+          address: data.address,
+          number: data.number,
+          complement: data.complement,
+          district: data.district,
+          city: data.city,
+          cityId: data.cityId,
+          state: data.state,
+          country: data.country,
+          zip: data.zip
+        })
     })
   })
 })
