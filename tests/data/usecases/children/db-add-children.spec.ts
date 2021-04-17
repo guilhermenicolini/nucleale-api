@@ -1,6 +1,6 @@
 import { DbAddChildren } from '@/data/usecases'
 import { AddChildrenRepositorySpy } from '@/tests/data/mocks'
-import { mockAddChildrenModel } from '@/tests/domain/mocks'
+import { mockAddChildrenModel, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddChildren
@@ -23,5 +23,12 @@ describe('DbAddChildren Usecase', () => {
     const params = mockAddChildrenModel()
     await sut.add(params)
     expect(addChildrenRepositorySpy.params).toEqual(params)
+  })
+
+  test('Should throw if AddChildrenRepository throws', async () => {
+    const { sut, addChildrenRepositorySpy } = makeSut()
+    jest.spyOn(addChildrenRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.add(mockAddChildrenModel())
+    await expect(promise).rejects.toThrow()
   })
 })
