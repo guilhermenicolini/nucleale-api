@@ -1,5 +1,6 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
+import { mockAddChildrenModel } from '@/tests/domain/mocks'
 import { mockAccessToken } from '@/tests/main/mocks'
 
 import { Collection } from 'mongodb'
@@ -35,6 +36,17 @@ describe('Children Routes', () => {
         .send({})
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
+    })
+
+    test('Should return 201 on success', async () => {
+      await request(app)
+        .post('/childrens')
+        .send(mockAddChildrenModel())
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(201)
+        .then(res => {
+          if (!res.body.id) throw new Error('Missing id in body')
+        })
     })
   })
 })
