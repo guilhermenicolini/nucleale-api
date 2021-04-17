@@ -1,7 +1,8 @@
 import { makeSaveAddressValidation } from '@/main/factories'
 import {
   ValidationComposite,
-  RequiredFieldValidation
+  RequiredFieldValidation,
+  NumberValidation
 } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
 
@@ -11,14 +12,10 @@ describe('ApproveAccountValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
     makeSaveAddressValidation()
     const validations: Validation[] = []
-    validations.push(new RequiredFieldValidation('address'))
-    validations.push(new RequiredFieldValidation('number'))
-    validations.push(new RequiredFieldValidation('district'))
-    validations.push(new RequiredFieldValidation('city'))
-    validations.push(new RequiredFieldValidation('cityId'))
-    validations.push(new RequiredFieldValidation('state'))
-    validations.push(new RequiredFieldValidation('zip'))
-    validations.push(new RequiredFieldValidation('country'))
+    for (const field of ['address', 'number', 'district', 'city', 'cityId', 'state', 'zip', 'country']) {
+      validations.push(new RequiredFieldValidation(field))
+    }
+    validations.push(new NumberValidation('cityId'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })
