@@ -56,5 +56,12 @@ describe('Children Routes', () => {
         .get('/childrens')
         .expect(401)
     })
+
+    test('Should return 200 on success with no records', async () => {
+      await request(app)
+        .get('/childrens')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(200, [])
+    })
   })
 })
