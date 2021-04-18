@@ -22,3 +22,14 @@ export const mockResultChildrenModel = (): Omit<ChildrenModel, 'accountId'> => (
   }),
   gender: Gender.female
 })
+
+export const mockChildrenModel = (accountId: string) => ({
+  _id: new ObjectId(),
+  accountId: new ObjectId(accountId),
+  name: faker.name.findName(),
+  birth: faker.random.number({
+    min: 1609459200000,
+    max: 1612051200000
+  }),
+  gender: Gender.female
+})
