@@ -35,4 +35,17 @@ describe('DbLoadChildrens Usecase', () => {
     const promise = sut.load(mockAccountId())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return childrens on success', async () => {
+    const { sut, loadChildrensRepositorySpy } = makeSut()
+    const childrens = await sut.load(mockAccountId())
+    expect(childrens).toEqual(loadChildrensRepositorySpy.result)
+  })
+
+  test('Should return empty array if LoadChildrensRepository return null', async () => {
+    const { sut, loadChildrensRepositorySpy } = makeSut()
+    loadChildrensRepositorySpy.result = null
+    const childrens = await sut.load(mockAccountId())
+    expect(childrens).toEqual([])
+  })
 })
