@@ -49,4 +49,12 @@ describe('Children Routes', () => {
         })
     })
   })
+
+  describe('GET /childrens', () => {
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .get('/childrens')
+        .expect(401)
+    })
+  })
 })
