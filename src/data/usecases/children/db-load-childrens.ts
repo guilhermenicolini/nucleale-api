@@ -8,6 +8,6 @@ export class DbLoadChildrens implements LoadChildrens {
 
   async load (accountId: string): Promise<LoadChildrensRepository.Result> {
     const childrens = await this.loadChildrensRepository.load(accountId)
-    return childrens
+    return childrens || []
   }
 }
