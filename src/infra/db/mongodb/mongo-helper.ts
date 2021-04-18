@@ -36,7 +36,7 @@ export class MongoHelper {
     return this.client.db().collection(collectionName)
   }
 
-  map (object: any, mapper: Mapper = idMapper()): any {
+  map (object: any, mapper: Mapper): any {
     return mapper.map(object)
   }
 
