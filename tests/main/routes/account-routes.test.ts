@@ -33,6 +33,19 @@ describe('Account Routes', () => {
         .expect(400)
     })
 
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .get('/accounts/status/any_status')
+        .expect(401)
+    })
+
+    test('Should return 403 if token is not admin', async () => {
+      await request(app)
+        .get('/accounts/status/any_status')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(403)
+    })
+
     test('Should return 200 with empty array if no records was found', async () => {
       await request(app)
         .get('/accounts/status/awaitingVerification')
@@ -64,6 +77,19 @@ describe('Account Routes', () => {
   })
 
   describe('POST /accounts/:id/approve', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .post(`/accounts/${mockId()}/approve`)
+        .expect(401)
+    })
+
+    test('Should return 403 if token is not admin', async () => {
+      await request(app)
+        .post(`/accounts/${mockId()}/approve`)
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(403)
+    })
+
     test('Should return 404 if record was not found', async () => {
       await request(app)
         .post(`/accounts/${mockId()}/approve`)
@@ -108,6 +134,12 @@ describe('Account Routes', () => {
         .post(`/accounts/invite/${faker.random.word()}`)
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
+    })
+
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .post(`/accounts/invite/${faker.random.word()}`)
+        .expect(401)
     })
 
     test('Should return 204 on success', async () => {

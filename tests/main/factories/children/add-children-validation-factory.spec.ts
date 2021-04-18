@@ -1,4 +1,4 @@
-import { makeSaveAddressValidation } from '@/main/factories'
+import { makeAddChildrenValidation } from '@/main/factories'
 import {
   ValidationComposite,
   RequiredFieldValidation,
@@ -8,14 +8,14 @@ import { Validation } from '@/presentation/protocols'
 
 jest.mock('@/validation/validators/validation-composite')
 
-describe('ApproveAccountValidation Factory', () => {
+describe('AddChildrenValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
-    makeSaveAddressValidation()
+    makeAddChildrenValidation()
     const validations: Validation[] = []
-    for (const field of ['address', 'number', 'district', 'city', 'cityId', 'state', 'zip', 'country']) {
+    for (const field of ['name', 'birth', 'gender']) {
       validations.push(new RequiredFieldValidation(field))
     }
-    validations.push(new NumberValidation('cityId'))
+    validations.push(new NumberValidation('birth'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

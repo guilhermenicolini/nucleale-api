@@ -1,3 +1,4 @@
 export * from './mock-cryptography'
 export * from './mock-db-account'
 export * from './mock-db-address'
+export * from './mock-db-children'

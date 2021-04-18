@@ -30,11 +30,15 @@ export default {
     },
     {
       name: 'Accounts',
-      description: 'Accounts related APIPs'
+      description: 'Accounts related APIs'
     },
     {
       name: 'Addresses',
-      description: 'Addresses related APIPs'
+      description: 'Addresses related APIs'
+    },
+    {
+      name: 'Childrens',
+      description: 'Childrens related APIs'
     }
   ],
   paths,

@@ -5,11 +5,11 @@ import {
 } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
 
-export const makeSaveAddressValidation = (): ValidationComposite => {
+export const makeAddChildrenValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  for (const field of ['address', 'number', 'district', 'city', 'cityId', 'state', 'zip', 'country']) {
+  for (const field of ['name', 'birth', 'gender']) {
     validations.push(new RequiredFieldValidation(field))
   }
-  validations.push(new NumberValidation('cityId'))
+  validations.push(new NumberValidation('birth'))
   return new ValidationComposite(validations)
 }

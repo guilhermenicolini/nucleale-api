@@ -1,6 +1,7 @@
 import { makeInviteAccountValidation } from '@/main/factories'
 import {
   ValidationComposite,
+  RequiredFieldValidation,
   EmailValidation
 } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
@@ -12,6 +13,7 @@ describe('makeInviteAccountValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
     makeInviteAccountValidation()
     const validations: Validation[] = []
+    validations.push(new RequiredFieldValidation('email'))
     validations.push(new EmailValidation('email', new EmailValidatorAdapter()))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
