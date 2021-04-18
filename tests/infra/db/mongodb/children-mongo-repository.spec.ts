@@ -55,5 +55,12 @@ describe('ChildrenMongoRepository', () => {
       expect(childrens[1].birth).toBe(data[1].birth)
       expect(childrens[1].gender).toBe(data[1].gender)
     })
+
+    test('Should return empty array if not exists', async () => {
+      const accountId = new ObjectId().toString()
+      const sut = makeSut()
+      const childrens = await sut.load(accountId)
+      expect(childrens.length).toBe(0)
+    })
   })
 })
