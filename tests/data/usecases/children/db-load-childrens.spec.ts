@@ -1,5 +1,6 @@
 import { DbLoadChildrens } from '@/data/usecases'
 import { LoadChildrensRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -26,5 +27,12 @@ describe('DbLoadChildrens Usecase', () => {
     const accountId = mockAccountId()
     await sut.load(accountId)
     expect(loadChildrensRepositorySpy.accountId).toBe(accountId)
+  })
+
+  test('Should throw if LoadChildrensRepository throws', async () => {
+    const { sut, loadChildrensRepositorySpy } = makeSut()
+    jest.spyOn(loadChildrensRepositorySpy, 'load').mockImplementationOnce(throwError)
+    const promise = sut.load(mockAccountId())
+    await expect(promise).rejects.toThrow()
   })
 })
