@@ -21,7 +21,7 @@ export const accountSchema = {
     },
     birth: {
       type: 'number',
-      format: 'int32'
+      format: 'milliseconds'
     },
     status: {
       type: 'string',

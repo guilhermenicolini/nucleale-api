@@ -11,7 +11,8 @@ export const childrenSchema = {
       type: 'string'
     },
     birth: {
-      type: 'string'
+      type: 'number',
+      format: 'milliseconds'
     },
     gender: {
       type: 'string',
