@@ -1,5 +1,8 @@
 import { DeleteChildrenController } from '@/presentation/controllers'
 import { DeleteChildrenSpy } from '@/tests/presentation/mocks'
+import { throwError } from '@/tests/domain/mocks'
+import { serverError } from '@/presentation/helpers'
+import { ServerError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -28,5 +31,12 @@ describe('DeleteChildren Controller', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(deleteChildrenSpy.params).toEqual(request)
+  })
+
+  test('Should return 500 if DeleteChildren throws ', async () => {
+    const { sut, deleteChildrenSpy } = makeSut()
+    jest.spyOn(deleteChildrenSpy, 'delete').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
