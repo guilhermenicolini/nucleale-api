@@ -2,7 +2,8 @@ import { MongoHelper } from '@/infra/db'
 import {
   AddChildrenRepository,
   LoadChildrensRepository,
-  UpdateChildrenRepository
+  UpdateChildrenRepository,
+  DeleteChildrenRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
@@ -42,6 +43,15 @@ export class ChildrenMongoRepository implements
         birth: params.birth,
         gender: params.gender
       }
+    })
+    return operation.lastErrorObject.updatedExisting
+  }
+
+  async delete (params: DeleteChildrenRepository.Params): Promise<boolean> {
+    const childrensCollection = await MongoHelper.instance.getCollection('childrens')
+    const operation = await childrensCollection.findOneAndDelete({
+      _id: new ObjectId(params.id),
+      accountId: new ObjectId(params.accountId)
     })
     return operation.lastErrorObject.updatedExisting
   }
