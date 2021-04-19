@@ -33,8 +33,8 @@ export default {
       description: 'Accounts related APIs'
     },
     {
-      name: 'Addresses',
-      description: 'Addresses related APIs'
+      name: 'Address',
+      description: 'Address related APIs'
     },
     {
       name: 'Childrens',

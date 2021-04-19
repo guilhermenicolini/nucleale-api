@@ -1,7 +1,7 @@
 export const addressesPaths = {
   '/address': {
     put: {
-      tags: ['Addresses'],
+      tags: ['Address'],
       security: [{
         bearerAuth: []
       }],
@@ -37,7 +37,7 @@ export const addressesPaths = {
       }
     },
     get: {
-      tags: ['Addresses'],
+      tags: ['Address'],
       security: [{
         bearerAuth: []
       }],
