@@ -1,7 +1,7 @@
 import { DeleteChildrenController } from '@/presentation/controllers'
 import { DeleteChildrenSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
-import { serverError, notFound, noContent } from '@/presentation/helpers'
+import { serverError, badRequest, notFound, noContent } from '@/presentation/helpers'
 import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
 import faker from 'faker'
@@ -34,6 +34,13 @@ describe('DeleteChildren Controller', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(validationSpy.input).toEqual(request)
+  })
+
+  test('Should return 400 if Validation returns an error ', async () => {
+    const { sut, validationSpy } = makeSut()
+    validationSpy.error = new Error()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 
   test('Should call DeleteChildren with correct values', async () => {
