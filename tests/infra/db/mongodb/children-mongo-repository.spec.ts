@@ -102,5 +102,18 @@ describe('ChildrenMongoRepository', () => {
       expect(childrens.length).toBe(0)
       expect(result).toBe(true)
     })
+
+    test('Should not delete children if not find', async () => {
+      const sut = makeSut()
+      const toDelete = mockChildrenModel()
+      await childrensCollection.insertOne(toDelete)
+      const result = await sut.delete({
+        id: new ObjectId().toString(),
+        accountId: toDelete.accountId.toString()
+      })
+      const childrens = await childrensCollection.find({}).toArray()
+      expect(childrens.length).toBe(1)
+      expect(result).toBe(false)
+    })
   })
 })
