@@ -107,4 +107,12 @@ describe('Children Routes', () => {
         .expect(204)
     })
   })
+
+  describe('DELETE /childrens/:id', () => {
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .delete(`/childrens/${mockId()}`)
+        .expect(401)
+    })
+  })
 })
