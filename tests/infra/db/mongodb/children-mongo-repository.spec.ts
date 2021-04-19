@@ -88,4 +88,19 @@ describe('ChildrenMongoRepository', () => {
       expect(result).toBe(false)
     })
   })
+
+  describe('delete()', () => {
+    test('Should delete children on success', async () => {
+      const sut = makeSut()
+      const toDelete = mockChildrenModel()
+      await childrensCollection.insertOne(toDelete)
+      const result = await sut.delete({
+        id: toDelete._id.toString(),
+        accountId: toDelete.accountId.toString()
+      })
+      const childrens = await childrensCollection.find({}).toArray()
+      expect(childrens.length).toBe(0)
+      expect(result).toBe(true)
+    })
+  })
 })

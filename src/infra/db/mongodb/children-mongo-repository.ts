@@ -53,6 +53,6 @@ export class ChildrenMongoRepository implements
       _id: new ObjectId(params.id),
       accountId: new ObjectId(params.accountId)
     })
-    return operation.lastErrorObject.updatedExisting
+    return operation.lastErrorObject.n === 1
   }
 }
