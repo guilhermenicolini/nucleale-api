@@ -1,7 +1,7 @@
 import { UpdateChildrenController } from '@/presentation/controllers'
 import { ValidationSpy, UpdateChildrenSpy } from '@/tests/presentation/mocks'
 import { mockUpdateChildrenModel, throwError } from '@/tests/domain/mocks'
-import { badRequest, serverError, notFound } from '@/presentation/helpers'
+import { badRequest, serverError, notFound, noContent } from '@/presentation/helpers'
 import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
 type SutTypes = {
@@ -55,5 +55,11 @@ describe('UpdateChildren Controller', () => {
     updateChildrenSpy.result = false
     const httpResponse = await sut.handle(mockUpdateChildrenModel())
     expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Children')))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockUpdateChildrenModel())
+    expect(httpResponse).toEqual(noContent())
   })
 })
