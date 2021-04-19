@@ -38,4 +38,11 @@ describe('DbDeleteChildren Usecase', () => {
     const promise = sut.delete(mockParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return false if DeleteChildrenRepository returns false', async () => {
+    const { sut, deleteChildrenRepositorySpy } = makeSut()
+    deleteChildrenRepositorySpy.result = false
+    const result = await sut.delete(mockParams())
+    expect(result).toBe(false)
+  })
 })
