@@ -8,37 +8,27 @@ export class SaveAddressController implements Controller {
     private readonly saveAddress: SaveAddress
   ) { }
 
-  async handle (request: SaveAddressController.Request): Promise<HttpResponse> {
+  async handle (httpRequest: SaveAddressController.Request): Promise<HttpResponse> {
     try {
+      const request = {
+        accountId: httpRequest.accountId,
+        address: httpRequest.address,
+        number: httpRequest.number,
+        complement: httpRequest.complement,
+        district: httpRequest.district,
+        city: httpRequest.city,
+        cityId: httpRequest.cityId,
+        state: httpRequest.state,
+        zip: httpRequest.zip,
+        country: httpRequest.country
+      }
+
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
-      const {
-        accountId,
-        address,
-        number,
-        complement,
-        district,
-        city,
-        cityId,
-        state,
-        zip,
-        country
-      } = request
 
-      await this.saveAddress.save({
-        accountId,
-        address,
-        number,
-        complement,
-        district,
-        city,
-        cityId,
-        state,
-        zip,
-        country
-      })
+      await this.saveAddress.save(request)
 
       return noContent()
     } catch (error) {
