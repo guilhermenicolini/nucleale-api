@@ -31,4 +31,11 @@ describe('DbUpdateChildren Usecase', () => {
     const promise = sut.update(mockUpdateChildrenModel())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return false if UpdateChildrenRepository returns false', async () => {
+    const { sut, updateChildrenRepositorySpy } = makeSut()
+    updateChildrenRepositorySpy.result = false
+    const result = await sut.update(mockUpdateChildrenModel())
+    expect(result).toBe(false)
+  })
 })
