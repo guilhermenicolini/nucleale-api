@@ -131,4 +131,17 @@ describe('Children Routes', () => {
       .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
       .expect(404)
   })
+
+  test('Should return 204 on success', async () => {
+    const token = mockAccessToken()
+    const data = {
+      _id: new ObjectId(),
+      accountId: new ObjectId(token.accoundId)
+    }
+    await childrensCollection.insertOne(data)
+    await request(app)
+      .delete(`/childrens/${data._id.toString()}`)
+      .set('authorization', `Bearer ${token.accessToken}`)
+      .expect(204)
+  })
 })
