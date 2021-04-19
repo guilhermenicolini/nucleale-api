@@ -1,8 +1,8 @@
 import { UpdateChildrenController } from '@/presentation/controllers'
 import { ValidationSpy, UpdateChildrenSpy } from '@/tests/presentation/mocks'
 import { mockUpdateChildrenModel, throwError } from '@/tests/domain/mocks'
-import { badRequest, serverError } from '@/presentation/helpers'
-import { ServerError } from '@/presentation/errors'
+import { badRequest, serverError, notFound } from '@/presentation/helpers'
+import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: UpdateChildrenController,
@@ -48,5 +48,12 @@ describe('UpdateChildren Controller', () => {
     jest.spyOn(updateChildrenSpy, 'update').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockUpdateChildrenModel())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 404 on fail', async () => {
+    const { sut, updateChildrenSpy } = makeSut()
+    updateChildrenSpy.result = false
+    const httpResponse = await sut.handle(mockUpdateChildrenModel())
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Children')))
   })
 })
