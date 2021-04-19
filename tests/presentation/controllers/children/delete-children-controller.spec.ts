@@ -1,5 +1,5 @@
 import { DeleteChildrenController } from '@/presentation/controllers'
-import { DeleteChildrenSpy } from '@/tests/presentation/mocks'
+import { DeleteChildrenSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 import { serverError, notFound, noContent } from '@/presentation/helpers'
 import { ServerError, RecordNotFoundError } from '@/presentation/errors'
@@ -13,19 +13,29 @@ const mockRequest = () => ({
 
 type SutTypes = {
   sut: DeleteChildrenController,
+  validationSpy: ValidationSpy
   deleteChildrenSpy: DeleteChildrenSpy
 }
 
 const makeSut = (): SutTypes => {
+  const validationSpy = new ValidationSpy()
   const deleteChildrenSpy = new DeleteChildrenSpy()
-  const sut = new DeleteChildrenController(deleteChildrenSpy)
+  const sut = new DeleteChildrenController(validationSpy, deleteChildrenSpy)
   return {
     sut,
+    validationSpy,
     deleteChildrenSpy
   }
 }
 
 describe('DeleteChildren Controller', () => {
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(validationSpy.input).toEqual(request)
+  })
+
   test('Should call DeleteChildren with correct values', async () => {
     const { sut, deleteChildrenSpy } = makeSut()
     const request = mockRequest()
