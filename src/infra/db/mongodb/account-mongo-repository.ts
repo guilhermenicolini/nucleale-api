@@ -23,7 +23,7 @@ export class AccountMongoRepository implements
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const invitationCollection = await MongoHelper.instance.getCollection('invitations')
     const { accountId, ...obj } = data
-    const cmd = await accountCollection.insertOne({ ...obj, accountId: new ObjectId(accountId) })
+    const cmd = await accountCollection.insertOne({ accountId: new ObjectId(accountId), ...obj })
     await invitationCollection.findOneAndDelete({ email: data.email })
     return {
       userId: cmd.ops[0]._id.toString(),
