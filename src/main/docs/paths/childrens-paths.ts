@@ -80,7 +80,7 @@ export const childrensPaths = {
       parameters: [{
         in: 'path',
         name: 'id',
-        description: 'Children id to be approved',
+        description: 'Children id to be updated',
         required: true,
         schema: {
           type: 'string'
@@ -96,6 +96,41 @@ export const childrensPaths = {
           }
         }
       },
+      responses: {
+        204: {
+          description: 'No Content'
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    },
+    delete: {
+      tags: ['Childrens'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to delete children',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'deleteChildren',
+      parameters: [{
+        in: 'path',
+        name: 'id',
+        description: 'Children id to be deleted',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
       responses: {
         204: {
           description: 'No Content'

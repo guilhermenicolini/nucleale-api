@@ -1,7 +1,8 @@
 import {
   AddChildrenRepository,
   LoadChildrensRepository,
-  UpdateChildrenRepository
+  UpdateChildrenRepository,
+  DeleteChildrenRepository
 } from '@/data/protocols'
 import { mockResultChildrenModel } from '@/tests/domain/mocks'
 
@@ -35,6 +36,16 @@ export class UpdateChildrenRepositorySpy implements UpdateChildrenRepository {
   result = true
 
   async update (params: UpdateChildrenRepository.Params): Promise<boolean> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class DeleteChildrenRepositorySpy implements DeleteChildrenRepository {
+  params: DeleteChildrenRepository.Params
+  result = true
+
+  async delete (params: DeleteChildrenRepository.Params): Promise<boolean> {
     this.params = params
     return this.result
   }

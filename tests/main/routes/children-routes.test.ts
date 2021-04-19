@@ -107,4 +107,41 @@ describe('Children Routes', () => {
         .expect(204)
     })
   })
+
+  describe('DELETE /childrens/:id', () => {
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .delete(`/childrens/${mockId()}`)
+        .expect(401)
+    })
+  })
+
+  test('Should return 400 on invalid id', async () => {
+    await request(app)
+      .delete('/childrens/any_id')
+      .send({})
+      .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+      .expect(400)
+  })
+
+  test('Should return 404 if children not exists', async () => {
+    await request(app)
+      .delete(`/childrens/${mockId()}`)
+      .send({})
+      .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+      .expect(404)
+  })
+
+  test('Should return 204 on success', async () => {
+    const token = mockAccessToken()
+    const data = {
+      _id: new ObjectId(),
+      accountId: new ObjectId(token.accoundId)
+    }
+    await childrensCollection.insertOne(data)
+    await request(app)
+      .delete(`/childrens/${data._id.toString()}`)
+      .set('authorization', `Bearer ${token.accessToken}`)
+      .expect(204)
+  })
 })
