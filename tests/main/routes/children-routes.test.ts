@@ -1,9 +1,9 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
-import { mockAddChildrenModel, mockChildrenModel } from '@/tests/domain/mocks'
+import { mockAddChildrenModel, mockChildrenModel, mockUpdateChildrenBody } from '@/tests/domain/mocks'
 import { mockAccessToken, mockId } from '@/tests/main/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
 
 let childrensCollection: Collection
@@ -87,10 +87,24 @@ describe('Children Routes', () => {
 
     test('Should return 400 on invalid body', async () => {
       await request(app)
-        .put(`/childrens/${mockId}`)
+        .put(`/childrens/${mockId().toString()}`)
         .send({})
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
+    })
+
+    test('Should return 204 on success', async () => {
+      const token = mockAccessToken()
+      const data = {
+        _id: new ObjectId(),
+        accountId: new ObjectId(token.accoundId)
+      }
+      await childrensCollection.insertOne(data)
+      await request(app)
+        .put(`/childrens/${data._id.toString()}`)
+        .send(mockUpdateChildrenBody())
+        .set('authorization', `Bearer ${token.accessToken}`)
+        .expect(204)
     })
   })
 })
