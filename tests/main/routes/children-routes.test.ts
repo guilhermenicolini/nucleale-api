@@ -115,4 +115,12 @@ describe('Children Routes', () => {
         .expect(401)
     })
   })
+
+  test('Should return 400 on invalid id', async () => {
+    await request(app)
+      .put('/childrens/any_id')
+      .send({})
+      .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+      .expect(400)
+  })
 })
