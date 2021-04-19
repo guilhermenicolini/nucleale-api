@@ -33,7 +33,7 @@ export class ChildrenMongoRepository implements
 
   async update (params: UpdateChildrenRepository.Params): Promise<boolean> {
     const childrensCollection = await MongoHelper.instance.getCollection('childrens')
-    const children = await childrensCollection.findOneAndUpdate({
+    const operation = await childrensCollection.findOneAndUpdate({
       _id: new ObjectId(params.id),
       accountId: new ObjectId(params.accountId)
     }, {
@@ -43,6 +43,6 @@ export class ChildrenMongoRepository implements
         gender: params.gender
       }
     })
-    return children !== null
+    return operation.lastErrorObject.updatedExisting
   }
 }

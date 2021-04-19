@@ -80,5 +80,12 @@ describe('ChildrenMongoRepository', () => {
       expect(childrens[0].birth).toBe(data.birth)
       expect(childrens[0].gender).toBe(data.gender)
     })
+
+    test('Should return false if not exists', async () => {
+      const sut = makeSut()
+      const data = mockUpdateChildrenModel()
+      const result = await sut.update(data)
+      expect(result).toBe(false)
+    })
   })
 })
