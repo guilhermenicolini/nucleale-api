@@ -1,6 +1,7 @@
 import {
   AddChildrenRepository,
-  LoadChildrensRepository
+  LoadChildrensRepository,
+  UpdateChildrenRepository
 } from '@/data/protocols'
 import { mockResultChildrenModel } from '@/tests/domain/mocks'
 
@@ -25,6 +26,16 @@ export class LoadChildrensRepositorySpy implements LoadChildrensRepository {
 
   async load (accountId: string): Promise<LoadChildrensRepository.Result> {
     this.accountId = accountId
+    return this.result
+  }
+}
+
+export class UpdateChildrenRepositorySpy implements UpdateChildrenRepository {
+  params: UpdateChildrenRepository.Params
+  result = true
+
+  async update (params: UpdateChildrenRepository.Params): Promise<boolean> {
+    this.params = params
     return this.result
   }
 }

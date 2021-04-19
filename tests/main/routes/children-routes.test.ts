@@ -1,9 +1,9 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
-import { mockAddChildrenModel, mockChildrenModel } from '@/tests/domain/mocks'
-import { mockAccessToken } from '@/tests/main/mocks'
+import { mockAddChildrenModel, mockChildrenModel, mockUpdateChildrenBody } from '@/tests/domain/mocks'
+import { mockAccessToken, mockId } from '@/tests/main/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
 
 let childrensCollection: Collection
@@ -75,6 +75,36 @@ describe('Children Routes', () => {
         .then(res => {
           if (res.body.length !== 1) throw new Error('Wrong body length')
         })
+    })
+  })
+
+  describe('PUT /childrens/:id', () => {
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .put(`/childrens/${mockId()}`)
+        .expect(401)
+    })
+
+    test('Should return 400 on invalid body', async () => {
+      await request(app)
+        .put(`/childrens/${mockId().toString()}`)
+        .send({})
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(400)
+    })
+
+    test('Should return 204 on success', async () => {
+      const token = mockAccessToken()
+      const data = {
+        _id: new ObjectId(),
+        accountId: new ObjectId(token.accoundId)
+      }
+      await childrensCollection.insertOne(data)
+      await request(app)
+        .put(`/childrens/${data._id.toString()}`)
+        .send(mockUpdateChildrenBody())
+        .set('authorization', `Bearer ${token.accessToken}`)
+        .expect(204)
     })
   })
 })

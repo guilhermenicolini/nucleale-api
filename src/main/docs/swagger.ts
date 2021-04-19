@@ -44,7 +44,7 @@ export const components = {
     account: accountSchema,
     accounts: accountsSchema,
     address: map(addressSchema, ['id', 'accountId']),
-    addChildren: map(childrenSchema, ['id', 'accountId']),
+    saveChildren: map(childrenSchema, ['id', 'accountId']),
     children: map(childrenSchema, ['accountId']),
     childrens: childrensSchema,
     id: idSchema

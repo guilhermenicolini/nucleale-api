@@ -13,7 +13,7 @@ export const childrensPaths = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#components/schemas/addChildren'
+              $ref: '#components/schemas/saveChildren'
             }
           }
         }
@@ -61,6 +61,53 @@ export const childrensPaths = {
         },
         401: {
           $ref: '#/components/errors/unauthorized'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
+  },
+  '/childrens/{id}': {
+    put: {
+      tags: ['Childrens'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to update children',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'updateChildren',
+      parameters: [{
+        in: 'path',
+        name: 'id',
+        description: 'Children id to be approved',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      requestBody: {
+        description: 'Children object to be updated',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#components/schemas/saveChildren'
+            }
+          }
+        }
+      },
+      responses: {
+        204: {
+          description: 'No Content'
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
         },
         500: {
           $ref: '#/components/errors/serverError'

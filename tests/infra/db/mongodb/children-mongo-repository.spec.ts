@@ -1,5 +1,5 @@
 import { ChildrenMongoRepository, MongoHelper } from '@/infra/db'
-import { mockAddChildrenModel, mockChildrenModel } from '@/tests/domain/mocks'
+import { mockAddChildrenModel, mockChildrenModel, mockUpdateChildrenModel } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 
@@ -61,6 +61,31 @@ describe('ChildrenMongoRepository', () => {
       const sut = makeSut()
       const childrens = await sut.load(accountId)
       expect(childrens.length).toBe(0)
+    })
+  })
+
+  describe('update()', () => {
+    test('Should update children on success', async () => {
+      const sut = makeSut()
+      const toInsert = mockChildrenModel()
+      await childrensCollection.insertOne(toInsert)
+      const data = mockUpdateChildrenModel(toInsert._id.toString(), toInsert.accountId.toString())
+      const result = await sut.update(data)
+      expect(result).toBe(true)
+      const childrens = await childrensCollection.find({}).toArray()
+      expect(childrens.length).toBe(1)
+      expect(childrens[0]._id.toString()).toBe(data.id)
+      expect(childrens[0].accountId.toString()).toBe(data.accountId)
+      expect(childrens[0].name).toBe(data.name)
+      expect(childrens[0].birth).toBe(data.birth)
+      expect(childrens[0].gender).toBe(data.gender)
+    })
+
+    test('Should return false if not exists', async () => {
+      const sut = makeSut()
+      const data = mockUpdateChildrenModel()
+      const result = await sut.update(data)
+      expect(result).toBe(false)
     })
   })
 })
