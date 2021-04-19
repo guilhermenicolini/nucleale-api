@@ -1,7 +1,7 @@
 import { DeleteChildrenController } from '@/presentation/controllers'
 import { DeleteChildrenSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
-import { serverError, notFound } from '@/presentation/helpers'
+import { serverError, notFound, noContent } from '@/presentation/helpers'
 import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
 import faker from 'faker'
@@ -45,5 +45,11 @@ describe('DeleteChildren Controller', () => {
     deleteChildrenSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Children')))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
