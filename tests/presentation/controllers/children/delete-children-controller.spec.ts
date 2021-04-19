@@ -1,8 +1,8 @@
 import { DeleteChildrenController } from '@/presentation/controllers'
 import { DeleteChildrenSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
-import { serverError } from '@/presentation/helpers'
-import { ServerError } from '@/presentation/errors'
+import { serverError, notFound } from '@/presentation/helpers'
+import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -38,5 +38,12 @@ describe('DeleteChildren Controller', () => {
     jest.spyOn(deleteChildrenSpy, 'delete').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 404 if record not exists', async () => {
+    const { sut, deleteChildrenSpy } = makeSut()
+    deleteChildrenSpy.result = false
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Children')))
   })
 })
