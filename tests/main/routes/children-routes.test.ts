@@ -118,9 +118,17 @@ describe('Children Routes', () => {
 
   test('Should return 400 on invalid id', async () => {
     await request(app)
-      .put('/childrens/any_id')
+      .delete('/childrens/any_id')
       .send({})
       .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
       .expect(400)
+  })
+
+  test('Should return 404 if children not exists', async () => {
+    await request(app)
+      .delete(`/childrens/${mockId()}`)
+      .send({})
+      .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+      .expect(404)
   })
 })
