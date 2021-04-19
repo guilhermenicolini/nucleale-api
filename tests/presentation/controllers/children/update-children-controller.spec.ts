@@ -34,4 +34,11 @@ describe('UpdateChildren Controller', () => {
     const httpResponse = await sut.handle(mockUpdateChildrenModel())
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
+
+  test('Should call UpdateChildren with correct values', async () => {
+    const { sut, updateChildrenSpy } = makeSut()
+    const request = mockUpdateChildrenModel()
+    await sut.handle(request)
+    expect(updateChildrenSpy.params).toEqual(request)
+  })
 })
