@@ -1,13 +1,15 @@
 import { MongoHelper } from '@/infra/db'
 import {
   AddChildrenRepository,
-  LoadChildrensRepository
+  LoadChildrensRepository,
+  UpdateChildrenRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
 export class ChildrenMongoRepository implements
   AddChildrenRepository,
-  LoadChildrensRepository {
+  LoadChildrensRepository,
+  UpdateChildrenRepository {
   async add (params: AddChildrenRepository.Params): Promise<string> {
     const childrensCollection = await MongoHelper.instance.getCollection('childrens')
     const { accountId, ...obj } = params
@@ -27,5 +29,20 @@ export class ChildrenMongoRepository implements
         }
       }).toArray()
     return MongoHelper.instance.mapCollection(childrens)
+  }
+
+  async update (params: UpdateChildrenRepository.Params): Promise<boolean> {
+    const childrensCollection = await MongoHelper.instance.getCollection('childrens')
+    const children = await childrensCollection.findOneAndUpdate({
+      _id: new ObjectId(params.id),
+      accountId: new ObjectId(params.accountId)
+    }, {
+      $set: {
+        name: params.name,
+        birth: params.birth,
+        gender: params.gender
+      }
+    })
+    return children !== null
   }
 }
