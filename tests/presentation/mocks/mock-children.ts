@@ -1,6 +1,7 @@
 import {
   AddChildren,
-  LoadChildrens
+  LoadChildrens,
+  UpdateChildren
 } from '@/domain/usecases'
 
 import faker from 'faker'
@@ -21,6 +22,16 @@ export class LoadChildrensSpy implements LoadChildrens {
 
   async load (accountId: string): Promise<LoadChildrens.Result> {
     this.accountId = accountId
+    return this.result
+  }
+}
+
+export class UpdateChildrenSpy implements UpdateChildren {
+  params: UpdateChildren.Params
+  result = true
+
+  async update (params: UpdateChildren.Params): Promise<boolean> {
+    this.params = params
     return this.result
   }
 }
