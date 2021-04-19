@@ -1,7 +1,7 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
 import { mockAddChildrenModel, mockChildrenModel } from '@/tests/domain/mocks'
-import { mockAccessToken } from '@/tests/main/mocks'
+import { mockAccessToken, mockId } from '@/tests/main/mocks'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
@@ -75,6 +75,14 @@ describe('Children Routes', () => {
         .then(res => {
           if (res.body.length !== 1) throw new Error('Wrong body length')
         })
+    })
+  })
+
+  describe('PUT /childrens/:id', () => {
+    test('Should return 401 if no token is provided', async () => {
+      await request(app)
+        .put(`/childrens/${mockId()}`)
+        .expect(401)
     })
   })
 })
