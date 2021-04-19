@@ -45,4 +45,10 @@ describe('DbDeleteChildren Usecase', () => {
     const result = await sut.delete(mockParams())
     expect(result).toBe(false)
   })
+
+  test('Should return true if DeleteChildrenRepository returns true', async () => {
+    const { sut } = makeSut()
+    const result = await sut.delete(mockParams())
+    expect(result).toBe(true)
+  })
 })
