@@ -21,7 +21,8 @@ import {
   notFoundError,
   addressSchema,
   childrenSchema,
-  idSchema
+  idSchema,
+  childrensSchema
 } from './components'
 
 import map from './utils/mapper'
@@ -44,6 +45,8 @@ export const components = {
     accounts: accountsSchema,
     address: map(addressSchema, ['id', 'accountId']),
     addChildren: map(childrenSchema, ['id', 'accountId']),
+    children: map(childrenSchema, ['accountId']),
+    childrens: childrensSchema,
     id: idSchema
   },
   errors: {

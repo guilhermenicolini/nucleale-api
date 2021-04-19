@@ -1,6 +1,7 @@
 import { MongoClient, Collection } from 'mongodb'
 import { Mapper } from '@/infra/db/protocols'
 import env from '@/main/config/env'
+import { idMapper } from './mongo-util'
 
 export class MongoHelper {
   private client: MongoClient = null
@@ -39,7 +40,7 @@ export class MongoHelper {
     return mapper.map(object)
   }
 
-  mapCollection (collection: any[], mapper: Mapper): any[] {
+  mapCollection (collection: any[], mapper: Mapper = idMapper()): any[] {
     return collection.map(c => mapper.map(c))
   }
 }

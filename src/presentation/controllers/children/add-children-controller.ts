@@ -1,5 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { AddChildren } from '@/domain/usecases'
+import { Gender } from '@/domain/models'
 import { badRequest, serverError, created } from '@/presentation/helpers'
 
 export class AddChildrenController implements Controller {
@@ -8,12 +9,20 @@ export class AddChildrenController implements Controller {
     private readonly addChildren: AddChildren
   ) { }
 
-  async handle (request: AddChildrenController.Request): Promise<HttpResponse> {
+  async handle (httpRequest: AddChildrenController.Request): Promise<HttpResponse> {
     try {
+      const request = {
+        accountId: httpRequest.accountId,
+        name: httpRequest.name,
+        birth: httpRequest.birth,
+        gender: httpRequest.gender
+      }
+
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
+
       const id = await this.addChildren.add(request)
       return created({ id })
     } catch (error) {
@@ -23,5 +32,10 @@ export class AddChildrenController implements Controller {
 }
 
 export namespace AddChildrenController {
-  export type Request = AddChildren.Params
+  export type Request = {
+    accountId: string
+    name: string
+    birth: number
+    gender: Gender
+  }
 }

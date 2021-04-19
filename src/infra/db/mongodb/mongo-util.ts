@@ -7,6 +7,12 @@ class AccountMapper implements Mapper {
   }
 }
 
-export const accountMapper = (): Mapper => {
-  return new AccountMapper()
+class IdMapper implements Mapper {
+  map (data: any): any {
+    const { _id, ...rest } = data
+    return { ...rest, id: _id.toString() }
+  }
 }
+
+export const accountMapper = (): Mapper => new AccountMapper()
+export const idMapper = (): Mapper => new IdMapper()
