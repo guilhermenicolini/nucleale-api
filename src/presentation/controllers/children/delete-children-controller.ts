@@ -1,10 +1,11 @@
-import { Controller, HttpResponse } from '@/presentation/protocols'
+import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { DeleteChildren } from '@/domain/usecases'
-import { serverError, notFound, noContent } from '@/presentation/helpers'
+import { serverError, notFound, noContent, badRequest } from '@/presentation/helpers'
 import { RecordNotFoundError } from '@/presentation/errors'
 
 export class DeleteChildrenController implements Controller {
   constructor (
+    private readonly validation: Validation,
     private readonly deleteChildren: DeleteChildren
   ) { }
 
@@ -13,6 +14,11 @@ export class DeleteChildrenController implements Controller {
       const request = {
         accountId: httpRequest.accountId,
         id: httpRequest.id
+      }
+
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
       }
 
       const result = await this.deleteChildren.delete(request)
