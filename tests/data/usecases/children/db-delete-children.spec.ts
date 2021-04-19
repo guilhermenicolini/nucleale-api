@@ -1,5 +1,6 @@
 import { DbDeleteChildren } from '@/data/usecases'
 import { DeleteChildrenRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -29,5 +30,12 @@ describe('DbDeleteChildren Usecase', () => {
     const params = mockParams()
     await sut.delete(params)
     expect(deleteChildrenRepositorySpy.params).toEqual(params)
+  })
+
+  test('Should throw if DeleteChildrenRepository throws', async () => {
+    const { sut, deleteChildrenRepositorySpy } = makeSut()
+    jest.spyOn(deleteChildrenRepositorySpy, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.delete(mockParams())
+    await expect(promise).rejects.toThrow()
   })
 })
