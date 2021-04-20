@@ -44,6 +44,15 @@ describe('ImportInvoices Controller', () => {
     expect(saveSpy).toHaveBeenNthCalledWith(2, loadInvoicesSpy.result[1])
   })
 
+  test('Should return 500 if SaveInvoice throws', async () => {
+    const { sut, saveInvoiceSpy } = makeSut()
+    const saveSpy = jest.spyOn(saveInvoiceSpy, 'save')
+    saveSpy.mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
+    expect(saveSpy).toHaveBeenCalledTimes(1)
+  })
+
   test('Should return 204 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle()
