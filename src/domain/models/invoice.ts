@@ -9,7 +9,7 @@ export type InvoicePerson = {
   phone: string
 }
 
-export type InvoiceItems = {
+export type InvoiceItem = {
   taxable: boolean
   description: string
   quantity: number
@@ -38,5 +38,5 @@ export type InvoiceModel = {
   serviceState: string
   provider: InvoicePerson
   taker: InvoicePerson
-  items: InvoiceItems[]
+  items: InvoiceItem[]
 }

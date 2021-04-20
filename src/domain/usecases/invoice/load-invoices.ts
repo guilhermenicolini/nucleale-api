@@ -5,5 +5,5 @@ export interface LoadInvoices {
 }
 
 export namespace LoadInvoices {
-  export type Result = InvoiceModel[]
+  export type Result = Omit<InvoiceModel, 'id'>[]
 }
