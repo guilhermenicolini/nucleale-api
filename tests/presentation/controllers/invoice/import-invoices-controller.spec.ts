@@ -1,20 +1,23 @@
 import { ImportInvoicesController } from '@/presentation/controllers'
-import { LoadInvoicesSpy } from '@/tests/presentation/mocks'
+import { LoadInvoicesSpy, SaveInvoiceSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 import { serverError, noContent } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: ImportInvoicesController,
-  loadInvoicesSpy: LoadInvoicesSpy
+  loadInvoicesSpy: LoadInvoicesSpy,
+  saveInvoiceSpy: SaveInvoiceSpy
 }
 
 const makeSut = (): SutTypes => {
   const loadInvoicesSpy = new LoadInvoicesSpy()
-  const sut = new ImportInvoicesController(loadInvoicesSpy)
+  const saveInvoiceSpy = new SaveInvoiceSpy()
+  const sut = new ImportInvoicesController(loadInvoicesSpy, saveInvoiceSpy)
   return {
     sut,
-    loadInvoicesSpy
+    loadInvoicesSpy,
+    saveInvoiceSpy
   }
 }
 
@@ -31,6 +34,14 @@ describe('ImportInvoices Controller', () => {
     jest.spyOn(loadInvoicesSpy, 'load').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should call SaveInvoice with correct values', async () => {
+    const { sut, loadInvoicesSpy, saveInvoiceSpy } = makeSut()
+    const saveSpy = jest.spyOn(saveInvoiceSpy, 'save')
+    await sut.handle()
+    expect(saveSpy).toHaveBeenNthCalledWith(1, loadInvoicesSpy.result[0])
+    expect(saveSpy).toHaveBeenNthCalledWith(2, loadInvoicesSpy.result[1])
   })
 
   test('Should return 204 on success', async () => {
