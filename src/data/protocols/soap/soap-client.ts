@@ -11,5 +11,5 @@ export type SoapResponse<T = any> = {
 }
 
 export interface SoapClient<R = any> {
-  send: (requets: SoapRequest) => Promise<SoapResponse<R>>
+  send: (request: SoapRequest) => Promise<SoapResponse<R>>
 }
