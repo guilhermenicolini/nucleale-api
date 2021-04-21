@@ -1,6 +1,7 @@
 import { SoapRequest } from '@/data/protocols'
 import { RemoteLoadInvoices } from '@/data/usecases'
 import { mockSoapRequest, SoapClientSpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: RemoteLoadInvoices
@@ -25,5 +26,12 @@ describe('RemoteLoadInvoices Usecase', () => {
     const { sut, soapRequest, soapClientSpy } = makeSut()
     await sut.load()
     expect(soapClientSpy.request).toBe(soapRequest)
+  })
+
+  test('Should throw if SoapClient throws', async () => {
+    const { sut, soapClientSpy } = makeSut()
+    jest.spyOn(soapClientSpy, 'send').mockImplementationOnce(throwError)
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
   })
 })
