@@ -1,4 +1,4 @@
-import { Hasher, Signer, HashComparer, Decrypter } from '@/data/protocols'
+import { Hasher, Signer, HashComparer, Decrypter, Transformer } from '@/data/protocols'
 
 import faker from 'faker'
 
@@ -45,5 +45,15 @@ export class DecrypterSpy implements Decrypter {
   async decrypt (ciphertext: string): Promise<any> {
     this.ciphertext = ciphertext
     return this.result
+  }
+}
+
+export class TransformerSpy implements Transformer {
+  data: any
+  retult: any = 'any_data'
+
+  transform (data: any): any {
+    this.data = data
+    return this.retult
   }
 }
