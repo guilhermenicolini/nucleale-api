@@ -40,4 +40,11 @@ describe('Transformer Composite', () => {
       expect(error).toEqual(new Error('Error 1'))
     }
   })
+
+  test('Should return if all transformers succeeds', () => {
+    const { sut, transformerSpies } = makeSut()
+    transformerSpies[1].retult = 'any_data_2'
+    const result = sut.transform('any_data')
+    expect(result).toBe('any_data_2')
+  })
 })
