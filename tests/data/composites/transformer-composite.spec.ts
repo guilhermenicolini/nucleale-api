@@ -29,4 +29,15 @@ describe('Transformer Composite', () => {
       expect(error).toEqual(new Error())
     }
   })
+
+  test('Should throw the first error if more than one transformer fails', () => {
+    const { sut, transformerSpies } = makeSut()
+    jest.spyOn(transformerSpies[0], 'transform').mockImplementationOnce(() => { throw new Error('Error 1') })
+    jest.spyOn(transformerSpies[1], 'transform').mockImplementationOnce(throwError)
+    try {
+      sut.transform('any_data')
+    } catch (error) {
+      expect(error).toEqual(new Error('Error 1'))
+    }
+  })
 })
