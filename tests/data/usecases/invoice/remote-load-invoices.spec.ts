@@ -43,8 +43,10 @@ describe('RemoteLoadInvoices Usecase', () => {
 
   test('Should throw error if SoapClient not returns success', async () => {
     const { sut, soapClientSpy } = makeSut()
-    soapClientSpy.result.success = false
-    soapClientSpy.result.error = new Error()
+    soapClientSpy.result = {
+      success: false,
+      error: new Error()
+    }
     const promise = sut.load()
     await expect(promise).rejects.toThrow()
   })
