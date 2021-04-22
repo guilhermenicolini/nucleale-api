@@ -67,6 +67,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "express-multipart-file-parser": "^0.1.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.5",
     "swagger-ui-express": "^4.1.6",
