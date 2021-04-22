@@ -45,4 +45,7 @@ export const mockItem = (): InvoiceItem => ({
   totalValue: faker.random.float({ min: 100, max: 400, precision: 2 })
 })
 
-export const mockXmlBuffer = (): Buffer => fs.readFileSync('tests/main/mocks/mock.xml')
+export const mockXmlFileBuffer = (): any => ({
+  fieldname: faker.system.commonFileName('xml'),
+  buffer: fs.readFileSync('tests/main/mocks/mock.xml')
+})

@@ -1,11 +1,11 @@
 import { UploadInvoicesController } from '@/presentation/controllers'
 import { LoadInvoicesFromFileSpy, SaveInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { mockXmlBuffer, throwError } from '@/tests/domain/mocks'
+import { mockXmlFileBuffer, throwError } from '@/tests/domain/mocks'
 import { serverError, noContent } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
 
 const mockRequest = (): UploadInvoicesController.Request => ({
-  files: [mockXmlBuffer()]
+  files: [mockXmlFileBuffer()]
 })
 
 type SutTypes = {
@@ -29,12 +29,12 @@ const makeSut = (): SutTypes => {
 }
 
 describe('UploadInvoices Controller', () => {
-  // test('Should call LoadInvoicesFromFile with correct values', async () => {
-  //   const { sut, loadInvoicesFromFileSpy } = makeSut()
-  //   const request = mockRequest()
-  //   await sut.handle(request)
-  //   expect(loadInvoicesFromFileSpy).toHaveBeenCalledWith(request.files[0])
-  // })
+  test('Should call LoadInvoicesFromFile with correct values', async () => {
+    const { sut, loadInvoicesFromFileSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(loadInvoicesFromFileSpy.buffer).toEqual(request.files[0].buffer)
+  })
 
   test('Should return 500 if LoadInvoices throws ', async () => {
     const { sut, loadInvoicesFromFileSpy } = makeSut()
