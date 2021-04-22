@@ -1,5 +1,6 @@
 export * from './account'
 export * from './address'
 export * from './children'
+export * from './company'
 export * from './enums'
 export * from './invoice'
