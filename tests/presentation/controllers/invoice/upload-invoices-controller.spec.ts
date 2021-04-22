@@ -29,6 +29,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('UploadInvoices Controller', () => {
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(validationSpy.input).toEqual(request)
+  })
+
   test('Should call LoadInvoicesFromFile with correct values', async () => {
     const { sut, loadInvoicesFromFileSpy } = makeSut()
     const request = mockRequest()
