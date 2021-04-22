@@ -1,6 +1,7 @@
 import { InvoiceModel, InvoicePerson, InvoiceItem } from '@/domain/models'
 
 import faker from 'faker'
+import fs from 'fs'
 
 export const mockInvoice = (): Omit<InvoiceModel, 'id'> => ({
   invoiceNo: faker.random.number({ min: 1, max: 999 }),
@@ -43,3 +44,5 @@ export const mockItem = (): InvoiceItem => ({
   unitValue: faker.random.float({ min: 100, max: 400, precision: 2 }),
   totalValue: faker.random.float({ min: 100, max: 400, precision: 2 })
 })
+
+export const mockXmlBuffer = (): Buffer => fs.readFileSync('tests/main/mocks/mock.xml')

@@ -1,1 +1,1 @@
-export * from './import-invoices-controller'
+export * from './upload-invoices-controller'
