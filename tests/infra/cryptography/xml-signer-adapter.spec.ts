@@ -21,9 +21,17 @@ const makeSut = (): XmlSignerAdapter => {
 }
 
 describe('XmlSigner Adapter', () => {
-  test('Should call SignedXml with correct values', async () => {
-    const sut = makeSut()
-    const result = await sut.sign('any_xml')
-    expect(result).toBe('signed_xml')
+  describe('sign()', () => {
+    test('Should call SignedXml with correct values', async () => {
+      const sut = makeSut()
+      await sut.sign('any_xml')
+      expect(computeSignatureStub).toHaveBeenCalledWith('any_xml')
+    })
+
+    test('Should return a signed xml on success', async () => {
+      const sut = makeSut()
+      const result = await sut.sign('any_xml')
+      expect(result).toBe('signed_xml')
+    })
   })
 })
