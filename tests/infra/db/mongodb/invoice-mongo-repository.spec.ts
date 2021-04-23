@@ -32,5 +32,13 @@ describe('InvoiceMongoRepository', () => {
       const invoices = await invoicesCollection.find({}).toArray()
       expect(invoices.length).toBe(1)
     })
+
+    test('Should insert if invoice not exists', async () => {
+      const sut = makeSut()
+      const data = mockInvoice()
+      await sut.save(data)
+      const invoices = await invoicesCollection.find({}).toArray()
+      expect(invoices.length).toBe(1)
+    })
   })
 })
