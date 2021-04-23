@@ -43,4 +43,11 @@ describe('IoLoadInvoices Usecase', () => {
     await sut.load(mockBuffer())
     expect(transformerSpy.data).toEqual(decrypterSpy.result)
   })
+
+  test('Should throw if Transformer throws', async () => {
+    const { sut, transformerSpy } = makeSut()
+    jest.spyOn(transformerSpy, 'transform').mockImplementationOnce(throwError)
+    const promise = sut.load(mockBuffer())
+    await expect(promise).rejects.toThrow()
+  })
 })
