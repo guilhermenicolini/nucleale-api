@@ -35,14 +35,14 @@ export class HashComparerSpy implements HashComparer {
 }
 
 export class DecrypterSpy implements Decrypter {
-  ciphertext: string
+  ciphertext: any
   result = {
     sub: faker.random.uuid(),
     acc: faker.random.uuid(),
     role: faker.random.word()
   }
 
-  async decrypt (ciphertext: string): Promise<any> {
+  async decrypt (ciphertext: any): Promise<any> {
     this.ciphertext = ciphertext
     return this.result
   }
