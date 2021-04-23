@@ -1,5 +1,5 @@
 import { IoLoadInvoices } from '@/data/usecases'
-import { DecrypterSpy, TransformerSpy } from '@/tests/data/mocks'
+import { NfseDecrypterSpy, TransformerSpy } from '@/tests/data/mocks'
 import { mockXmlFileBuffer, throwError } from '@/tests/domain/mocks'
 
 const mockBuffer = (): Buffer => {
@@ -8,12 +8,12 @@ const mockBuffer = (): Buffer => {
 
 type SutTypes = {
   sut: IoLoadInvoices,
-  decrypterSpy: DecrypterSpy,
+  decrypterSpy: NfseDecrypterSpy,
   transformerSpy: TransformerSpy
 }
 
 const makeSut = (): SutTypes => {
-  const decrypterSpy = new DecrypterSpy()
+  const decrypterSpy = new NfseDecrypterSpy()
   const transformerSpy = new TransformerSpy()
   const sut = new IoLoadInvoices(decrypterSpy, transformerSpy)
   return {
@@ -28,7 +28,7 @@ describe('IoLoadInvoices Usecase', () => {
     const { sut, decrypterSpy } = makeSut()
     const buffer = mockBuffer()
     await sut.load(buffer)
-    expect(decrypterSpy.ciphertext).toEqual(buffer)
+    expect(decrypterSpy.buffer).toEqual(buffer)
   })
 
   test('Should throw if Decrypter throws', async () => {
@@ -40,8 +40,11 @@ describe('IoLoadInvoices Usecase', () => {
 
   test('Should call Transformer with correct values', async () => {
     const { sut, decrypterSpy, transformerSpy } = makeSut()
+    const spy = jest.spyOn(transformerSpy, 'transform')
     await sut.load(mockBuffer())
-    expect(transformerSpy.data).toEqual(decrypterSpy.result)
+    expect(spy).toHaveBeenCalledTimes(2)
+    expect(spy).toHaveBeenNthCalledWith(1, decrypterSpy.result.NOTAS_FISCAIS.NOTA_FISCAL[0])
+    expect(spy).toHaveBeenNthCalledWith(2, decrypterSpy.result.NOTAS_FISCAIS.NOTA_FISCAL[1])
   })
 
   test('Should throw if Transformer throws', async () => {
@@ -52,8 +55,8 @@ describe('IoLoadInvoices Usecase', () => {
   })
 
   test('Should return object on success', async () => {
-    const { sut, transformerSpy } = makeSut()
+    const { sut } = makeSut()
     const result = await sut.load(mockBuffer())
-    expect(result).toEqual(transformerSpy.result)
+    expect(result).toEqual(['any_data', 'any_data'])
   })
 })

@@ -1,4 +1,4 @@
-export type InvoicePerson = {
+export type InvoicePersonModel = {
   taxId: string
   name: string
   registryId: string
@@ -9,7 +9,7 @@ export type InvoicePerson = {
   phone: string
 }
 
-export type InvoiceItem = {
+export type InvoiceItemModel = {
   taxable: boolean
   description: string
   quantity: number
@@ -36,7 +36,7 @@ export type InvoiceModel = {
   service: string
   serviceCity: string
   serviceState: string
-  provider: InvoicePerson
-  taker: InvoicePerson
-  items: InvoiceItem[]
+  provider: InvoicePersonModel
+  taker: InvoicePersonModel
+  items: InvoiceItemModel[]
 }

@@ -48,6 +48,20 @@ export class DecrypterSpy implements Decrypter {
   }
 }
 
+export class NfseDecrypterSpy implements Decrypter {
+  buffer: any
+  result = {
+    NOTAS_FISCAIS: {
+      NOTA_FISCAL: ['any_nfse_1', 'any_nfse_2']
+    }
+  }
+
+  async decrypt (buffer: any): Promise<any> {
+    this.buffer = buffer
+    return this.result
+  }
+}
+
 export class TransformerSpy implements Transformer {
   data: any
   result: any = 'any_data'
