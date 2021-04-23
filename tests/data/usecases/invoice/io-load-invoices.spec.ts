@@ -37,4 +37,10 @@ describe('IoLoadInvoices Usecase', () => {
     const promise = sut.load(mockBuffer())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should call Transformer with correct values', async () => {
+    const { sut, decrypterSpy, transformerSpy } = makeSut()
+    await sut.load(mockBuffer())
+    expect(transformerSpy.data).toEqual(decrypterSpy.result)
+  })
 })
