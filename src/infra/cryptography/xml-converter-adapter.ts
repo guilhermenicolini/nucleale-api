@@ -1,6 +1,6 @@
 import { Converter, Decrypter } from '@/data/protocols'
 
-import builder, { convert } from 'xmlbuilder2'
+import builder from 'xmlbuilder2'
 
 export class XmlConverterAdapter implements Converter, Decrypter {
   constructor (
@@ -14,6 +14,6 @@ export class XmlConverterAdapter implements Converter, Decrypter {
   }
 
   async decrypt (xml: string): Promise<any> {
-    return convert(xml, { format: 'object' })
+    return builder.convert(xml, { format: 'object' })
   }
 }

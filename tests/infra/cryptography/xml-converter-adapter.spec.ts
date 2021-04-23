@@ -18,6 +18,7 @@ const makeSut = (): XmlConverterAdapter => {
 describe('XmlConverter Adapter', () => {
   beforeAll(() => {
     builder.create = createStub
+    builder.convert = jest.fn().mockReturnThis()
   })
 
   describe('builder()', () => {
@@ -31,6 +32,14 @@ describe('XmlConverter Adapter', () => {
       const sut = makeSut()
       const result = await sut.convert('any_xml')
       expect(result).toBe('xml_converted')
+    })
+  })
+
+  describe('convert()', () => {
+    test('Should call convert with correct values', async () => {
+      const sut = makeSut()
+      await sut.decrypt('any_xml')
+      expect(builder.convert).toHaveBeenCalledWith('any_xml', { format: 'object' })
     })
   })
 })
