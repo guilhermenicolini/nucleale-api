@@ -1,1 +1,1 @@
-export * from './remote-load-invoices'
+export * from './io-load-invoices'
