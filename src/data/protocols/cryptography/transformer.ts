@@ -1,3 +1,3 @@
-export interface Transformer {
-  transform: (data: any) => any
+export interface Transformer<T = any> {
+  transform: (data: any) => T
 }
