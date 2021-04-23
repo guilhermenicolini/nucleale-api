@@ -50,10 +50,10 @@ export class DecrypterSpy implements Decrypter {
 
 export class TransformerSpy implements Transformer {
   data: any
-  retult: any = 'any_data'
+  result: any = 'any_data'
 
   transform (data: any): any {
     this.data = data
-    return this.retult
+    return this.result
   }
 }

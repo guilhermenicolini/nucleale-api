@@ -50,4 +50,10 @@ describe('IoLoadInvoices Usecase', () => {
     const promise = sut.load(mockBuffer())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return object on success', async () => {
+    const { sut, transformerSpy } = makeSut()
+    const result = await sut.load(mockBuffer())
+    expect(result).toEqual(transformerSpy.result)
+  })
 })
