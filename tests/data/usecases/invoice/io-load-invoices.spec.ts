@@ -1,6 +1,6 @@
 import { IoLoadInvoices } from '@/data/usecases'
 import { DecrypterSpy, TransformerSpy } from '@/tests/data/mocks'
-import { mockXmlFileBuffer } from '@/tests/domain/mocks'
+import { mockXmlFileBuffer, throwError } from '@/tests/domain/mocks'
 
 const mockBuffer = (): Buffer => {
   return mockXmlFileBuffer().buffer
@@ -29,5 +29,12 @@ describe('IoLoadInvoices Usecase', () => {
     const buffer = mockBuffer()
     await sut.load(buffer)
     expect(decrypterSpy.ciphertext).toEqual(buffer)
+  })
+
+  test('Should throw if Decrypter throws', async () => {
+    const { sut, decrypterSpy } = makeSut()
+    jest.spyOn(decrypterSpy, 'decrypt').mockImplementationOnce(throwError)
+    const promise = sut.load(mockBuffer())
+    await expect(promise).rejects.toThrow()
   })
 })
