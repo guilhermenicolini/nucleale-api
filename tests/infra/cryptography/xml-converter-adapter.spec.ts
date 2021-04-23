@@ -8,6 +8,7 @@ const createStub = jest.fn().mockImplementation(() => {
     end: endStub
   }
 })
+const convertStub = jest.fn().mockImplementation(() => ({ obj: true }))
 
 jest.mock('xmlbuilder2', () => jest.fn())
 
@@ -18,7 +19,7 @@ const makeSut = (): XmlConverterAdapter => {
 describe('XmlConverter Adapter', () => {
   beforeAll(() => {
     builder.create = createStub
-    builder.convert = jest.fn().mockReturnThis()
+    builder.convert = convertStub
   })
 
   describe('builder()', () => {
@@ -40,6 +41,12 @@ describe('XmlConverter Adapter', () => {
       const sut = makeSut()
       await sut.decrypt('any_xml')
       expect(builder.convert).toHaveBeenCalledWith('any_xml', { format: 'object' })
+    })
+
+    test('Should return object on success', async () => {
+      const sut = makeSut()
+      const result = await sut.decrypt('any_xml')
+      expect(result).toEqual({ obj: true })
     })
   })
 })
