@@ -13,7 +13,7 @@ export class XmlConverterAdapter implements Converter, Decrypter {
       .end({ prettyPrint: true })
   }
 
-  async decrypt (xml: string): Promise<any> {
-    return builder.convert(xml, { format: 'object' })
+  async decrypt (xml: any): Promise<any> {
+    return builder.convert(xml.toString(this.encoding), { format: 'object' })
   }
 }

@@ -8,7 +8,7 @@ export class IoLoadInvoices implements LoadInvoicesFromBuffer {
   ) { }
 
   async load (buffer: Buffer): Promise<LoadInvoicesFromBuffer.Result> {
-    const data = await this.decrypter.decrypt(buffer.toString('latin1'))
+    const data = await this.decrypter.decrypt(buffer)
     return this.transformer.transform(data)
   }
 }
