@@ -9,7 +9,6 @@ describe('NfseItem Transformer', () => {
     const data = mockNfseItem()
     const result = sut.transform(data)
     expect(result).toEqual({
-      id: null,
       invoiceNo: result.invoiceNo,
       invoiceDate: result.invoiceDate,
       issueDate: result.issueDate,
@@ -26,10 +25,7 @@ describe('NfseItem Transformer', () => {
       activity: result.activity,
       service: result.service,
       serviceCity: result.serviceCity,
-      serviceState: result.serviceState,
-      provider: null,
-      taker: null,
-      items: null
+      serviceState: result.serviceState
     })
   })
 })

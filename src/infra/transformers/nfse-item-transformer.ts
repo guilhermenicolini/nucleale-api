@@ -3,8 +3,8 @@ import { InvoiceModel } from '@/domain/models'
 import { removeTextCharacters, parseMoney } from '@/infra/utils'
 import moment from 'moment-timezone'
 
-export class NfseItemTransformer implements Transformer<InvoiceModel> {
-  transform (data: any): InvoiceModel {
+export class NfseItemTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
+  transform (data: any): Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'> {
     const invoiceDate = moment(data.DATA_HORA_EMISSAO, 'DD/MM/YYYY HH:mm:ss')
     const issueDate = moment(
       `${data.DIA_EMISSAO}${invoiceDate.format('/MM/YYYY')}`,
@@ -12,7 +12,6 @@ export class NfseItemTransformer implements Transformer<InvoiceModel> {
     )
 
     return {
-      id: null,
       invoiceNo: parseInt(data.NUM_NOTA),
       invoiceDate: invoiceDate.valueOf(),
       issueDate: issueDate.valueOf(),
@@ -29,10 +28,7 @@ export class NfseItemTransformer implements Transformer<InvoiceModel> {
       activity: data.DESCRICAO_ATIVIDADE,
       service: data.DESCRICAO_SERVICO,
       serviceCity: data.CIDADE_PRESTACAO.toUpperCase(),
-      serviceState: data.UF_PRESTACAO.toUpperCase(),
-      provider: null,
-      taker: null,
-      items: null
+      serviceState: data.UF_PRESTACAO.toUpperCase()
     }
   }
 }
