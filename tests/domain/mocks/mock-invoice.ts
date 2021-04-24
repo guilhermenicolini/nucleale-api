@@ -4,15 +4,15 @@ import faker from 'faker'
 import fs from 'fs'
 
 export const mockInvoice = (): Omit<InvoiceModel, 'id'> => ({
-  invoiceNo: faker.random.number({ min: 1, max: 999 }),
+  invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
   invoiceDate: faker.date.past().getUTCMilliseconds(),
   issueDate: faker.date.past().getUTCMilliseconds(),
   verificationCode: faker.random.alphaNumeric(8),
   description: faker.random.words(3),
-  invoiceValue: faker.random.float({ min: 100, max: 400, precision: 2 }),
-  serviceValue: faker.random.float({ min: 100, max: 400, precision: 2 }),
-  issValue: faker.random.float({ min: 100, max: 400, precision: 2 }),
-  issAliquot: faker.random.float({ min: 1, max: 4, precision: 2 }),
+  invoiceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  serviceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  issValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  issAliquot: faker.datatype.float({ min: 1, max: 4, precision: 2 }),
   competence: faker.random.word(),
   pickupType: faker.random.word()[0].toUpperCase(),
   taxation: faker.random.word(),
@@ -38,11 +38,11 @@ export const mockPerson = (): InvoicePerson => ({
 })
 
 export const mockItem = (): InvoiceItem => ({
-  taxable: faker.random.boolean(),
+  taxable: faker.datatype.boolean(),
   description: faker.random.words(5),
-  quantity: faker.random.number({ min: 1, max: 3 }),
-  unitValue: faker.random.float({ min: 100, max: 400, precision: 2 }),
-  totalValue: faker.random.float({ min: 100, max: 400, precision: 2 })
+  quantity: faker.datatype.number({ min: 1, max: 3 }),
+  unitValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  totalValue: faker.datatype.float({ min: 100, max: 400, precision: 2 })
 })
 
 export const mockXmlFileBuffer = (): any => ({

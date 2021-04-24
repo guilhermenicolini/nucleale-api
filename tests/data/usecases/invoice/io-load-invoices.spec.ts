@@ -55,8 +55,12 @@ describe('IoLoadInvoices Usecase', () => {
   })
 
   test('Should return object on success', async () => {
-    const { sut } = makeSut()
+    const { sut, transformerSpy } = makeSut()
     const result = await sut.load(mockBuffer())
-    expect(result).toEqual(['any_data', 'any_data'])
+    const field = Object.keys(transformerSpy.result)[0]
+    expect(result).toEqual([
+      { [field]: transformerSpy.result[field] },
+      { [field]: transformerSpy.result[field] }
+    ])
   })
 })

@@ -42,9 +42,12 @@ describe('Transformer Composite', () => {
   })
 
   test('Should return if all transformers succeeds', () => {
-    const { sut, transformerSpies } = makeSut()
-    transformerSpies[1].result = 'any_data_2'
+    const { sut } = makeSut()
     const result = sut.transform('any_data')
-    expect(result).toBe('any_data_2')
+    const fields = Object.keys(result)
+    expect(result).toEqual({
+      [fields[0]]: result[fields[0]],
+      [fields[1]]: result[fields[1]]
+    })
   })
 })
