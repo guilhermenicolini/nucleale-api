@@ -1,9 +1,9 @@
-import { NfseItemTransformer } from '@/infra/transformers'
+import { NfseTransformer } from '@/infra/transformers'
 import { mockNfseItem } from '@/tests/infra/mocks'
 
-const makeSut = (): NfseItemTransformer => new NfseItemTransformer()
+const makeSut = (): NfseTransformer => new NfseTransformer()
 
-describe('NfseItem Transformer', () => {
+describe('Nfse Transformer', () => {
   test('Should return invoice model on success', () => {
     const sut = makeSut()
     const data = mockNfseItem()

@@ -3,7 +3,7 @@ import { InvoiceModel } from '@/domain/models'
 import { removeTextCharacters, parseMoney } from '@/infra/utils'
 import moment from 'moment-timezone'
 
-export class NfseItemTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
+export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
   transform (data: any): Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'> {
     const invoiceDate = moment(data.DATA_HORA_EMISSAO, 'DD/MM/YYYY HH:mm:ss')
     const issueDate = moment(
