@@ -1,4 +1,5 @@
 import { Transformer } from '@/data/protocols'
+import { InvoicePersonModel } from '@/domain/models'
 
 export class NfsePersonTransformer implements Transformer<any> {
   constructor (
@@ -8,24 +9,26 @@ export class NfsePersonTransformer implements Transformer<any> {
   ) { }
 
   transform (data: any): any {
-    return {
-      [this.prop]: {
-        taxId: data[`${this.tag}_CPF_CNPJ`],
-        name: data[`${this.tag}_RAZAO_SOCIAL`].toUpperCase(),
-        registryId: data[`${this.tag}_INSCRICAO_MUNICIPAL`],
-        address: `${data[`${this.tag}_TIPO_LOGRADOURO`]
-          ? data[`${this.tag}_TIPO_LOGRADOURO`].toUpperCase() + ' '
+    const person: InvoicePersonModel = {
+      taxId: data[`${this.tag}_CPF_CNPJ`],
+      name: data[`${this.tag}_RAZAO_SOCIAL`].toUpperCase(),
+      registryId: data[`${this.tag}_INSCRICAO_MUNICIPAL`],
+      address: `${data[`${this.tag}_TIPO_LOGRADOURO`]
+        ? data[`${this.tag}_TIPO_LOGRADOURO`].toUpperCase() + ' '
+        : ''
+        }${data[`${this.tag}_LOGRADOURO`].toUpperCase()}, Nº ${data[`${this.tag}${this.prefix ? '_' + this.prefix : ''}_NUMERO`]}${data[`${this.tag}_COMPLEMENTO`]
+          ? ' ' + data[`${this.tag}_COMPLEMENTO`].toUpperCase()
           : ''
-          }${data[`${this.tag}_LOGRADOURO`].toUpperCase()}, Nº ${data[`${this.tag}${this.prefix ? '_' + this.prefix : ''}_NUMERO`]}${data[`${this.tag}_COMPLEMENTO`]
-            ? ' ' + data[`${this.tag}_COMPLEMENTO`].toUpperCase()
-            : ''
-          } - BAIRRO ${data[`${this.tag}_BAIRRO`].toUpperCase()} - CEP: ${data[`${this.tag}_CEP`]
-          }`,
-        city: data[`${this.tag}_CIDADE`].toUpperCase(),
-        state: data[`${this.tag}_UF`].toUpperCase(),
-        email: data[`${this.tag}_EMAIL`],
-        phone: `(${data[`${this.tag}_DDD_TELEFONE`]}) ${data[`${this.tag}_TELEFONE`]}`
-      }
+        } - BAIRRO ${data[`${this.tag}_BAIRRO`].toUpperCase()} - CEP: ${data[`${this.tag}_CEP`]
+        }`,
+      city: data[`${this.tag}_CIDADE`].toUpperCase(),
+      state: data[`${this.tag}_UF`].toUpperCase(),
+      email: data[`${this.tag}_EMAIL`],
+      phone: `(${data[`${this.tag}_DDD_TELEFONE`]}) ${data[`${this.tag}_TELEFONE`]}`
+    }
+
+    return {
+      [this.prop]: person
     }
   }
 }
