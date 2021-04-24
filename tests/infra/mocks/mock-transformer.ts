@@ -59,6 +59,6 @@ export const mockNfse = (): any => ({
   PRESTADOR_DDD_TELEFONE: fakeNumber(2),
   PRESTADOR_TELEFONE: fakeNumber(9),
   ITENS: {
-    ITEM: [mockNFseItem()]
+    ITEM: [mockNFseItem(), mockNFseItem()]
   }
 })
