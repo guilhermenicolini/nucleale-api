@@ -4,7 +4,15 @@ import moment from 'moment-timezone'
 const fakePrice = (): string => faker.datatype.number({ min: 100, max: 199, precision: 0.01 }).toString().replace('.', ',')
 const fakeNumber = (length: number): string => faker.address.zipCode(''.padStart(length, '#')).toString()
 
-export const mockNfseItem = (): any => ({
+export const mockNFseItem = (): any => ({
+  TRIBUTAVEL: faker.random.word()[0].toUpperCase(),
+  DESCRICAO: faker.random.words(2).toUpperCase(),
+  QUANTIDADE: fakeNumber(1),
+  VALOR_UNITARIO: fakePrice(),
+  VALOR_TOTAL: fakePrice()
+})
+
+export const mockNfse = (): any => ({
   NUM_NOTA: fakePrice(),
   DATA_HORA_EMISSAO: moment(faker.date.past()).format('DD/MM/YYYY HH:mm:ss'),
   DIA_EMISSAO: faker.datatype.number({ min: 1, max: 20 }).toString().padStart(2, '0'),
@@ -51,12 +59,6 @@ export const mockNfseItem = (): any => ({
   PRESTADOR_DDD_TELEFONE: fakeNumber(2),
   PRESTADOR_TELEFONE: fakeNumber(9),
   ITENS: {
-    ITEM: [{
-      TRIBUTAVEL: faker.random.word()[0].toUpperCase(),
-      DESCRICAO: faker.random.words(2).toUpperCase(),
-      QUANTIDADE: fakeNumber(1),
-      VALOR_UNITARIO: fakePrice(),
-      VALOR_TOTAL: fakePrice()
-    }]
+    ITEM: [mockNFseItem()]
   }
 })
