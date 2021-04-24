@@ -1,5 +1,6 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
+import { mockAccessToken } from '@/tests/main/mocks'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
@@ -26,6 +27,13 @@ describe('Invoices Routes', () => {
         .post('/invoices/upload')
         .send({})
         .expect(401)
+    })
+
+    test('Should return 403 if token is not admin', async () => {
+      await request(app)
+        .post('/invoices/upload')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(403)
     })
   })
 })
