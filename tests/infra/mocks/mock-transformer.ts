@@ -49,5 +49,14 @@ export const mockNfseItem = (): any => ({
   PRESTADOR_UF: faker.address.stateAbbr().toUpperCase(),
   PRESTADOR_EMAIL: faker.internet.email(),
   PRESTADOR_DDD_TELEFONE: fakeNumber(2),
-  PRESTADOR_TELEFONE: fakeNumber(9)
+  PRESTADOR_TELEFONE: fakeNumber(9),
+  ITENS: {
+    ITEM: [{
+      TRIBUTAVEL: faker.random.word()[0].toUpperCase(),
+      DESCRICAO: faker.random.words(2).toUpperCase(),
+      QUANTIDADE: fakeNumber(1),
+      VALOR_UNITARIO: fakePrice(),
+      VALOR_TOTAL: fakePrice()
+    }]
+  }
 })

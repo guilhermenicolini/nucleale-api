@@ -8,15 +8,15 @@ export class NfseItemsTransformer implements Transformer<any> {
     for (const item of data.ITENS.ITEM) {
       const obj: InvoiceItemModel = {
         taxable: item.TRIBUTAVEL === 'S',
-        description: item.DESCRICAO
-          ? item.DESCRICAO.toUpperCase()
-          : '',
+        description: item.DESCRICAO.toUpperCase(),
         quantity: item.QUANTIDADE,
         unitValue: parseMoney(item.VALOR_UNITARIO),
         totalValue: parseFloat(item.VALOR_TOTAL)
       }
       list.push(obj)
     }
-    return list
+    return {
+      items: list
+    }
   }
 }
