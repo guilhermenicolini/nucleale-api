@@ -10,7 +10,7 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
   email: faker.internet.email(),
   password: 'P@ssw0rd',
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
-  birth: faker.random.number({
+  birth: faker.datatype.number({
     min: 315543600000,
     max: 631159200000
   }),
@@ -24,7 +24,7 @@ export const mockSaveAccountParams = (): SaveAccount.Params => ({
   name: faker.name.findName(),
   email: faker.internet.email(),
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
-  birth: faker.random.number({
+  birth: faker.datatype.number({
     min: 315543600000,
     max: 631159200000
   }),
@@ -46,7 +46,7 @@ export const mockAccountModel = (): AccountModel => ({
   name: faker.name.findName(),
   email: faker.internet.email(),
   mobilePhone: faker.phone.phoneNumber(),
-  birth: faker.random.number({
+  birth: faker.datatype.number({
     min: 315543600000,
     max: 631159200000
   }),
@@ -56,6 +56,6 @@ export const mockAccountModel = (): AccountModel => ({
 })
 
 export const mockInvitation = (): any => ({
-  accountId: faker.random.uuid(),
+  accountId: faker.datatype.uuid(),
   email: faker.internet.email()
 })

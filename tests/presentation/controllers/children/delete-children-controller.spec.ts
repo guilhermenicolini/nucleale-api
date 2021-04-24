@@ -7,8 +7,8 @@ import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 import faker from 'faker'
 
 const mockRequest = () => ({
-  accountId: faker.random.uuid(),
-  id: faker.random.uuid()
+  accountId: faker.datatype.uuid(),
+  id: faker.datatype.uuid()
 })
 
 type SutTypes = {

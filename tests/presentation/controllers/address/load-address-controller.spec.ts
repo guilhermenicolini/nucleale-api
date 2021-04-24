@@ -7,7 +7,7 @@ import { ServerError } from '@/presentation/errors'
 import faker from 'faker'
 
 const mockRequest = () => {
-  return { accountId: faker.random.uuid() }
+  return { accountId: faker.datatype.uuid() }
 }
 
 type SutTypes = {

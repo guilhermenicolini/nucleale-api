@@ -18,7 +18,7 @@ describe('NumberValidation', () => {
 
   test('Should not return if validation succeeds', () => {
     const sut = makeSut()
-    const error = sut.validate({ [field]: faker.random.number() })
+    const error = sut.validate({ [field]: faker.datatype.number() })
     expect(error).toBeFalsy()
   })
 })

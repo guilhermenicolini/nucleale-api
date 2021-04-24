@@ -4,7 +4,7 @@ import faker from 'faker'
 
 export class HasherSpy implements Hasher {
   plainText: string
-  result = faker.random.uuid()
+  result = faker.datatype.uuid()
 
   async hash (plainText: string): Promise<string> {
     this.plainText = plainText
@@ -14,7 +14,7 @@ export class HasherSpy implements Hasher {
 
 export class SignerSpy implements Signer {
   data: any
-  result = faker.random.uuid()
+  result = faker.datatype.uuid()
 
   async sign (data: any): Promise<string> {
     this.data = data
@@ -37,8 +37,8 @@ export class HashComparerSpy implements HashComparer {
 export class DecrypterSpy implements Decrypter {
   ciphertext: any
   result = {
-    sub: faker.random.uuid(),
-    acc: faker.random.uuid(),
+    sub: faker.datatype.uuid(),
+    acc: faker.datatype.uuid(),
     role: faker.random.word()
   }
 
@@ -64,7 +64,7 @@ export class NfseDecrypterSpy implements Decrypter {
 
 export class TransformerSpy implements Transformer {
   data: any
-  result: any = 'any_data'
+  result: any = { [faker.database.column()]: faker.random.word() }
 
   transform (data: any): any {
     this.data = data

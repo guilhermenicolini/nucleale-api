@@ -17,8 +17,8 @@ export class AddAccountRepositorySpy implements AddAccountRepository {
   params: AddAccountRepository.Params
   result: AddAccountRepository.Result = ({
     isValid: true,
-    accountId: faker.random.uuid(),
-    userId: faker.random.uuid(),
+    accountId: faker.datatype.uuid(),
+    userId: faker.datatype.uuid(),
     role: faker.random.word()
   })
 
@@ -41,8 +41,8 @@ export class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepo
 export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
   email: string
   result: LoadAccountByEmailRepository.Result = {
-    accountId: faker.random.uuid(),
-    userId: faker.random.uuid(),
+    accountId: faker.datatype.uuid(),
+    userId: faker.datatype.uuid(),
     password: faker.internet.password(),
     role: faker.random.word()
   }
@@ -68,7 +68,7 @@ export class LoadAccountsByStatusRepositorySpy implements LoadAccountsByStatus {
 
 export class LoadInvitationRepositorySpy implements LoadInvitationRepository {
   email: string
-  result = faker.random.uuid()
+  result = faker.datatype.uuid()
 
   async loadInvitation (email: string): Promise<string> {
     this.email = email

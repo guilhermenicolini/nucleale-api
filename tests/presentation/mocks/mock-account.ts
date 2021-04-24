@@ -16,8 +16,8 @@ export class AddAccountSpy implements AddAccount {
   params: AddAccount.Params
   result: AddAccount.Result = {
     isValid: true,
-    accountId: faker.random.uuid(),
-    userId: faker.random.uuid(),
+    accountId: faker.datatype.uuid(),
+    userId: faker.datatype.uuid(),
     role: faker.random.word()
   }
 
@@ -30,8 +30,8 @@ export class AddAccountSpy implements AddAccount {
 export class VerifyAccountSpy implements VerifyAccount {
   params: VerifyAccount.Params
   result: VerifyAccount.Result = {
-    accountId: faker.random.uuid(),
-    userId: faker.random.uuid(),
+    accountId: faker.datatype.uuid(),
+    userId: faker.datatype.uuid(),
     role: faker.random.word()
   }
 
@@ -59,8 +59,8 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
   role: string
   result: LoadAccountByToken.Result = {
     isValid: true,
-    userId: faker.random.uuid(),
-    accountId: faker.random.uuid()
+    userId: faker.datatype.uuid(),
+    accountId: faker.datatype.uuid()
   }
 
   async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
@@ -72,7 +72,7 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
 
 export class LoadInvitationSpy implements LoadInvitation {
   email: string
-  result = faker.random.uuid()
+  result = faker.datatype.uuid()
 
   async load (email: string): Promise<string> {
     this.email = email

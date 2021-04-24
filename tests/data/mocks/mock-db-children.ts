@@ -10,7 +10,7 @@ import faker from 'faker'
 
 export class AddChildrenRepositorySpy implements AddChildrenRepository {
   params: AddChildrenRepository.Params
-  result = faker.random.uuid()
+  result = faker.datatype.uuid()
 
   async add (params: AddChildrenRepository.Params): Promise<string> {
     this.params = params

@@ -25,14 +25,14 @@ describe('Id Validation', () => {
   test('Should return an error if IdValidator returns false', () => {
     const { sut, idValidatorSpy } = makeSut()
     idValidatorSpy.isIdValid = false
-    const id = faker.random.uuid()
+    const id = faker.datatype.uuid()
     const error = sut.validate({ [field]: id })
     expect(error).toEqual(new InvalidParamError(field))
   })
 
   test('Should call IdValidator with correct values', () => {
     const { sut, idValidatorSpy } = makeSut()
-    const id = faker.random.uuid()
+    const id = faker.datatype.uuid()
     sut.validate({ [field]: id })
     expect(idValidatorSpy.id).toBe(id)
   })
