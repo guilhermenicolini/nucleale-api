@@ -5,8 +5,8 @@ import { throwError } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockParams = () => ({
-  accountId: faker.random.uuid(),
-  id: faker.random.uuid()
+  accountId: faker.datatype.uuid(),
+  id: faker.datatype.uuid()
 })
 
 type SutTypes = {

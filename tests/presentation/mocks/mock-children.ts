@@ -9,7 +9,7 @@ import faker from 'faker'
 
 export class AddChildrenSpy implements AddChildren {
   params: AddChildren.Params
-  result = faker.random.uuid()
+  result = faker.datatype.uuid()
 
   async add (params: AddChildren.Params): Promise<string> {
     this.params = params

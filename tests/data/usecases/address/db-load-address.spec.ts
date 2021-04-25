@@ -4,7 +4,7 @@ import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-const mockAccountId = (): string => faker.random.uuid()
+const mockAccountId = (): string => faker.datatype.uuid()
 
 type SutTypes = {
   sut: DbLoadAddress

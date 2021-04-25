@@ -19,7 +19,7 @@ const mockAddRequest = () => {
     password,
     passwordConfirmation: password,
     mobilePhone: faker.phone.phoneNumber('+55199########'),
-    birth: faker.random.number({
+    birth: faker.datatype.number({
       min: 315543600000,
       max: 631159200000
     })

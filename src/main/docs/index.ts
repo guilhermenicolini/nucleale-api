@@ -1,4 +1,4 @@
-import { paths, components } from './swagger'
+import { tags, paths, components } from './swagger'
 import env from '@/main/config/env'
 
 export default {
@@ -23,24 +23,7 @@ export default {
       description: env.serverName
     }
   ],
-  tags: [
-    {
-      name: 'Authentication',
-      description: 'Authentication related APIs'
-    },
-    {
-      name: 'Accounts',
-      description: 'Accounts related APIs'
-    },
-    {
-      name: 'Address',
-      description: 'Address related APIs'
-    },
-    {
-      name: 'Childrens',
-      description: 'Childrens related APIs'
-    }
-  ],
+  tags,
   paths,
   components
 }
