@@ -8,6 +8,7 @@ export const mockInvoice = (): Omit<InvoiceModel, 'id'> => ({
   invoiceDate: faker.date.past().getUTCMilliseconds(),
   issueDate: faker.date.past().getUTCMilliseconds(),
   verificationCode: faker.random.alphaNumeric(8),
+  status: faker.random.word(),
   description: faker.random.words(3),
   invoiceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
   serviceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
