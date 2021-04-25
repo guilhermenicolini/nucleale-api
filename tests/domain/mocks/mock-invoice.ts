@@ -1,4 +1,4 @@
-import { InvoiceModel, InvoicePerson, InvoiceItem } from '@/domain/models'
+import { InvoiceModel, InvoicePersonModel, InvoiceItemModel } from '@/domain/models'
 
 import faker from 'faker'
 import fs from 'fs'
@@ -26,7 +26,7 @@ export const mockInvoice = (): Omit<InvoiceModel, 'id'> => ({
   items: [mockItem(), mockItem()]
 })
 
-export const mockPerson = (): InvoicePerson => ({
+export const mockPerson = (): InvoicePersonModel => ({
   taxId: faker.address.zipCode('###########'),
   name: faker.name.findName(),
   registryId: faker.address.zipCode('########'),
@@ -37,7 +37,7 @@ export const mockPerson = (): InvoicePerson => ({
   phone: faker.phone.phoneNumber('+55##9########')
 })
 
-export const mockItem = (): InvoiceItem => ({
+export const mockItem = (): InvoiceItemModel => ({
   taxable: faker.datatype.boolean(),
   description: faker.random.words(5),
   quantity: faker.datatype.number({ min: 1, max: 3 }),

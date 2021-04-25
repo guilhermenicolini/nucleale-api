@@ -1,27 +1,21 @@
 import { XmlConverterAdapter } from '@/infra/cryptography'
 
-import builder from 'xmlbuilder2'
+import builder, { convert } from 'xmlbuilder2'
 
-const endStub = jest.fn().mockImplementation(() => 'xml_converted')
-const createStub = jest.fn().mockImplementation(() => {
-  return {
-    end: endStub
-  }
-})
-const convertStub = jest.fn().mockImplementation(() => ({ obj: true }))
-
-jest.mock('xmlbuilder2', () => jest.fn())
+jest.mock('xmlbuilder2', () => ({
+  convert: jest.fn().mockImplementation(() => ({ obj: true })),
+  create: jest.fn().mockImplementation(() => {
+    return {
+      end: jest.fn().mockImplementation(() => 'xml_converted')
+    }
+  })
+}))
 
 const makeSut = (): XmlConverterAdapter => {
   return new XmlConverterAdapter('any_encoding')
 }
 
 describe('XmlConverter Adapter', () => {
-  beforeAll(() => {
-    builder.create = createStub
-    builder.convert = convertStub
-  })
-
   describe('builder()', () => {
     test('Should call builder with correct values', async () => {
       const sut = makeSut()
@@ -40,7 +34,7 @@ describe('XmlConverter Adapter', () => {
     test('Should call convert with correct values', async () => {
       const sut = makeSut()
       await sut.decrypt('any_xml')
-      expect(builder.convert).toHaveBeenCalledWith('any_xml', { format: 'object' })
+      expect(convert).toHaveBeenCalledWith('any_xml', { format: 'object' })
     })
 
     test('Should return object on success', async () => {

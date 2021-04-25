@@ -42,5 +42,16 @@ describe('Invoices Routes', () => {
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(400)
     })
+
+    test('Should return 204 on success', async () => {
+      await request(app)
+        .post('/invoices/upload')
+        .attach('xml', 'tests/main/mocks/mock.xml')
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
+        .expect(204)
+
+      const invoices = await invoicesCollection.find({}).toArray()
+      expect(invoices.length).toBe(2)
+    })
   })
 })
