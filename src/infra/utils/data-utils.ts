@@ -8,3 +8,11 @@ export const parseMoney = (value: string): number => {
   const v = value.replace(',', '.')
   return parseFloat(v)
 }
+
+export const hasValue = (value: any): boolean => {
+  if (typeof value === 'object' || value === null || value === undefined) {
+    return false
+  }
+
+  return value.trim().length > 0
+}
