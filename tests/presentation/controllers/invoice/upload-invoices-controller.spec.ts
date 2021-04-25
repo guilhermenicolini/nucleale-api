@@ -1,5 +1,5 @@
 import { UploadInvoicesController } from '@/presentation/controllers'
-import { LoadInvoicesFromFileSpy, SaveInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
+import { LoadInvoicesFromBufferSpy, SaveInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { mockXmlFileBuffer, throwError } from '@/tests/domain/mocks'
 import { serverError, badRequest, noContent } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
@@ -11,19 +11,19 @@ const mockRequest = (): UploadInvoicesController.Request => ({
 type SutTypes = {
   sut: UploadInvoicesController,
   validationSpy: ValidationSpy,
-  loadInvoicesFromFileSpy: LoadInvoicesFromFileSpy,
+  loadInvoicesFromBufferSpy: LoadInvoicesFromBufferSpy,
   saveInvoiceSpy: SaveInvoiceSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const loadInvoicesFromFileSpy = new LoadInvoicesFromFileSpy()
+  const loadInvoicesFromBufferSpy = new LoadInvoicesFromBufferSpy()
   const saveInvoiceSpy = new SaveInvoiceSpy()
-  const sut = new UploadInvoicesController(validationSpy, loadInvoicesFromFileSpy, saveInvoiceSpy)
+  const sut = new UploadInvoicesController(validationSpy, loadInvoicesFromBufferSpy, saveInvoiceSpy)
   return {
     sut,
     validationSpy,
-    loadInvoicesFromFileSpy,
+    loadInvoicesFromBufferSpy,
     saveInvoiceSpy
   }
 }
@@ -43,26 +43,26 @@ describe('UploadInvoices Controller', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 
-  test('Should call LoadInvoicesFromFile with correct values', async () => {
-    const { sut, loadInvoicesFromFileSpy } = makeSut()
+  test('Should call LoadInvoicesFromBuffer with correct values', async () => {
+    const { sut, loadInvoicesFromBufferSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadInvoicesFromFileSpy.buffer).toEqual(request.files[0].buffer)
+    expect(loadInvoicesFromBufferSpy.buffer).toEqual(request.files[0].buffer)
   })
 
   test('Should return 500 if LoadInvoices throws ', async () => {
-    const { sut, loadInvoicesFromFileSpy } = makeSut()
-    jest.spyOn(loadInvoicesFromFileSpy, 'load').mockImplementationOnce(throwError)
+    const { sut, loadInvoicesFromBufferSpy } = makeSut()
+    jest.spyOn(loadInvoicesFromBufferSpy, 'load').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 
   test('Should call SaveInvoice with correct values', async () => {
-    const { sut, loadInvoicesFromFileSpy, saveInvoiceSpy } = makeSut()
+    const { sut, loadInvoicesFromBufferSpy, saveInvoiceSpy } = makeSut()
     const saveSpy = jest.spyOn(saveInvoiceSpy, 'save')
     await sut.handle(mockRequest())
-    expect(saveSpy).toHaveBeenNthCalledWith(1, loadInvoicesFromFileSpy.result[0])
-    expect(saveSpy).toHaveBeenNthCalledWith(2, loadInvoicesFromFileSpy.result[1])
+    expect(saveSpy).toHaveBeenNthCalledWith(1, loadInvoicesFromBufferSpy.result[0])
+    expect(saveSpy).toHaveBeenNthCalledWith(2, loadInvoicesFromBufferSpy.result[1])
   })
 
   test('Should return 500 if SaveInvoice throws', async () => {

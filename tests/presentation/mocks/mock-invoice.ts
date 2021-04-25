@@ -1,14 +1,14 @@
 import {
-  LoadInvoicesFromFile,
+  LoadInvoicesFromBuffer,
   SaveInvoice
 } from '@/domain/usecases'
 import { mockInvoice } from '@/tests/domain/mocks'
 
-export class LoadInvoicesFromFileSpy implements LoadInvoicesFromFile {
+export class LoadInvoicesFromBufferSpy implements LoadInvoicesFromBuffer {
   buffer: Buffer
-  result: LoadInvoicesFromFile.Result = [mockInvoice(), mockInvoice()]
+  result: LoadInvoicesFromBuffer.Result = [mockInvoice(), mockInvoice()]
 
-  async load (buffer: Buffer): Promise<LoadInvoicesFromFile.Result> {
+  async load (buffer: Buffer): Promise<LoadInvoicesFromBuffer.Result> {
     this.buffer = buffer
     return this.result
   }
