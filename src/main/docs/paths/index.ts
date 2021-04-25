@@ -1,5 +1,6 @@
 export * from './accounts-paths'
 export * from './addresses-paths'
 export * from './childrens-paths'
+export * from './invoices-paths'
 export * from './login-path'
 export * from './signup-path'

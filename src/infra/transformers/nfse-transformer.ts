@@ -1,6 +1,6 @@
 import { Transformer } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
-import { removeTextCharacters, parseMoney } from '@/infra/utils'
+import { removeTextCharacters, parseMoney, hasValue } from '@/infra/utils'
 import moment from 'moment-timezone'
 
 export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
@@ -16,7 +16,7 @@ export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'p
       invoiceDate: invoiceDate.valueOf(),
       issueDate: issueDate.valueOf(),
       verificationCode: data.CODIGO_VERIFICACAO,
-      description: removeTextCharacters(data.DESCRICAO_NOTA.toUpperCase()),
+      description: hasValue(data.DESCRICAO_NOTA) ? removeTextCharacters(data.DESCRICAO_NOTA.toUpperCase()) : null,
       invoiceValue: parseMoney(data.VALOR_NOTA),
       serviceValue: parseMoney(data.VALOR_SERVICO),
       issValue: parseMoney(data.VALOR_ISS),

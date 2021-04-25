@@ -3,7 +3,8 @@ import {
   loginPath,
   accountsPaths,
   addressesPaths,
-  childrensPaths
+  childrensPaths,
+  invoicesPaths
 } from './paths'
 import {
   signupSchema,
@@ -27,12 +28,38 @@ import {
 
 import map from './utils/mapper'
 
+export const tags = {
+  tags: [
+    {
+      name: 'Authentication',
+      description: 'Authentication related APIs'
+    },
+    {
+      name: 'Accounts',
+      description: 'Accounts related APIs'
+    },
+    {
+      name: 'Address',
+      description: 'Address related APIs'
+    },
+    {
+      name: 'Childrens',
+      description: 'Childrens related APIs'
+    },
+    {
+      name: 'Invoices',
+      description: 'Invoices related APIs'
+    }
+  ]
+}
+
 export const paths = {
   '/signup': signUpPath,
   '/login': loginPath,
   ...accountsPaths,
   ...addressesPaths,
-  ...childrensPaths
+  ...childrensPaths,
+  ...invoicesPaths
 }
 
 export const components = {

@@ -25,6 +25,7 @@ export class UploadInvoicesController implements Controller {
       }
       return noContent()
     } catch (error) {
+      console.error(error)
       return serverError(error)
     }
   }
