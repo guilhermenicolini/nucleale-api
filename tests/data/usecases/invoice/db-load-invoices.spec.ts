@@ -41,4 +41,11 @@ describe('DbLoadInvoices Usecase', () => {
     const invoices = await sut.load(mockAccountId())
     expect(invoices).toEqual(loadInvoicesRepositorySpy.result)
   })
+
+  test('Should return empty array if LoadInvoicesRepository returns null', async () => {
+    const { sut, loadInvoicesRepositorySpy } = makeSut()
+    loadInvoicesRepositorySpy.result = null
+    const invoices = await sut.load(mockAccountId())
+    expect(invoices).toEqual([])
+  })
 })
