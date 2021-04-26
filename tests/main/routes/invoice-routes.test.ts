@@ -54,4 +54,13 @@ describe('Invoices Routes', () => {
       expect(invoices.length).toBe(2)
     })
   })
+
+  describe('GET /invoices', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/invoices')
+        .send({})
+        .expect(401)
+    })
+  })
 })
