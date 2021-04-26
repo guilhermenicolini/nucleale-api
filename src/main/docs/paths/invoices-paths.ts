@@ -42,5 +42,34 @@ export const invoicesPaths = {
         }
       }
     }
+  },
+  '/invoices': {
+    get: {
+      tags: ['Invoices'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to retrieve invoices',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'loadInvoices',
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/invoices'
+              }
+            }
+          }
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }
