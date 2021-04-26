@@ -3,7 +3,7 @@ import { InvoiceModel, InvoicePersonModel, InvoiceItemModel } from '@/domain/mod
 import faker from 'faker'
 import fs from 'fs'
 
-export const mockInvoice = (): Omit<InvoiceModel, 'id'> => ({
+export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
   invoiceDate: faker.date.past().getUTCMilliseconds(),
   issueDate: faker.date.past().getUTCMilliseconds(),
@@ -23,12 +23,12 @@ export const mockInvoice = (): Omit<InvoiceModel, 'id'> => ({
   serviceCity: faker.address.city(),
   serviceState: faker.address.stateAbbr(),
   provider: mockPerson(),
-  taker: mockPerson(),
+  taker: mockPerson(taxId),
   items: [mockItem(), mockItem()]
 })
 
-export const mockPerson = (): InvoicePersonModel => ({
-  taxId: faker.address.zipCode('###########'),
+export const mockPerson = (taxId?: string): InvoicePersonModel => ({
+  taxId: taxId || faker.address.zipCode('###########'),
   name: faker.name.findName(),
   registryId: faker.address.zipCode('########'),
   address: faker.address.streetAddress(true),
