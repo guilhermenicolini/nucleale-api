@@ -62,5 +62,12 @@ describe('Invoices Routes', () => {
         .send({})
         .expect(401)
     })
+
+    test('Should return 200 on success', async () => {
+      await request(app)
+        .get('/invoices')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(200)
+    })
   })
 })
