@@ -1,5 +1,6 @@
 import { DbLoadInvoices } from '@/data/usecases'
 import { LoadInvoicesRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -26,5 +27,12 @@ describe('DbLoadInvoices Usecase', () => {
     const accountId = mockAccountId()
     await sut.load(accountId)
     expect(loadInvoicesRepositorySpy.accountId).toBe(accountId)
+  })
+
+  test('Should throw if LoadInvoicesRepository throws', async () => {
+    const { sut, loadInvoicesRepositorySpy } = makeSut()
+    jest.spyOn(loadInvoicesRepositorySpy, 'load').mockImplementationOnce(throwError)
+    const promise = sut.load(mockAccountId())
+    await expect(promise).rejects.toThrow()
   })
 })
