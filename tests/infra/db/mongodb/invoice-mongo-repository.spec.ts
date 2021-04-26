@@ -1,12 +1,14 @@
 import { InvoiceMongoRepository, MongoHelper } from '@/infra/db'
 import { mockInvoice } from '@/tests/domain/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
+import faker from 'faker'
 
 const makeSut = (): InvoiceMongoRepository => {
   return new InvoiceMongoRepository()
 }
 
+let accountsCollection: Collection
 let invoicesCollection: Collection
 
 describe('InvoiceMongoRepository', () => {
@@ -20,7 +22,9 @@ describe('InvoiceMongoRepository', () => {
 
   beforeEach(async () => {
     invoicesCollection = await MongoHelper.instance.getCollection('invoices')
+    accountsCollection = await MongoHelper.instance.getCollection('accounts')
     await invoicesCollection.deleteMany({})
+    await accountsCollection.deleteMany({})
   })
 
   describe('save()', () => {
@@ -40,5 +44,40 @@ describe('InvoiceMongoRepository', () => {
       const invoices = await invoicesCollection.find({}).toArray()
       expect(invoices.length).toBe(1)
     })
+  })
+
+  describe('load()', () => {
+    test('Should return all invoices only of active accounts', async () => {
+      const sut = makeSut()
+      const accountId = new ObjectId()
+      const taxId = faker.address.zipCode('###########')
+      const invoices = [mockInvoice(taxId), mockInvoice(taxId), mockInvoice()]
+      const accounts = [
+        { accountId, taxId, status: 'active' },
+        { accountId, taxId: invoices[2].taker.taxId, status: 'inactive' }
+      ]
+      await accountsCollection.insertMany(accounts)
+      await invoicesCollection.insertMany(invoices)
+      const result = await sut.load(accountId.toString())
+      expect(result.length).toBe(2)
+    })
+  })
+
+  test('Should return empty array if there are no invoices for active accounts', async () => {
+    const sut = makeSut()
+    const accountId = new ObjectId()
+    const taxId = faker.address.zipCode('###########')
+    const accounts = [
+      { accountId, taxId, status: 'active' }
+    ]
+    await accountsCollection.insertMany(accounts)
+    const result = await sut.load(accountId.toString())
+    expect(result.length).toBe(0)
+  })
+
+  test('Should return empty array if there are no accounts', async () => {
+    const sut = makeSut()
+    const result = await sut.load(new ObjectId().toString())
+    expect(result.length).toBe(0)
   })
 })

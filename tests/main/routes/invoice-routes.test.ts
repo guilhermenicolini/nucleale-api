@@ -54,4 +54,20 @@ describe('Invoices Routes', () => {
       expect(invoices.length).toBe(2)
     })
   })
+
+  describe('GET /invoices', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/invoices')
+        .send({})
+        .expect(401)
+    })
+
+    test('Should return 200 on success', async () => {
+      await request(app)
+        .get('/invoices')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(200)
+    })
+  })
 })
