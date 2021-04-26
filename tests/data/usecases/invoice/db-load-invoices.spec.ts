@@ -35,4 +35,10 @@ describe('DbLoadInvoices Usecase', () => {
     const promise = sut.load(mockAccountId())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return invoices on success', async () => {
+    const { sut, loadInvoicesRepositorySpy } = makeSut()
+    const invoices = await sut.load(mockAccountId())
+    expect(invoices).toEqual(loadInvoicesRepositorySpy.result)
+  })
 })
