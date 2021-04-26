@@ -50,3 +50,10 @@ export const mockXmlFileBuffer = (): any => ({
   fieldname: faker.system.commonFileName('xml'),
   buffer: fs.readFileSync('tests/main/mocks/mock.xml')
 })
+
+export const mockLoadInvoice = (): Pick<InvoiceModel, 'id' | 'invoiceNo' | 'invoiceDate' | 'description'> => ({
+  id: faker.datatype.uuid(),
+  invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
+  invoiceDate: faker.date.past().getUTCMilliseconds(),
+  description: faker.random.words(3)
+})

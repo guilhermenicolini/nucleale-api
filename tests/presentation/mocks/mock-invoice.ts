@@ -1,8 +1,9 @@
 import {
   LoadInvoicesFromBuffer,
-  SaveInvoice
+  SaveInvoice,
+  LoadInvoices
 } from '@/domain/usecases'
-import { mockInvoice } from '@/tests/domain/mocks'
+import { mockInvoice, mockLoadInvoice } from '@/tests/domain/mocks'
 
 export class LoadInvoicesFromBufferSpy implements LoadInvoicesFromBuffer {
   buffer: Buffer
@@ -19,5 +20,18 @@ export class SaveInvoiceSpy implements SaveInvoice {
 
   async save (param: SaveInvoice.Param): Promise<void> {
     this.param = param
+  }
+}
+
+export class LoadInvoicesSpy implements LoadInvoices {
+  accountId: string
+  result: LoadInvoices.Result = [
+    mockLoadInvoice(),
+    mockLoadInvoice()
+  ]
+
+  async load (accountId: string): Promise<LoadInvoices.Result> {
+    this.accountId = accountId
+    return this.result
   }
 }
