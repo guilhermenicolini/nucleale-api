@@ -62,4 +62,16 @@ describe('InvoiceMongoRepository', () => {
       expect(result.length).toBe(2)
     })
   })
+
+  test('Should return empty array if there are no invoices for active accounts', async () => {
+    const sut = makeSut()
+    const accountId = new ObjectId()
+    const taxId = faker.address.zipCode('###########')
+    const accounts = [
+      { accountId, taxId, status: 'active' }
+    ]
+    await accountsCollection.insertMany(accounts)
+    const result = await sut.load(accountId.toString())
+    expect(result.length).toBe(0)
+  })
 })
