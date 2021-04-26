@@ -74,4 +74,10 @@ describe('InvoiceMongoRepository', () => {
     const result = await sut.load(accountId.toString())
     expect(result.length).toBe(0)
   })
+
+  test('Should return empty array if there are no accounts', async () => {
+    const sut = makeSut()
+    const result = await sut.load(new ObjectId().toString())
+    expect(result.length).toBe(0)
+  })
 })
