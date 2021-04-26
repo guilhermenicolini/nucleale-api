@@ -1,5 +1,8 @@
 import { LoadInvoicesController } from '@/presentation/controllers'
 import { LoadInvoicesSpy } from '@/tests/presentation/mocks'
+import { throwError } from '@/tests/domain/mocks'
+import { serverError } from '@/presentation/helpers'
+import { ServerError } from '@/presentation/errors'
 
 import faker from 'faker'
 
@@ -27,5 +30,12 @@ describe('LoadInvoices Controller', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(loadInvoicesSpy.accountId).toEqual(request.accountId)
+  })
+
+  test('Should return 500 if LoadChildrens throws ', async () => {
+    const { sut, loadInvoicesSpy } = makeSut()
+    jest.spyOn(loadInvoicesSpy, 'load').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
