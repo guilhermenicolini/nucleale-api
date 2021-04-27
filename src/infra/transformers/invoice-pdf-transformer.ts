@@ -1,43 +1,46 @@
-import { Converter, Transformer } from '@/data/protocols'
+import {
+  Transformer,
+  TimeManipulator,
+  MoneyManipulator,
+  MaskManipulator
+} from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
-import { toBRMoney } from '@/infra/utils'
-
-import moment from 'moment-timezone'
 
 export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
   constructor (
-    private readonly taxIdMasker: Converter,
-    private readonly phoneMasker: Converter
+    private readonly timeManipulator: TimeManipulator,
+    private readonly moneyManipulator: MoneyManipulator,
+    private readonly maskManipulator: MaskManipulator
   ) { }
 
   transform (invoice: InvoiceModel): any {
     const message = {
       invoiceNo: invoice.invoiceNo.toString().padStart(8, '0'),
-      invoiceDate: moment(invoice.invoiceDate).format('DD/MM/YYYY HH:mm:ss'),
-      invoiceValue: toBRMoney(invoice.invoiceValue),
+      invoiceDate: this.timeManipulator.toDateAndTime(invoice.invoiceDate),
+      invoiceValue: this.moneyManipulator.format(invoice.invoiceValue),
       verificationCode: invoice.verificationCode.substring(0, 8),
       name: invoice.taker.name,
-      taxId: this.taxIdMasker.convert(invoice.taker.taxId),
+      taxId: this.maskManipulator.mask(invoice.taker.taxId, '000.0000.0000-00'),
       registryId: null,
       address: invoice.taker.address,
       city: invoice.taker.city,
       state: invoice.taker.state,
       email: invoice.taker.email,
-      phone: this.phoneMasker.convert(invoice.taker.phone),
+      phone: this.maskManipulator.mask(invoice.taker.phone, '(00) 00000-0000'),
       description: invoice.description,
       items: invoice.items.map((i) => {
         return {
           taxable: i.taxable ? 'Sim' : 'Não',
           description: i.description,
           qty: i.quantity,
-          unitValue: toBRMoney(i.unitValue),
-          totalValue: toBRMoney(i.totalValue)
+          unitValue: this.moneyManipulator.format(i.unitValue),
+          totalValue: this.moneyManipulator.format(i.totalValue)
         }
       }),
       serviceValue:
-        invoice.issAliquot !== 0 ? toBRMoney(invoice.serviceValue) : '***',
-      issAliquot: invoice.issAliquot !== 0 ? toBRMoney(invoice.issAliquot) : '***',
-      issValue: invoice.issAliquot !== 0 ? toBRMoney(invoice.issValue) : '***',
+        invoice.issAliquot !== 0 ? this.moneyManipulator.format(invoice.serviceValue) : '***',
+      issAliquot: invoice.issAliquot !== 0 ? this.moneyManipulator.format(invoice.issAliquot) : '***',
+      issValue: invoice.issAliquot !== 0 ? this.moneyManipulator.format(invoice.issValue) : '***',
       competence: invoice.competence,
       serviceLocation: `${invoice.serviceCity}/${invoice.serviceState}`,
       pickup:
@@ -48,13 +51,9 @@ export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'p
       activity: invoice.activity,
       service: invoice.service,
       retroactive:
-        moment(invoice.invoiceDate).format('DD') !==
-          moment(invoice.issueDate).format('DD')
-          ? `NFSe gerada em ${moment(invoice.invoiceDate).format(
-            'DD/MM/YYYY'
-          )}, com data de emissão retroativa à ${moment(
-            invoice.issueDate
-          ).format('DD/MM/YYYY')}`
+        this.timeManipulator.toDay(invoice.invoiceDate) !==
+          this.timeManipulator.toDay(invoice.issueDate)
+          ? `NFSe gerada em ${this.timeManipulator.toDate(invoice.invoiceDate)}, com data de emissão retroativa à ${this.timeManipulator.toDate(invoice.issueDate)}`
           : null
     }
 
