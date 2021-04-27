@@ -61,6 +61,12 @@ describe('DownloadInvoice Controller', () => {
     expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Invoice')))
   })
 
+  test('Should call GenerateInvoice with correct values', async () => {
+    const { sut, loadInvoiceSpy, generateInvoiceSpy } = makeSut()
+    await sut.handle(mockDownloadRequest())
+    expect(generateInvoiceSpy.model).toEqual(loadInvoiceSpy.result)
+  })
+
   test('Should return 200 on success', async () => {
     const { sut, generateInvoiceSpy } = makeSut()
     const httpResponse = await sut.handle(mockDownloadRequest())
