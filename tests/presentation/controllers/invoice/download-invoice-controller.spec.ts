@@ -34,4 +34,12 @@ describe('DownloadInvoice Controller', () => {
     const httpResponse = await sut.handle(mockDownloadRequest())
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
+
+  test('Should call DownloadInvoice with correct values', async () => {
+    const { sut, downloadInvoiceSpy } = makeSut()
+    const request = mockDownloadRequest()
+    await sut.handle(request)
+    expect(downloadInvoiceSpy.id).toBe(request.id)
+    expect(downloadInvoiceSpy.accountId).toBe(request.accountId)
+  })
 })
