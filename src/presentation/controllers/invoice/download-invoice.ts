@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { DownloadInvoice } from '@/domain/usecases'
-import { badRequest, serverError, ok } from '@/presentation/helpers'
+import { badRequest, notFound, serverError, ok } from '@/presentation/helpers'
+import { RecordNotFoundError } from '@/presentation/errors'
 
 export class DownloadInvoiceController implements Controller {
   constructor (
@@ -21,6 +22,10 @@ export class DownloadInvoiceController implements Controller {
       }
 
       const invoice = await this.downloadInvoice.download(request.id, request.accountId)
+      if (!invoice) {
+        return notFound(new RecordNotFoundError('Invoice'))
+      }
+
       return ok(invoice)
     } catch (error) {
       return serverError(error)
