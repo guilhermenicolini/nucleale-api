@@ -1,3 +1,5 @@
 export interface TimeManipulator {
-  format: (millis: number, format: string) => string
+  toDateAndTime: (millis: number) => string
+  toDay: (millis: number) => string
+  toDate: (millis: number) => string
 }
