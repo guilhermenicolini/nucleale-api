@@ -73,7 +73,7 @@
     "moment-timezone": "^0.5.33",
     "mongodb": "^3.6.5",
     "swagger-ui-express": "^4.1.6",
-    "validator": "^13.5.2",
+    "validator": "^13.6.0",
     "xml-crypto": "^2.1.2",
     "xmlbuilder2": "^2.4.1"
   }
