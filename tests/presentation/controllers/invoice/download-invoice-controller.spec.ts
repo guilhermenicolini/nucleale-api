@@ -1,8 +1,8 @@
 import { DownloadInvoiceController } from '@/presentation/controllers'
 import { DownloadInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { mockDownloadRequest, throwError } from '@/tests/domain/mocks'
-import { badRequest, serverError } from '@/presentation/helpers'
-import { ServerError } from '@/presentation/errors'
+import { badRequest, serverError, notFound } from '@/presentation/helpers'
+import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: DownloadInvoiceController,
@@ -49,5 +49,12 @@ describe('DownloadInvoice Controller', () => {
     jest.spyOn(downloadInvoiceSpy, 'download').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockDownloadRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 404 if DownloadInvoice returns null ', async () => {
+    const { sut, downloadInvoiceSpy } = makeSut()
+    downloadInvoiceSpy.result = null
+    const httpResponse = await sut.handle(mockDownloadRequest())
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Invoice')))
   })
 })
