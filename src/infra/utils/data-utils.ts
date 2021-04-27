@@ -16,3 +16,5 @@ export const hasValue = (value: any): boolean => {
 
   return value.trim().length > 0
 }
+
+export const toBRMoney = (value) => value.toFixed(2).replace('.', ',')
