@@ -10,4 +10,12 @@ describe('Nfse Transformer', () => {
     const result = sut.transform(data)
     expect(result).toBeTruthy()
   })
+
+  test('Should return invoice model without description', () => {
+    const sut = makeSut()
+    const data = mockNfse()
+    data.DESCRICAO_NOTA = null
+    const result = sut.transform(data)
+    expect(result).toBeTruthy()
+  })
 })
