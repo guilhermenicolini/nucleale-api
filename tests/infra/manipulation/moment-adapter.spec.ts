@@ -38,4 +38,13 @@ describe('Moment Adapter', () => {
       expect(formatStub).toHaveBeenCalledWith(dayFormat)
     })
   })
+
+  describe('toDate()', () => {
+    test('Should call moment-timezone format with correct values', async () => {
+      const sut = makeSut()
+      sut.toDate(millis)
+      expect(moment).toHaveBeenCalledWith(millis)
+      expect(formatStub).toHaveBeenCalledWith(dateFormat)
+    })
+  })
 })
