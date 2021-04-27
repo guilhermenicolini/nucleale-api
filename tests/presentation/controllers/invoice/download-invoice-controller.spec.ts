@@ -1,7 +1,8 @@
 import { DownloadInvoiceController } from '@/presentation/controllers'
 import { DownloadInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
-import { mockDownloadRequest } from '@/tests/domain/mocks'
-import { badRequest } from '@/presentation/helpers'
+import { mockDownloadRequest, throwError } from '@/tests/domain/mocks'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { ServerError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: DownloadInvoiceController,
@@ -41,5 +42,12 @@ describe('DownloadInvoice Controller', () => {
     await sut.handle(request)
     expect(downloadInvoiceSpy.id).toBe(request.id)
     expect(downloadInvoiceSpy.accountId).toBe(request.accountId)
+  })
+
+  test('Should return 500 if DownloadInvoice throws ', async () => {
+    const { sut, downloadInvoiceSpy } = makeSut()
+    jest.spyOn(downloadInvoiceSpy, 'download').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockDownloadRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
