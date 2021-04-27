@@ -2,6 +2,7 @@ import { InvoiceModel, InvoicePersonModel, InvoiceItemModel } from '@/domain/mod
 
 import faker from 'faker'
 import fs from 'fs'
+import { ObjectId } from 'mongodb'
 
 export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
@@ -56,4 +57,9 @@ export const mockLoadInvoice = (): Pick<InvoiceModel, 'id' | 'invoiceNo' | 'invo
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
   invoiceDate: faker.date.past().getUTCMilliseconds(),
   description: faker.random.words(3)
+})
+
+export const mockDownloadRequest = () => ({
+  id: new ObjectId().toString(),
+  accountId: new ObjectId().toString()
 })
