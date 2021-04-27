@@ -28,6 +28,31 @@ export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   items: [mockItem(), mockItem()]
 })
 
+export const mockInvoiceDb = (taxId?: string): InvoiceModel => ({
+  id: new ObjectId().toString(),
+  invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
+  invoiceDate: faker.date.past().getUTCMilliseconds(),
+  issueDate: faker.date.past().getUTCMilliseconds(),
+  verificationCode: faker.random.alphaNumeric(8),
+  status: faker.random.word(),
+  description: faker.random.words(3),
+  invoiceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  serviceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  issValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  issAliquot: faker.datatype.float({ min: 1, max: 4, precision: 2 }),
+  competence: faker.random.word(),
+  pickupType: faker.random.word()[0].toUpperCase(),
+  taxation: faker.random.word(),
+  cnae: faker.random.word(),
+  activity: faker.random.word(),
+  service: faker.random.word(),
+  serviceCity: faker.address.city(),
+  serviceState: faker.address.stateAbbr(),
+  provider: mockPerson(),
+  taker: mockPerson(taxId),
+  items: [mockItem(), mockItem()]
+})
+
 export const mockPerson = (taxId?: string): InvoicePersonModel => ({
   taxId: taxId || faker.address.zipCode('###########'),
   name: faker.name.findName(),

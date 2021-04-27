@@ -1,5 +1,5 @@
 import { DownloadInvoiceController } from '@/presentation/controllers'
-import { DownloadInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
+import { LoadInvoiceSpy, GenerateInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { mockDownloadRequest, throwError } from '@/tests/domain/mocks'
 import { badRequest, serverError, notFound, ok } from '@/presentation/helpers'
 import { ServerError, RecordNotFoundError } from '@/presentation/errors'
@@ -7,17 +7,20 @@ import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 type SutTypes = {
   sut: DownloadInvoiceController,
   validationSpy: ValidationSpy,
-  downloadInvoiceSpy: DownloadInvoiceSpy
+  loadInvoiceSpy: LoadInvoiceSpy,
+  generateInvoiceSpy: GenerateInvoiceSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const downloadInvoiceSpy = new DownloadInvoiceSpy()
-  const sut = new DownloadInvoiceController(validationSpy, downloadInvoiceSpy)
+  const generateInvoiceSpy = new GenerateInvoiceSpy()
+  const loadInvoiceSpy = new LoadInvoiceSpy()
+  const sut = new DownloadInvoiceController(validationSpy, loadInvoiceSpy, generateInvoiceSpy)
   return {
     sut,
     validationSpy,
-    downloadInvoiceSpy
+    loadInvoiceSpy,
+    generateInvoiceSpy
   }
 }
 
@@ -36,31 +39,31 @@ describe('DownloadInvoice Controller', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 
-  test('Should call DownloadInvoice with correct values', async () => {
-    const { sut, downloadInvoiceSpy } = makeSut()
+  test('Should call LoadInvoice with correct values', async () => {
+    const { sut, loadInvoiceSpy } = makeSut()
     const request = mockDownloadRequest()
     await sut.handle(request)
-    expect(downloadInvoiceSpy.id).toBe(request.id)
-    expect(downloadInvoiceSpy.accountId).toBe(request.accountId)
+    expect(loadInvoiceSpy.id).toBe(request.id)
+    expect(loadInvoiceSpy.accountId).toBe(request.accountId)
   })
 
-  test('Should return 500 if DownloadInvoice throws', async () => {
-    const { sut, downloadInvoiceSpy } = makeSut()
-    jest.spyOn(downloadInvoiceSpy, 'download').mockImplementationOnce(throwError)
+  test('Should return 500 if LoadInvoice throws', async () => {
+    const { sut, loadInvoiceSpy } = makeSut()
+    jest.spyOn(loadInvoiceSpy, 'load').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockDownloadRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 
-  test('Should return 404 if DownloadInvoice returns null', async () => {
-    const { sut, downloadInvoiceSpy } = makeSut()
-    downloadInvoiceSpy.result = null
+  test('Should return 404 if LoadInvoice returns null', async () => {
+    const { sut, loadInvoiceSpy } = makeSut()
+    loadInvoiceSpy.result = null
     const httpResponse = await sut.handle(mockDownloadRequest())
     expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Invoice')))
   })
 
   test('Should return 200 on success', async () => {
-    const { sut, downloadInvoiceSpy } = makeSut()
+    const { sut, generateInvoiceSpy } = makeSut()
     const httpResponse = await sut.handle(mockDownloadRequest())
-    expect(httpResponse).toEqual(ok(downloadInvoiceSpy.result))
+    expect(httpResponse).toEqual(ok(generateInvoiceSpy.result))
   })
 })
