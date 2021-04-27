@@ -1,8 +1,9 @@
 import {
   SaveInvoiceRepository,
-  LoadInvoicesRepository
+  LoadInvoicesRepository,
+  LoadInvoiceRepository
 } from '@/data/protocols'
-import { mockLoadInvoice } from '@/tests/domain/mocks'
+import { mockInvoiceDb, mockLoadInvoice } from '@/tests/domain/mocks'
 
 export class SaveInvoiceRepositorySpy implements SaveInvoiceRepository {
   param: SaveInvoiceRepository.Param
@@ -20,6 +21,18 @@ export class LoadInvoicesRepositorySpy implements LoadInvoicesRepository {
   ]
 
   async load (accountId: string): Promise<LoadInvoicesRepository.Result> {
+    this.accountId = accountId
+    return this.result
+  }
+}
+
+export class LoadInvoiceRepositorySpy implements LoadInvoiceRepository {
+  id: string
+  accountId: string
+  result: LoadInvoiceRepository.Result = mockInvoiceDb()
+
+  async loadOne (id: string, accountId: string): Promise<LoadInvoiceRepository.Result> {
+    this.id = id
     this.accountId = accountId
     return this.result
   }
