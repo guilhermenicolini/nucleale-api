@@ -1,7 +1,7 @@
 import { DownloadInvoiceController } from '@/presentation/controllers'
 import { DownloadInvoiceSpy, ValidationSpy } from '@/tests/presentation/mocks'
 import { mockDownloadRequest, throwError } from '@/tests/domain/mocks'
-import { badRequest, serverError, notFound } from '@/presentation/helpers'
+import { badRequest, serverError, notFound, ok } from '@/presentation/helpers'
 import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
 type SutTypes = {
@@ -29,7 +29,7 @@ describe('DownloadInvoice Controller', () => {
     expect(validationSpy.input).toEqual(request)
   })
 
-  test('Should return 400 if Validation returns an error ', async () => {
+  test('Should return 400 if Validation returns an error', async () => {
     const { sut, validationSpy } = makeSut()
     validationSpy.error = new Error()
     const httpResponse = await sut.handle(mockDownloadRequest())
@@ -44,17 +44,23 @@ describe('DownloadInvoice Controller', () => {
     expect(downloadInvoiceSpy.accountId).toBe(request.accountId)
   })
 
-  test('Should return 500 if DownloadInvoice throws ', async () => {
+  test('Should return 500 if DownloadInvoice throws', async () => {
     const { sut, downloadInvoiceSpy } = makeSut()
     jest.spyOn(downloadInvoiceSpy, 'download').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockDownloadRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 
-  test('Should return 404 if DownloadInvoice returns null ', async () => {
+  test('Should return 404 if DownloadInvoice returns null', async () => {
     const { sut, downloadInvoiceSpy } = makeSut()
     downloadInvoiceSpy.result = null
     const httpResponse = await sut.handle(mockDownloadRequest())
     expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Invoice')))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, downloadInvoiceSpy } = makeSut()
+    const httpResponse = await sut.handle(mockDownloadRequest())
+    expect(httpResponse).toEqual(ok(downloadInvoiceSpy.result))
   })
 })
