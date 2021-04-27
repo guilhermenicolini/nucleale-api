@@ -67,6 +67,13 @@ describe('DownloadInvoice Controller', () => {
     expect(generateInvoiceSpy.model).toEqual(loadInvoiceSpy.result)
   })
 
+  test('Should return 500 if GenerateInvoice throws', async () => {
+    const { sut, generateInvoiceSpy } = makeSut()
+    jest.spyOn(generateInvoiceSpy, 'generate').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockDownloadRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
   test('Should return 200 on success', async () => {
     const { sut, generateInvoiceSpy } = makeSut()
     const httpResponse = await sut.handle(mockDownloadRequest())
