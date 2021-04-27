@@ -9,21 +9,33 @@ jest.mock('moment-timezone', () => jest.fn().mockImplementation(() => {
   }
 }))
 
-const makeSut = (): MomentAdapter => new MomentAdapter()
+const millis = 1619481600000
+const dateAndTimeFormat = 'DD/MM/YYYY HH:mm'
+const dayFormat = 'DD'
+const dateFormat = 'DD/MM/YYYY'
+
+const makeSut = (): MomentAdapter => new MomentAdapter(
+  dateAndTimeFormat,
+  dayFormat,
+  dateFormat
+)
 
 describe('Moment Adapter', () => {
-  describe('format()', () => {
+  describe('toDateAndTime()', () => {
     test('Should call moment-timezone format with correct values', async () => {
       const sut = makeSut()
-      sut.format(1619481600000, 'YYYY-MM-DD HH:mm')
-      expect(moment).toHaveBeenCalledWith(1619481600000)
-      expect(formatStub).toHaveBeenCalledWith('YYYY-MM-DD HH:mm')
+      sut.toDateAndTime(millis)
+      expect(moment).toHaveBeenCalledWith(millis)
+      expect(formatStub).toHaveBeenCalledWith(dateAndTimeFormat)
     })
+  })
 
-    test('Should format on success', async () => {
+  describe('toDay()', () => {
+    test('Should call moment-timezone format with correct values', async () => {
       const sut = makeSut()
-      const time = sut.format(1619481600000, 'YYYY-MM-DD HH:mm')
-      expect(time).toBe('2020-04-27 00:00')
+      sut.toDay(millis)
+      expect(moment).toHaveBeenCalledWith(millis)
+      expect(formatStub).toHaveBeenCalledWith(dayFormat)
     })
   })
 })
