@@ -1,19 +1,19 @@
 import {
-  Transformer,
+  Converter,
   TimeManipulator,
   MoneyManipulator,
   MaskManipulator
 } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 
-export class InvoicePdfTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
+export class InvoicePdfMessageConverter implements Converter {
   constructor (
     private readonly timeManipulator: TimeManipulator,
     private readonly moneyManipulator: MoneyManipulator,
     private readonly maskManipulator: MaskManipulator
   ) { }
 
-  transform (invoice: InvoiceModel): any {
+  convert (invoice: InvoiceModel) {
     const message = {
       invoiceNo: invoice.invoiceNo.toString().padStart(8, '0'),
       invoiceDate: this.timeManipulator.toDateAndTime(invoice.invoiceDate),
