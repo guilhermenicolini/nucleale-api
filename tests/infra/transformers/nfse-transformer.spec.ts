@@ -1,7 +1,8 @@
 import { NfseTransformer } from '@/infra/transformers'
 import { mockNfse } from '@/tests/infra/mocks'
+import { TimeManipulatorSpy } from '@/tests/data/mocks'
 
-const makeSut = (): NfseTransformer => new NfseTransformer()
+const makeSut = (): NfseTransformer => new NfseTransformer(new TimeManipulatorSpy())
 
 describe('Nfse Transformer', () => {
   test('Should return invoice model on success', () => {
