@@ -28,4 +28,10 @@ describe('TemplateHtml Adapter', () => {
     await sut.convert('any_message')
     expect(renderStub).toHaveBeenCalledWith(template, 'any_message')
   })
+
+  test('Should return html on success', async () => {
+    const sut = makeSut()
+    const result = await sut.convert('any_message')
+    expect(result).toBe('any_html')
+  })
 })
