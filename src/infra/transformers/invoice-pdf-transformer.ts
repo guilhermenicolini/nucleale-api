@@ -6,7 +6,7 @@ import {
 } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 
-export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
+export class InvoicePdfTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
   constructor (
     private readonly timeManipulator: TimeManipulator,
     private readonly moneyManipulator: MoneyManipulator,
