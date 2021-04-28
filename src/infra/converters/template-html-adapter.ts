@@ -3,6 +3,7 @@ import {
 } from '@/data/protocols'
 
 import Templates from 'email-templates'
+import pdf from 'html-pdf'
 
 export class TemplateHtmlAdapter implements Converter {
   constructor (
@@ -16,6 +17,10 @@ export class TemplateHtmlAdapter implements Converter {
       }
     })
     const html = await templates.render(this.template, message)
-    return html
+    return pdf.create(html, {
+      height: '1123px',
+      width: '794px',
+      quality: '75'
+    }).toStream()
   }
 }
