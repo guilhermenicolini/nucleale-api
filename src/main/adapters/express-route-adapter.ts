@@ -14,20 +14,9 @@ export const adaptRoute = (controller: Controller) => {
     const httpResponse = await controller.handle(request)
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       if (httpResponse.body?.fileName) {
-        httpResponse.body.pdf.toStream((err, stream) => {
-          if (err) {
-            res.status(500).json({
-              error: err.message
-            })
-          }
-
-          res.setHeader(
-            'Content-Disposition',
-            `inline; filename="${httpResponse.body.fileName}"`
-          )
-          res.setHeader('Content-Type', 'application/pdf')
-          return stream.pipe(res)
-        })
+        res.setHeader('Content-Disposition', `inline; filename="${httpResponse.body.fileName}"`)
+        res.setHeader('Content-Type', 'application/pdf')
+        res.status(200).end(httpResponse.body.buffer)
       } else {
         res.status(httpResponse.statusCode).json(httpResponse.body)
       }
