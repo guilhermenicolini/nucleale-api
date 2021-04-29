@@ -6,7 +6,7 @@ export class NfsePersonTransformer implements Transformer<any> {
   constructor (
     private readonly prop: string,
     private readonly tag: string,
-    private readonly prefix: string = null,
+    private readonly prefix: string,
     private readonly maskManipulator: MaskManipulator
   ) { }
 
