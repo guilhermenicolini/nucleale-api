@@ -19,6 +19,7 @@ describe('NfsePerson Transformer', () => {
       const data = mockNfse()
       data.TOMADOR_TIPO_LOGRADOURO = null
       data.TOMADOR_COMPLEMENTO = null
+      data.TOMADOR_TELEFONE = '34567890'
       const result = sut.transform(data)
       expect(result.taker).toBeTruthy()
     })

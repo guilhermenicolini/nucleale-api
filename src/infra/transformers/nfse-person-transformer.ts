@@ -11,6 +11,8 @@ export class NfsePersonTransformer implements Transformer<any> {
   ) { }
 
   transform (data: any): any {
+    const phone = data[`${this.tag}_DDD_TELEFONE`] + data[`${this.tag}_TELEFONE`]
+    const phoneMask = `(00) ${data[`${this.tag}_TELEFONE`].length === 9 ? '0' : ''}0000-0000`
     const person: InvoicePersonModel = {
       taxId: data[`${this.tag}_CPF_CNPJ`],
       name: data[`${this.tag}_RAZAO_SOCIAL`].toUpperCase(),
@@ -26,7 +28,7 @@ export class NfsePersonTransformer implements Transformer<any> {
       city: data[`${this.tag}_CIDADE`].toUpperCase(),
       state: data[`${this.tag}_UF`].toUpperCase(),
       email: data[`${this.tag}_EMAIL`],
-      phone: this.maskManipulator.mask(data[`${this.tag}_DDD_TELEFONE`] + data[`${this.tag}_TELEFONE`], '(00) 00000-0000')
+      phone: this.maskManipulator.mask(phone, phoneMask)
     }
 
     return {
