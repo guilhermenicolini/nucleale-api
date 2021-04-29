@@ -1,6 +1,6 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
-import { mockAccessToken, mockAdminAccessToken } from '@/tests/main/mocks'
+import { mockId, mockAccessToken, mockAdminAccessToken } from '@/tests/main/mocks'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
@@ -59,7 +59,6 @@ describe('Invoices Routes', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)
         .get('/invoices')
-        .send({})
         .expect(401)
     })
 
@@ -68,6 +67,14 @@ describe('Invoices Routes', () => {
         .get('/invoices')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(200)
+    })
+  })
+
+  describe('GET /invoices/:id/download', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get(`/invoices/${mockId()}/download`)
+        .expect(401)
     })
   })
 })
