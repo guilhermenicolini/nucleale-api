@@ -26,7 +26,7 @@ export class InvoicePdfMessageConverter implements Converter {
       city: invoice.taker.city,
       state: invoice.taker.state,
       email: invoice.taker.email,
-      phone: this.maskManipulator.mask(invoice.taker.phone.replace(/[^0-9]/g, ''), '(00) 00000-0000'),
+      phone: invoice.taker.phone,
       description: invoice.description,
       items: invoice.items.map((i) => {
         return {

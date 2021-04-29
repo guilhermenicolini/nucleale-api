@@ -1,8 +1,9 @@
 import { NfsePersonTransformer } from '@/infra/transformers'
 import { mockNfse } from '@/tests/infra/mocks'
+import { MaskManipulatorSpy } from '@/tests/data/mocks'
 
-const makeSutTaker = (): NfsePersonTransformer => new NfsePersonTransformer('taker', 'TOMADOR')
-const makeSutProvider = (): NfsePersonTransformer => new NfsePersonTransformer('provider', 'PRESTADOR', 'PREST')
+const makeSutTaker = (): NfsePersonTransformer => new NfsePersonTransformer('taker', 'TOMADOR', null, new MaskManipulatorSpy())
+const makeSutProvider = (): NfsePersonTransformer => new NfsePersonTransformer('provider', 'PRESTADOR', 'PREST', new MaskManipulatorSpy())
 
 describe('NfsePerson Transformer', () => {
   describe('taker', () => {
