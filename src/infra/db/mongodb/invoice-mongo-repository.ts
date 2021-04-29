@@ -1,13 +1,15 @@
 import { MongoHelper } from '@/infra/db'
 import {
   SaveInvoiceRepository,
-  LoadInvoicesRepository
+  LoadInvoicesRepository,
+  LoadInvoiceRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
 export class InvoiceMongoRepository implements
   SaveInvoiceRepository,
-  LoadInvoicesRepository {
+  LoadInvoicesRepository,
+  LoadInvoiceRepository {
   async save (data: SaveInvoiceRepository.Param): Promise<void> {
     const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
 
@@ -41,6 +43,11 @@ export class InvoiceMongoRepository implements
           }
         },
         {
+          $match: {
+            'invoice.status': 'Normal'
+          }
+        },
+        {
           $unwind: {
             path: '$invoice'
           }
@@ -65,5 +72,43 @@ export class InvoiceMongoRepository implements
         }
       ]).toArray()
     return MongoHelper.instance.mapCollection(invoices)
+  }
+
+  async loadOne (id: string, accountId: string): Promise<LoadInvoiceRepository.Result> {
+    const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
+    const invoice = await invoicesCollection
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(id),
+            status: 'Normal'
+          }
+        },
+        {
+          $lookup: {
+            from: 'accounts',
+            localField: 'taker.taxId',
+            foreignField: 'taxId',
+            as: 'account'
+          }
+        },
+        {
+          $unwind: {
+            path: '$account'
+          }
+        },
+        {
+          $match: {
+            'account.accountId': new ObjectId(accountId),
+            status: 'active'
+          }
+        },
+        {
+          $project: {
+            account: 0
+          }
+        }
+      ]).toArray()
+    return invoice ? MongoHelper.instance.map(invoice[0]) : null
   }
 }
