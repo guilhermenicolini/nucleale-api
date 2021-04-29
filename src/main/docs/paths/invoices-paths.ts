@@ -71,5 +71,50 @@ export const invoicesPaths = {
         }
       }
     }
+  },
+  '/invoices/{id}/download': {
+    get: {
+      tags: ['Invoices'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to download invoice',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'downloadInvoice',
+      parameters: [{
+        in: 'path',
+        name: 'id',
+        description: 'Invoice id to be downloaded',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/pdf': {
+              schema: {
+                type: 'string',
+                format: 'binary'
+              }
+            }
+          }
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }
