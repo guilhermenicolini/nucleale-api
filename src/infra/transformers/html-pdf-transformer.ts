@@ -1,16 +1,16 @@
 import {
-  Converter
+  Transformer
 } from '@/data/protocols'
 
 import Templates from 'email-templates'
 import pdf from 'html-pdf'
 
-export class TemplateHtmlAdapter implements Converter {
+export class HtmlPdfTransformer implements Transformer {
   constructor (
     private readonly template: string
   ) { }
 
-  async convert (message: any): Promise<string> {
+  async transform (message: any): Promise<string> {
     const templates = new Templates({
       views: {
         root: 'src/templates'

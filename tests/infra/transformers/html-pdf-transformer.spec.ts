@@ -1,9 +1,9 @@
-import { TemplateHtmlAdapter } from '@/infra/converters'
+import { HtmlPdfTransformer } from '@/infra/transformers'
 import Templates from 'email-templates'
 import pdf from 'html-pdf'
 
 const template = 'any_template'
-const makeSut = (): TemplateHtmlAdapter => new TemplateHtmlAdapter(template)
+const makeSut = (): HtmlPdfTransformer => new HtmlPdfTransformer(template)
 
 const renderStub = jest.fn().mockImplementation(() => 'any_html')
 
@@ -26,7 +26,7 @@ jest.mock('html-pdf', () => ({
 describe('TemplateHtml Adapter', () => {
   test('Should init email-templates with correct values', async () => {
     const sut = makeSut()
-    await sut.convert('any_message')
+    await sut.transform('any_message')
     expect(Templates).toHaveBeenCalledWith({
       views: {
         root: 'src/templates'
@@ -36,13 +36,13 @@ describe('TemplateHtml Adapter', () => {
 
   test('Should call render correct values', async () => {
     const sut = makeSut()
-    await sut.convert('any_message')
+    await sut.transform('any_message')
     expect(renderStub).toHaveBeenCalledWith(template, 'any_message')
   })
 
   test('Should create html-pdf with correct values', async () => {
     const sut = makeSut()
-    await sut.convert('any_message')
+    await sut.transform('any_message')
     expect(pdf.create).toHaveBeenCalledWith('any_html', {
       height: '1123px',
       width: '794px',
@@ -52,7 +52,7 @@ describe('TemplateHtml Adapter', () => {
 
   test('Should create html-pdf with correct values', async () => {
     const sut = makeSut()
-    await sut.convert('any_message')
+    await sut.transform('any_message')
     expect(pdf.create).toHaveBeenCalledWith('any_html', {
       height: '1123px',
       width: '794px',
@@ -62,13 +62,13 @@ describe('TemplateHtml Adapter', () => {
 
   test('Should call toStream', async () => {
     const sut = makeSut()
-    await sut.convert('any_message')
+    await sut.transform('any_message')
     expect(toStreamStub).toHaveBeenCalled()
   })
 
   test('Should return stream on success', async () => {
     const sut = makeSut()
-    const result = await sut.convert('any_message')
+    const result = await sut.transform('any_message')
     expect(result).toBe('any_stream')
   })
 })
