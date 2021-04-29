@@ -72,6 +72,18 @@ export class TransformerSpy implements Transformer {
   }
 }
 
+export class PdfTransformerSpy implements Transformer {
+  data: any
+  result: any = {
+    toBuffer: (cb) => cb(null, 'any_buffer')
+  }
+
+  transform (data: any): any {
+    this.data = data
+    return this.result
+  }
+}
+
 export class ConverterSpy implements Converter {
   data: any
   result: any = faker.random.word()

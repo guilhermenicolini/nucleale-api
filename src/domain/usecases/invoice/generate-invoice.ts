@@ -7,6 +7,6 @@ export namespace GenerateInvoice {
   export type Model = InvoiceModel
   export type Result = {
     fileName: string
-    pdf: any
+    buffer: any
   }
 }

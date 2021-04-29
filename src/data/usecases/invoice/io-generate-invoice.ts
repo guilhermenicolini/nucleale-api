@@ -10,9 +10,17 @@ export class IoGenerateInvoice implements GenerateInvoice {
   async generate (model: GenerateInvoice.Model): Promise<GenerateInvoice.Result> {
     const document = this.converter.convert(model)
     const pdf = await this.transformer.transform(document)
-    return {
-      fileName: `nf${model.invoiceNo}.pdf`,
-      pdf
-    }
+
+    return new Promise((resolve, reject) => {
+      pdf.toBuffer((err, buffer) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve({
+          fileName: `nf${model.invoiceNo}.pdf`,
+          buffer
+        })
+      })
+    })
   }
 }

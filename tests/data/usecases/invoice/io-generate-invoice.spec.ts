@@ -1,16 +1,16 @@
 import { IoGenerateInvoice } from '@/data/usecases'
-import { ConverterSpy, TransformerSpy } from '@/tests/data/mocks'
+import { ConverterSpy, PdfTransformerSpy } from '@/tests/data/mocks'
 import { mockInvoiceDb, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: IoGenerateInvoice,
   converterSpy: ConverterSpy,
-  transformerSpy: TransformerSpy
+  transformerSpy: PdfTransformerSpy
 }
 
 const makeSut = (): SutTypes => {
   const converterSpy = new ConverterSpy()
-  const transformerSpy = new TransformerSpy()
+  const transformerSpy = new PdfTransformerSpy()
   const sut = new IoGenerateInvoice(converterSpy, transformerSpy)
   return {
     sut,
@@ -47,11 +47,20 @@ describe('IoGenerateInvoice Usecase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should reject if toBuffer fails', async () => {
+    const { sut, transformerSpy } = makeSut()
+    transformerSpy.result = {
+      toBuffer: (cb) => cb(new Error(), null)
+    }
+    const promise = sut.generate(mockInvoiceDb())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should return object on success', async () => {
     const { sut } = makeSut()
     const data = mockInvoiceDb()
     const result = await sut.generate(data)
     expect(result.fileName).toBe(`nf${data.invoiceNo}.pdf`)
-    expect(result.pdf).toBeTruthy()
+    expect(result.buffer).toBeTruthy()
   })
 })
