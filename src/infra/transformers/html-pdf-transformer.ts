@@ -17,10 +17,11 @@ export class HtmlPdfTransformer implements Transformer {
       }
     })
     const html = await templates.render(this.template, message)
-    return pdf.create(html, {
+    const document = pdf.create(html, {
       height: '1123px',
       width: '794px',
       quality: '75'
-    }).toStream()
+    })
+    return document
   }
 }

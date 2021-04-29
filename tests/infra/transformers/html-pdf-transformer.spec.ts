@@ -13,14 +13,8 @@ jest.mock('email-templates', () => jest.fn().mockImplementation(() => {
   }
 }))
 
-const toStreamStub = jest.fn().mockImplementation(() => 'any_stream')
-
 jest.mock('html-pdf', () => ({
-  create: jest.fn().mockImplementation(() => {
-    return {
-      toStream: toStreamStub
-    }
-  })
+  create: jest.fn().mockImplementation(() => ({}))
 }))
 
 describe('TemplateHtml Adapter', () => {
@@ -60,15 +54,9 @@ describe('TemplateHtml Adapter', () => {
     })
   })
 
-  test('Should call toStream', async () => {
-    const sut = makeSut()
-    await sut.transform('any_message')
-    expect(toStreamStub).toHaveBeenCalled()
-  })
-
-  test('Should return stream on success', async () => {
+  test('Should return document on success', async () => {
     const sut = makeSut()
     const result = await sut.transform('any_message')
-    expect(result).toBe('any_stream')
+    expect(result).toEqual({})
   })
 })

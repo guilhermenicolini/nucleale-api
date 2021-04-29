@@ -6,8 +6,8 @@ import { ObjectId } from 'mongodb'
 
 export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
-  invoiceDate: faker.date.past().getUTCMilliseconds(),
-  issueDate: faker.date.past().getUTCMilliseconds(),
+  invoiceDate: faker.date.past().valueOf(),
+  issueDate: faker.date.past().valueOf(),
   verificationCode: faker.random.alphaNumeric(8),
   status: 'Normal',
   description: faker.random.words(3),
