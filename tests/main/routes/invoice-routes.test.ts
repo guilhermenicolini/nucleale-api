@@ -83,5 +83,12 @@ describe('Invoices Routes', () => {
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
     })
+
+    test('Should return 404 if invoice does not exists', async () => {
+      await request(app)
+        .get(`/invoices/${mockId()}/download`)
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(404)
+    })
   })
 })
