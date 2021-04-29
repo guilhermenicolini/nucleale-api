@@ -29,6 +29,7 @@ export class DownloadInvoiceController implements Controller {
       const document = await this.generateInvoice.generate(invoice)
       return ok(document)
     } catch (error) {
+      console.log(error)
       return serverError(error)
     }
   }
