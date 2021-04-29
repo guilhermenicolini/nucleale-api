@@ -23,5 +23,11 @@ describe('StringMask Adapter', () => {
       expect(applyStub).toHaveBeenCalledWith(value)
       expect(masked).toBe('12345-678')
     })
+
+    test('Should return null if value is invalid', () => {
+      const sut = makeSut()
+      const masked = sut.mask('', mask)
+      expect(masked).toBe(null)
+    })
   })
 })
