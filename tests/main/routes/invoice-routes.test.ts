@@ -76,5 +76,12 @@ describe('Invoices Routes', () => {
         .get(`/invoices/${mockId()}/download`)
         .expect(401)
     })
+
+    test('Should return 400 if invalid id is provided', async () => {
+      await request(app)
+        .get('/invoices/wrong_id/download')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(400)
+    })
   })
 })
