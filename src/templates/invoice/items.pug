@@ -1,0 +1,20 @@
+table(cellspacing='0' cellpadding='0' style='width: 100%; border-collapse: collapse; height: 200px;')
+  thead
+    th(style='width: 8%; border-right: 1px solid black; text-align: left; padding: 3px;') Tributável
+    th(style='width: 62%; border-right: 1px solid black; text-align: left; padding: 3px;') Item
+    th(style='width: 10%; border-right: 1px solid black; text-align: right; padding: 3px;') Qtde
+    th(style='width: 10%; border-right: 1px solid black; text-align: right; padding: 3px;') Unitário R$
+    th(style='width: 10%; text-align: right; padding: 3px;') Total R$
+  tbody(style='vertical-align: top; padding: 3px;')
+    tr
+      each item in items
+        td(style='border-right: 1px solid black; text-align: center; padding: 3px;')
+          b #{item.taxable}
+        td(style='border-right: 1px solid black; text-align: left; padding: 3px;')
+          b #{item.description}
+        td(style='border-right: 1px solid black;text-align: right; padding: 3px;')
+          b #{item.qty}
+        td(style='border-right: 1px solid black;text-align: right; padding: 3px;')
+          b #{item.unitValue}
+        td(style='border-right: 1px solid black;text-align: right; padding: 3px;')
+          b #{item.totalValue}
