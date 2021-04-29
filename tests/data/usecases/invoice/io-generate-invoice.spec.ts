@@ -48,8 +48,10 @@ describe('IoGenerateInvoice Usecase', () => {
   })
 
   test('Should return object on success', async () => {
-    const { sut, transformerSpy } = makeSut()
-    const result = await sut.generate(mockInvoiceDb())
-    expect(result).toEqual(transformerSpy.result)
+    const { sut } = makeSut()
+    const data = mockInvoiceDb()
+    const result = await sut.generate(data)
+    expect(result.fileName).toBe(`nf${data.invoiceNo}.pdf`)
+    expect(result.pdf).toBeTruthy()
   })
 })

@@ -9,7 +9,10 @@ export class IoGenerateInvoice implements GenerateInvoice {
 
   async generate (model: GenerateInvoice.Model): Promise<GenerateInvoice.Result> {
     const document = this.converter.convert(model)
-    const result = this.transformer.transform(document)
-    return result
+    const pdf = await this.transformer.transform(document)
+    return {
+      fileName: `nf${model.invoiceNo}.pdf`,
+      pdf
+    }
   }
 }
