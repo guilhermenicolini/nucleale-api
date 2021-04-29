@@ -100,7 +100,7 @@ export class InvoiceMongoRepository implements
         {
           $match: {
             'account.accountId': new ObjectId(accountId),
-            status: 'active'
+            'account.status': 'active'
           }
         },
         {
@@ -109,6 +109,6 @@ export class InvoiceMongoRepository implements
           }
         }
       ]).toArray()
-    return invoice ? MongoHelper.instance.map(invoice[0]) : null
+    return invoice.length === 1 ? MongoHelper.instance.map(invoice[0]) : null
   }
 }
