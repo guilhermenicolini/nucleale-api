@@ -13,7 +13,7 @@ export class HtmlPdfTransformer implements Transformer {
   async transform (message: any): Promise<string> {
     const templates = new Templates({
       views: {
-        root: 'src/templates'
+        root: 'templates'
       }
     })
     const html = await templates.render(this.template, message)

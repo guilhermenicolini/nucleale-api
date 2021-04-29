@@ -19,8 +19,8 @@ describe('StringMask Adapter', () => {
     test('Should call string-mask apply with correct values', () => {
       const sut = makeSut()
       const masked = sut.mask(value, mask)
-      expect(StringMask).toHaveBeenCalledWith(value)
-      expect(applyStub).toHaveBeenCalledWith(mask)
+      expect(StringMask).toHaveBeenCalledWith(mask)
+      expect(applyStub).toHaveBeenCalledWith(value)
       expect(masked).toBe('12345-678')
     })
   })

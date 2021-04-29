@@ -23,7 +23,7 @@ describe('TemplateHtml Adapter', () => {
     await sut.transform('any_message')
     expect(Templates).toHaveBeenCalledWith({
       views: {
-        root: 'src/templates'
+        root: 'templates'
       }
     })
   })

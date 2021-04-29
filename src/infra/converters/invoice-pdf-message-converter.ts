@@ -20,13 +20,13 @@ export class InvoicePdfMessageConverter implements Converter {
       invoiceValue: this.moneyManipulator.format(invoice.invoiceValue),
       verificationCode: invoice.verificationCode.substring(0, 8),
       name: invoice.taker.name,
-      taxId: this.maskManipulator.mask(invoice.taker.taxId, '000.0000.0000-00'),
+      taxId: this.maskManipulator.mask(invoice.taker.taxId, '000.000.000-00'),
       registryId: null,
       address: invoice.taker.address,
       city: invoice.taker.city,
       state: invoice.taker.state,
       email: invoice.taker.email,
-      phone: this.maskManipulator.mask(invoice.taker.phone, '(00) 00000-0000'),
+      phone: this.maskManipulator.mask(invoice.taker.phone.replace(/[^0-9]/g, ''), '(00) 00000-0000'),
       description: invoice.description,
       items: invoice.items.map((i) => {
         return {
