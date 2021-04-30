@@ -1,4 +1,5 @@
 export * from './controllers'
+export * from './converters'
 export * from './middlewares'
 export * from './transformers'
 export * from './usecases'

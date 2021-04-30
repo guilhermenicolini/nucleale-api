@@ -1,3 +1,5 @@
+export * from './generate-invoice'
+export * from './load-invoice'
 export * from './load-invoices'
 export * from './load-invoices-from-buffer'
 export * from './save-invoice'

@@ -1,15 +1,16 @@
-import { Transformer } from '@/data/protocols'
+import { Transformer, TimeManipulator } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 import { removeTextCharacters, parseMoney, hasValue } from '@/infra/utils'
-import moment from 'moment-timezone'
 
 export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'>> {
+  constructor (
+    private readonly timeManipulator: TimeManipulator
+  ) { }
+
   transform (data: any): Omit<InvoiceModel, 'id' | 'provider' | 'taker' | 'items'> {
-    const invoiceDate = moment(data.DATA_HORA_EMISSAO, 'DD/MM/YYYY HH:mm:ss')
-    const issueDate = moment(
-      `${data.DIA_EMISSAO}${invoiceDate.format('/MM/YYYY')}`,
-      'DD/MM/YYYY'
-    )
+    const invoiceDate = this.timeManipulator.fromDateAndTime(data.DATA_HORA_EMISSAO)
+    const invoiceMonth = this.timeManipulator.toMonthAndYear(invoiceDate)
+    const issueDate = this.timeManipulator.fromDate(`${data.DIA_EMISSAO}${invoiceMonth}`)
 
     return {
       invoiceNo: parseInt(data.NUM_NOTA),

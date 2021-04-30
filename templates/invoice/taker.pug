@@ -1,0 +1,41 @@
+table(cellspacing='0' cellpadding='0' style='width: 100%; border-collapse: collapse;')
+  tr
+    td(style='text-align: center; padding: 3px;' colspan='4')
+      b TOMADOR DE SERVIÇOS
+  tr
+    td(style='padding: 3px;' colspan='4')
+      label(style='padding-right: 3px;') Nome/Razão Social:
+      span
+        b #{name}
+  tr
+    td(style='padding: 3px;' colspan='2')
+      label(style='padding-right: 3px;') CPF/CNPJ:
+      span
+        b #{taxId}
+    if registryId
+      td(style='padding: 3px;' colspan='2')
+        label(style='padding-right: 3px;') Inscrição Municipal:
+        span
+          b #{registryId}
+  tr
+    td(style='padding: 3px;' colspan='4')
+      label(style='padding-right: 3px;') Endereço:
+      span
+        b #{address}
+  tr
+    td(style='width: 25%;padding: 3px;')
+      label(style='padding-right: 3px;') Município:
+      span
+        b #{city}
+    td(style='width: 10%;padding: 3px;')
+      label(style='padding-right: 3px;') UF:
+      span
+        b #{state}
+    td(style='width: 45%;padding: 3px;')
+      label(style='padding-right: 3px;') E-mail:
+      span
+        b #{email}
+    td(style='width: 20%;padding: 3px;')
+      label(style='padding-right: 3px;') Telefone:
+      span
+        b #{phone}
