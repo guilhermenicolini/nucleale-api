@@ -71,7 +71,7 @@ describe('AccountMongoRepository', () => {
       const inserted = await sut.add(data)
       const account = await sut.load(data.email)
       expect(account.accountId).toBe(inserted.accountId)
-      expect(account.userId).toBe(inserted.userId)
+      expect(account.id).toBe(inserted.userId)
       expect(account.password).toBe(data.password)
     })
 

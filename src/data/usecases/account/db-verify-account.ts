@@ -14,7 +14,7 @@ export class DbVerifyAccount implements VerifyAccount {
       if (isValid) {
         return {
           accountId: account.accountId,
-          userId: account.userId,
+          userId: account.id,
           role: account.role
         }
       }
