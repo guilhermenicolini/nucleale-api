@@ -56,7 +56,7 @@ export class GenerateInvoiceSpy implements GenerateInvoice {
   model: GenerateInvoice.Model
   result: GenerateInvoice.Result = {
     fileName: faker.system.commonFileName('pdf'),
-    pdf: {}
+    buffer: {}
   }
 
   async generate (model: GenerateInvoice.Model): Promise<GenerateInvoice.Result> {
