@@ -1,5 +1,6 @@
 export type MessageModel = {
   email: string
   phone: string
-  message: string
+  text: string
+  html: string
 }
