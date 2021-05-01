@@ -1,25 +1,32 @@
 import { DbGeneratePasswordRecoveryLink } from '@/data/usecases'
 import { LinkTypes } from '@/domain/models'
-import { AddLinkRepositorySpy, MessagefySpy, SenderSpy } from '@/tests/data/mocks'
+import { AddLinkRepositorySpy, MessagefySpy, SenderSpy, TimeManipulatorSpy } from '@/tests/data/mocks'
 import { mockAccountModel, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbGeneratePasswordRecoveryLink,
   addLinkRepositorySpy: AddLinkRepositorySpy,
   messagefySpy: MessagefySpy,
-  senderSpy: SenderSpy
+  senderSpy: SenderSpy,
+  timeManipulatorSpy: TimeManipulatorSpy
 }
 
 const makeSut = (): SutTypes => {
   const addLinkRepositorySpy = new AddLinkRepositorySpy()
   const messagefySpy = new MessagefySpy()
   const senderSpy = new SenderSpy()
-  const sut = new DbGeneratePasswordRecoveryLink(addLinkRepositorySpy, messagefySpy, senderSpy)
+  const timeManipulatorSpy = new TimeManipulatorSpy()
+  const sut = new DbGeneratePasswordRecoveryLink(addLinkRepositorySpy,
+    messagefySpy,
+    senderSpy,
+    'any_url',
+    timeManipulatorSpy)
   return {
     sut,
     addLinkRepositorySpy,
     messagefySpy,
-    senderSpy
+    senderSpy,
+    timeManipulatorSpy
   }
 }
 
@@ -43,8 +50,16 @@ describe('DbGeneratePasswordRecoveryLink Usecase', () => {
 
   test('Should call Messagefy with correct values', async () => {
     const { sut, addLinkRepositorySpy, messagefySpy } = makeSut()
-    await sut.generate(mockAccountModel())
-    expect(messagefySpy.data).toEqual(addLinkRepositorySpy.result)
+    const data = mockAccountModel()
+    await sut.generate(data)
+    expect(messagefySpy.data).toEqual({
+      ...addLinkRepositorySpy.result,
+      name: data.name,
+      email: data.email,
+      phone: data.mobilePhone,
+      link: `any_url/change-password/${addLinkRepositorySpy.result.link}`,
+      expiration: 'any_date'
+    })
   })
 
   test('Should throw if Messagefy throws', async () => {
