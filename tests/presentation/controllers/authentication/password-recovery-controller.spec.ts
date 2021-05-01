@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('SignUp Controller', () => {
+describe('PasswordRecovery Controller', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationSpy } = makeSut()
     const request = mockPasswordRecoveryRequest()
