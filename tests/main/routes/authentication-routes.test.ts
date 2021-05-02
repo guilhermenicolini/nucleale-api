@@ -127,5 +127,11 @@ describe('Account Routes', () => {
         .post('/password-recovery/invalid_email')
         .expect(400)
     })
+
+    test('Should return 404 if account not exists', async () => {
+      await request(app)
+        .post(`/password-recovery/${faker.internet.email()}`)
+        .expect(404)
+    })
   })
 })
