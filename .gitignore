@@ -5,3 +5,4 @@ dist
 .eslintcache
 globalConfig.json
 .env
+tokens
