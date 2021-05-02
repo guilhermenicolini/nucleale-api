@@ -1,0 +1,18 @@
+table(cellspacing='0' cellpadding='0' style='width: 100%; border-collapse: collapse;')
+  tr
+    td(style='width: 25%; border-right: 1px solid black; padding: 3px;')
+      div(style='display: flex; flex-direction:column;')
+        label Deduções do ISSQN
+        span(style='padding: 3px; display: block; font-weight: bold; text-align: right;') R$ 0,00
+    td(style='width: 25%; border-right: 1px solid black; padding: 3px;')
+      div(style='display: flex; flex-direction:column;')
+        label Base de Cálculo do ISSQN
+        span(style='padding: 3px; display: block; font-weight: bold; text-align: right;') #{serviceValue}
+    td(style='width: 25%; border-right: 1px solid black; padding: 3px;')
+      div(style='display: flex; flex-direction:column;')
+        label Alíquota do ISSQN
+        span(style='padding: 3px; display: block; font-weight: bold; text-align: right;') #{issAliquot}
+    td(style='width: 25%; border-right: none; padding: 3px;')
+      div(style='display: flex; flex-direction:column;')
+        label ISSQN Devido
+        span(style='padding: 3px; display: block; font-weight: bold; text-align: right;') #{issValue}       

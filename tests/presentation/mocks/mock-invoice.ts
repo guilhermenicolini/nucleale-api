@@ -1,9 +1,13 @@
 import {
   LoadInvoicesFromBuffer,
   SaveInvoice,
-  LoadInvoices
+  LoadInvoices,
+  LoadInvoice,
+  GenerateInvoice
 } from '@/domain/usecases'
-import { mockInvoice, mockLoadInvoice } from '@/tests/domain/mocks'
+import { mockInvoice, mockLoadInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
+
+import faker from 'faker'
 
 export class LoadInvoicesFromBufferSpy implements LoadInvoicesFromBuffer {
   buffer: Buffer
@@ -32,6 +36,31 @@ export class LoadInvoicesSpy implements LoadInvoices {
 
   async load (accountId: string): Promise<LoadInvoices.Result> {
     this.accountId = accountId
+    return this.result
+  }
+}
+
+export class LoadInvoiceSpy implements LoadInvoice {
+  id: string
+  accountId: string
+  result: LoadInvoice.Result = mockInvoiceDb()
+
+  async load (id: string, accountId: string): Promise<LoadInvoice.Result> {
+    this.id = id
+    this.accountId = accountId
+    return this.result
+  }
+}
+
+export class GenerateInvoiceSpy implements GenerateInvoice {
+  model: GenerateInvoice.Model
+  result: GenerateInvoice.Result = {
+    fileName: faker.system.commonFileName('pdf'),
+    buffer: {}
+  }
+
+  async generate (model: GenerateInvoice.Model): Promise<GenerateInvoice.Result> {
+    this.model = model
     return this.result
   }
 }

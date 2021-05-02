@@ -80,4 +80,40 @@ describe('InvoiceMongoRepository', () => {
     const result = await sut.load(new ObjectId().toString())
     expect(result.length).toBe(0)
   })
+
+  describe('loadOne()', () => {
+    test('Should return invoice only if account is active', async () => {
+      const sut = makeSut()
+      const accountId = new ObjectId()
+      const taxId = faker.address.zipCode('###########')
+      const invoice = mockInvoice(taxId)
+      await accountsCollection.insertOne({ accountId, taxId, status: 'active' })
+      const insertedInvoice = await invoicesCollection.insertOne(invoice)
+      const result = await sut.loadOne(insertedInvoice.ops[0]._id.toString(), accountId.toString())
+      expect(result).toBeTruthy()
+    })
+
+    test('Should not return invoice if account is not active', async () => {
+      const sut = makeSut()
+      const accountId = new ObjectId()
+      const taxId = faker.address.zipCode('###########')
+      const invoice = mockInvoice(taxId)
+      await accountsCollection.insertOne({ accountId, taxId, status: 'inactive' })
+      const insertedInvoice = await invoicesCollection.insertOne(invoice)
+      const result = await sut.loadOne(insertedInvoice.ops[0]._id.toString(), accountId.toString())
+      expect(result).toBeFalsy()
+    })
+
+    test('Should not return invoice if invoice is not Normal', async () => {
+      const sut = makeSut()
+      const accountId = new ObjectId()
+      const taxId = faker.address.zipCode('###########')
+      const invoice = mockInvoice(taxId)
+      invoice.status = 'Cancelado'
+      await accountsCollection.insertOne({ accountId, taxId, status: 'active' })
+      const insertedInvoice = await invoicesCollection.insertOne(invoice)
+      const result = await sut.loadOne(insertedInvoice.ops[0]._id.toString(), accountId.toString())
+      expect(result).toBeFalsy()
+    })
+  })
 })

@@ -2,11 +2,37 @@ import { InvoiceModel, InvoicePersonModel, InvoiceItemModel } from '@/domain/mod
 
 import faker from 'faker'
 import fs from 'fs'
+import { ObjectId } from 'mongodb'
 
 export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
-  invoiceDate: faker.date.past().getUTCMilliseconds(),
-  issueDate: faker.date.past().getUTCMilliseconds(),
+  invoiceDate: faker.date.past().valueOf(),
+  issueDate: faker.date.past().valueOf(),
+  verificationCode: faker.random.alphaNumeric(8),
+  status: 'Normal',
+  description: faker.random.words(3),
+  invoiceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  serviceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  issValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
+  issAliquot: faker.datatype.float({ min: 1, max: 4, precision: 2 }),
+  competence: faker.random.word(),
+  pickupType: faker.random.word()[0].toUpperCase(),
+  taxation: faker.random.word(),
+  cnae: faker.random.word(),
+  activity: faker.random.word(),
+  service: faker.random.word(),
+  serviceCity: faker.address.city(),
+  serviceState: faker.address.stateAbbr(),
+  provider: mockPerson(),
+  taker: mockPerson(taxId),
+  items: [mockItem(), mockItem()]
+})
+
+export const mockInvoiceDb = (taxId?: string): InvoiceModel => ({
+  id: new ObjectId().toString(),
+  invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
+  invoiceDate: 1619481600000,
+  issueDate: 1619481600000,
   verificationCode: faker.random.alphaNumeric(8),
   status: faker.random.word(),
   description: faker.random.words(3),
@@ -15,7 +41,7 @@ export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   issValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
   issAliquot: faker.datatype.float({ min: 1, max: 4, precision: 2 }),
   competence: faker.random.word(),
-  pickupType: faker.random.word()[0].toUpperCase(),
+  pickupType: 'A',
   taxation: faker.random.word(),
   cnae: faker.random.word(),
   activity: faker.random.word(),
@@ -39,7 +65,7 @@ export const mockPerson = (taxId?: string): InvoicePersonModel => ({
 })
 
 export const mockItem = (): InvoiceItemModel => ({
-  taxable: faker.datatype.boolean(),
+  taxable: true,
   description: faker.random.words(5),
   quantity: faker.datatype.number({ min: 1, max: 3 }),
   unitValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
@@ -56,4 +82,9 @@ export const mockLoadInvoice = (): Pick<InvoiceModel, 'id' | 'invoiceNo' | 'invo
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
   invoiceDate: faker.date.past().getUTCMilliseconds(),
   description: faker.random.words(3)
+})
+
+export const mockDownloadRequest = () => ({
+  id: new ObjectId().toString(),
+  accountId: new ObjectId().toString()
 })

@@ -1,4 +1,4 @@
-import { Hasher, Signer, HashComparer, Decrypter, Transformer } from '@/data/protocols'
+import { Hasher, Signer, HashComparer, Decrypter, Transformer, Converter } from '@/data/protocols'
 
 import faker from 'faker'
 
@@ -67,6 +67,28 @@ export class TransformerSpy implements Transformer {
   result: any = { [faker.database.column()]: faker.random.word() }
 
   transform (data: any): any {
+    this.data = data
+    return this.result
+  }
+}
+
+export class PdfTransformerSpy implements Transformer {
+  data: any
+  result: any = {
+    toBuffer: (cb) => cb(null, 'any_buffer')
+  }
+
+  transform (data: any): any {
+    this.data = data
+    return this.result
+  }
+}
+
+export class ConverterSpy implements Converter {
+  data: any
+  result: any = faker.random.word()
+
+  convert (data: any): any {
     this.data = data
     return this.result
   }

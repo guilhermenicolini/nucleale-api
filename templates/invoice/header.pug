@@ -1,0 +1,25 @@
+table(style='width: 100%; border-collapse: collapse;' cellspacing='0' cellpadding='0')
+  tr
+    td(style='width: 70px; text-align: center;' rowspan='3')
+        include campinas.pug
+    td(style='border-right: 1px solid black;' rowspan='3')
+      span(style='padding: 3px; display: block; font-weight: bold; text-align: center;')
+        b PREFEITURA MUNICIPAL DE CAMPINAS
+      span(style='padding: 3px; display: block; font-weight: bold; text-align: center;')
+        b SECRETARIA MUNICIPAL DE FINANÇAS DE CAMPINAS
+      span(style='padding: 3px; display: block; font-weight: bold; text-align: center;')
+        b NOTA FISCAL DE SERVIÇOS ELETRÔNICA - NFSe
+    td(style='width: 200px; border-bottom: 1px solid black; padding: 3px;')
+      div(style='display: flex; flex-direction: column;')
+        label Número da Nota
+        span(style='padding: 3px; display: block; font-weight: bold; text-align: center;') #{invoiceNo}
+  tr
+    td(style='border-bottom: 1px solid black; padding: 3px;')
+      div(style='display: flex; flex-direction:column;')
+        label Data e Hora de Emissão
+        span(style='padding: 3px; display: block; font-weight: bold; text-align: center;') #{invoiceDate}
+  tr
+    td(style='padding: 3px;')
+      div(style='display: flex; flex-direction:column;')
+        label Código de Verificação
+        span(style='padding: 3px; display: block; font-weight: bold; text-align: center;') #{verificationCode}

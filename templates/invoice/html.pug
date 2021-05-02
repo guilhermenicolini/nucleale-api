@@ -1,0 +1,35 @@
+doctype html
+html(style='font-family: "Arial, Helvetica, sans-serif"; margin: 10px; padding: 0; font-size: 0.8em;')
+  head
+  body(style='font-family: "Arial, Helvetica, sans-serif"; margin: 10px; padding: 0; font-size: 0.8em;')
+    table(cellspacing='0' cellpadding='0' style='width: 100%; border-collapse: collapse;')
+      tr
+        td(style='border: 1px solid black;')
+          include header.pug
+      tr
+        td(style='border: 1px solid black; padding: 3px')
+          include provider.pug
+      tr
+        td(style='border: 1px solid black; padding: 3px')
+          include taker.pug
+      tr
+        td(style='border: 1px solid black; padding: 3px')
+          include description.pug
+      tr
+        td(style='border: 1px solid black;')
+          include items.pug
+      tr
+        td(style='border: 1px solid black; padding: 3px; text-align: center;')
+          b DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL
+      tr
+        td(style='border: 1px solid black;')
+          include aliquotes.pug
+      tr
+        td(style='border: 1px solid black; padding: 3px; text-align: center;')
+          b VALOR TOTAL DA NOTA = R$ #{invoiceValue}
+      tr
+        td(style='border: 1px solid black;')
+          include totals.pug
+      tr
+        td(style='border: 1px solid black; padding: 3px')
+          include informations.pug

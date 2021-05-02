@@ -1,8 +1,9 @@
 import { NfsePersonTransformer } from '@/infra/transformers'
 import { mockNfse } from '@/tests/infra/mocks'
+import { MaskManipulatorSpy } from '@/tests/data/mocks'
 
-const makeSutTaker = (): NfsePersonTransformer => new NfsePersonTransformer('taker', 'TOMADOR')
-const makeSutProvider = (): NfsePersonTransformer => new NfsePersonTransformer('provider', 'PRESTADOR', 'PREST')
+const makeSutTaker = (): NfsePersonTransformer => new NfsePersonTransformer('taker', 'TOMADOR', null, new MaskManipulatorSpy())
+const makeSutProvider = (): NfsePersonTransformer => new NfsePersonTransformer('provider', 'PRESTADOR', 'PREST', new MaskManipulatorSpy())
 
 describe('NfsePerson Transformer', () => {
   describe('taker', () => {
@@ -18,6 +19,7 @@ describe('NfsePerson Transformer', () => {
       const data = mockNfse()
       data.TOMADOR_TIPO_LOGRADOURO = null
       data.TOMADOR_COMPLEMENTO = null
+      data.TOMADOR_TELEFONE = '34567890'
       const result = sut.transform(data)
       expect(result.taker).toBeTruthy()
     })
