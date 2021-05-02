@@ -1,4 +1,5 @@
 import { create, Whatsapp } from '@wppconnect-team/wppconnect'
+import env from '@/main/config/env'
 
 export class WhatsappHelper {
   private client: Whatsapp = null
@@ -15,7 +16,7 @@ export class WhatsappHelper {
 
   async connect (): Promise<void> {
     this.client = await create({
-      session: 'attendance',
+      session: env.whatsappSession,
       autoClose: 0
     })
   }
