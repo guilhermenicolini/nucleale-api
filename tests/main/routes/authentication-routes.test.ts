@@ -133,5 +133,13 @@ describe('Account Routes', () => {
         .post(`/password-recovery/${faker.internet.email()}`)
         .expect(404)
     })
+
+    test('Should return 204 on success', async () => {
+      const data = mockAccountModel()
+      await accountCollection.insertOne(data)
+      await request(app)
+        .post(`/password-recovery/${data.email}`)
+        .expect(204)
+    })
   })
 })
