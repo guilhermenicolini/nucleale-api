@@ -1,4 +1,5 @@
-import { Authentication } from '@/domain/usecases'
+import { AccountModel } from '@/domain/models'
+import { Authentication, GeneratePasswordRecoveryLink } from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -11,5 +12,13 @@ export class AuthenticationSpy implements Authentication {
   async auth (params: Authentication.Params): Promise<Authentication.Result> {
     this.params = params
     return this.result
+  }
+}
+
+export class GeneratePasswordRecoveryLinkSpy implements GeneratePasswordRecoveryLink {
+  account: AccountModel
+
+  async generate (account: AccountModel): Promise<void> {
+    this.account = account
   }
 }

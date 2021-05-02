@@ -7,3 +7,7 @@ export const mockAuthenticationParams = (): Authentication.Params => ({
   userId: faker.datatype.uuid(),
   role: faker.random.word()
 })
+
+export const mockPasswordRecoveryRequest = () => ({
+  email: faker.internet.email()
+})

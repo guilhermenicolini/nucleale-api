@@ -12,3 +12,7 @@ export enum Gender {
   male = 'male',
   female = 'female'
 }
+
+export enum LinkTypes {
+  passwordRecovery = 'passwordRecovery'
+}

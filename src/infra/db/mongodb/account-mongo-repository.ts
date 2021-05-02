@@ -49,23 +49,9 @@ export class AccountMongoRepository implements
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const account = await accountCollection.findOne({
       email
-    }, {
-      projection: {
-        _id: 1,
-        accountId: 1,
-        password: 1,
-        role: 1
-      }
     })
-    if (account) {
-      return {
-        accountId: account.accountId.toString(),
-        userId: account._id.toString(),
-        password: account.password,
-        role: account.role
-      }
-    }
-    return null
+
+    return account ? MongoHelper.instance.map(account, accountMapper()) : null
   }
 
   async loadByStatus (params: LoadAccountsByStatusRepository.Params): Promise<LoadAccountsByStatusRepository.Result> {

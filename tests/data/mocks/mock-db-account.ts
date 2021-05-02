@@ -40,12 +40,7 @@ export class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepo
 
 export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
   email: string
-  result: LoadAccountByEmailRepository.Result = {
-    accountId: faker.datatype.uuid(),
-    userId: faker.datatype.uuid(),
-    password: faker.internet.password(),
-    role: faker.random.word()
-  }
+  result: LoadAccountByEmailRepository.Result = mockAccountModel()
 
   async load (email: string): Promise<LoadAccountByEmailRepository.Result> {
     this.email = email

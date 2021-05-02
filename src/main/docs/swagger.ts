@@ -1,6 +1,5 @@
 import {
-  signUpPath,
-  loginPath,
+  authenticationPaths,
   accountsPaths,
   addressesPaths,
   childrensPaths,
@@ -56,8 +55,7 @@ export const tags = {
 }
 
 export const paths = {
-  '/signup': signUpPath,
-  '/login': loginPath,
+  ...authenticationPaths,
   ...accountsPaths,
   ...addressesPaths,
   ...childrensPaths,
