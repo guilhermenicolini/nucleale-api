@@ -4,15 +4,6 @@ import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
-jest.mock('@wppconnect-team/wppconnect', jest.fn().mockImplementation(() => {
-  return {
-    create: jest.fn().mockImplementation(() => ({
-      sendText: jest.fn(),
-      close: jest.fn()
-    }))
-  }
-}))
-
 const mockData = (): MessageModel => ({
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
