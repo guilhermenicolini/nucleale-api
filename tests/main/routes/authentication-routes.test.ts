@@ -120,4 +120,12 @@ describe('Account Routes', () => {
         .expect(validateToken(inserted.ops[0]))
     })
   })
+
+  describe('POST /password-recovery/:email', () => {
+    test('Should return 400 on invalid email', async () => {
+      await request(app)
+        .post('/password-recovery/invalid_email')
+        .expect(400)
+    })
+  })
 })
