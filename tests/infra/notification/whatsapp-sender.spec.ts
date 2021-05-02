@@ -1,18 +1,18 @@
 import { MessageModel } from '@/domain/models'
-import { WhatsappSender } from '@/infra/notification'
+import { WhatsappSender, WhatsappHelper } from '@/infra/notification'
 import { throwError } from '@/tests/domain/mocks'
-import faker from 'faker'
 
-let sendMessageStub = jest.fn()
+import faker from 'faker'
 
 jest.mock('@wppconnect-team/wppconnect', jest.fn().mockImplementation(() => {
   return {
     create: jest.fn().mockImplementation(() => ({
-      sendText: sendMessageStub,
+      sendText: jest.fn(),
       close: jest.fn()
     }))
   }
 }))
+
 const mockData = (): MessageModel => ({
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
@@ -23,22 +23,19 @@ const mockData = (): MessageModel => ({
 const makeSut = (): WhatsappSender => new WhatsappSender()
 
 describe('Whatsapp Sender', () => {
-  beforeEach(async () => {
-    sendMessageStub = jest.fn()
-  })
-
   test('Should call WhatsappHelper with correct values', async () => {
     const sut = makeSut()
     const data = mockData()
+    WhatsappHelper.instance.sendMessage = jest.fn()
     await sut.send(data)
-    expect(sendMessageStub).toHaveBeenLastCalledWith(`${data.phone}@c.us`, data.text)
+    expect(WhatsappHelper.instance.sendMessage).toHaveBeenLastCalledWith(data.phone, data.text)
   })
 
-  test('Should return null if  WhatsappHelper throws', async () => {
+  test('Should return null if WhatsappHelper throws', async () => {
     const sut = makeSut()
     const data = mockData()
-    sendMessageStub = jest.fn().mockImplementation(throwError)
+    WhatsappHelper.instance.sendMessage = jest.fn().mockImplementation(throwError)
     const result = await sut.send(data)
-    expect(result).toBeFalsy()
+    expect(result).toBe(null)
   })
 })
