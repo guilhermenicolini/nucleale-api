@@ -22,7 +22,8 @@ jest.mock('@google-cloud/storage', () => ({
           exists: existsStub,
           save: jest.fn(),
           download: jest.fn().mockImplementation(() => Buffer.from(JSON.stringify({ ok: 'ok' }), 'utf8'))
-        }))
+        })),
+        getFiles: jest.fn().mockImplementation(() => [[{ name: 'token1' }, { name: 'token2' }]])
       }))
     }
   })
@@ -59,5 +60,11 @@ describe('GoogleTokenStore Adapter', () => {
     const sut = makeSut()
     const token = await sut.removeToken(sessionName)
     expect(token).toBe(false)
+  })
+
+  test('Should return all tokens', async () => {
+    const sut = makeSut()
+    const tokens = await sut.listTokens()
+    expect(tokens).toEqual(['token1', 'token2'])
   })
 })
