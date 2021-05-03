@@ -54,4 +54,10 @@ describe('GoogleTokenStore Adapter', () => {
     const token = await sut.removeToken(sessionName)
     expect(token).toBe(false)
   })
+
+  test('Should return true if delete token exists', async () => {
+    const sut = makeSut()
+    const token = await sut.removeToken(sessionName)
+    expect(token).toBe(false)
+  })
 })
