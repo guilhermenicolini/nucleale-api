@@ -16,6 +16,7 @@ jest.mock('@google-cloud/storage', () => ({
         file: jest.fn().mockImplementation(() => ({
           exists: jest.fn().mockImplementation(() => [true]),
           save: jest.fn(),
+          delete: jest.fn(),
           download: jest.fn().mockImplementation(() => Buffer.from(JSON.stringify({ ok: 'ok' }), 'utf8'))
         })),
         getFiles: jest.fn().mockImplementation(() => [[{ name: 'token1' }, { name: 'token2' }]])

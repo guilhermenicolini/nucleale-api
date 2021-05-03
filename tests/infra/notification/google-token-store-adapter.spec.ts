@@ -21,6 +21,7 @@ jest.mock('@google-cloud/storage', () => ({
         file: jest.fn().mockImplementation(() => ({
           exists: existsStub,
           save: jest.fn(),
+          delete: jest.fn(),
           download: jest.fn().mockImplementation(() => Buffer.from(JSON.stringify({ ok: 'ok' }), 'utf8'))
         })),
         getFiles: jest.fn().mockImplementation(() => [[{ name: 'token1' }, { name: 'token2' }]])
@@ -30,6 +31,10 @@ jest.mock('@google-cloud/storage', () => ({
 }))
 
 describe('GoogleTokenStore Adapter', () => {
+  beforeEach(async () => {
+    existsStub = jest.fn().mockImplementation(() => [true])
+  })
+
   test('Should get token on success', async () => {
     const sut = makeSut()
     const token = await sut.getToken(sessionName)
@@ -58,8 +63,8 @@ describe('GoogleTokenStore Adapter', () => {
 
   test('Should return true if delete token exists', async () => {
     const sut = makeSut()
-    const token = await sut.removeToken(sessionName)
-    expect(token).toBe(false)
+    const result = await sut.removeToken(sessionName)
+    expect(result).toBe(true)
   })
 
   test('Should return all tokens', async () => {
