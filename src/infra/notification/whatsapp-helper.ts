@@ -1,4 +1,5 @@
 import { create, Whatsapp } from '@wppconnect-team/wppconnect'
+import { GoogleTokenStore } from './google-token-store-adapter'
 import env from '@/main/config/env'
 
 export class WhatsappHelper {
@@ -17,7 +18,8 @@ export class WhatsappHelper {
   async connect (): Promise<void> {
     this.client = await create({
       session: env.whatsappSession,
-      autoClose: 0
+      autoClose: 0,
+      tokenStore: new GoogleTokenStore()
     })
   }
 
