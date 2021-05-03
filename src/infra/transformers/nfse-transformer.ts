@@ -16,6 +16,7 @@ export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'p
       invoiceNo: parseInt(data.NUM_NOTA),
       invoiceDate: invoiceDate.valueOf(),
       issueDate: issueDate.valueOf(),
+      rpsNumber: hasValue(data.RPS_NUM) ? parseInt(data.RPS_NUM) : 0,
       verificationCode: data.CODIGO_VERIFICACAO,
       status: data.SITUACAO_NF,
       description: hasValue(data.DESCRICAO_NOTA) ? removeTextCharacters(data.DESCRICAO_NOTA.toUpperCase()) : null,

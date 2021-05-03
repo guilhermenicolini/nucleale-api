@@ -16,6 +16,7 @@ export const mockNfse = (): any => ({
   NUM_NOTA: fakePrice(),
   DATA_HORA_EMISSAO: moment(faker.date.past()).format('DD/MM/YYYY HH:mm:ss'),
   DIA_EMISSAO: faker.datatype.number({ min: 1, max: 20 }).toString().padStart(2, '0'),
+  RPS_NUM: fakeNumber(2),
   CODIGO_VERIFICACAO: faker.random.alphaNumeric(10),
   DESCRICAO_NOTA: faker.random.words(5),
   VALOR_NOTA: fakePrice(),

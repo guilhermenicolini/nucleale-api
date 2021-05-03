@@ -22,6 +22,7 @@ export type InvoiceModel = {
   invoiceNo: number
   invoiceDate: number
   issueDate: number
+  rpsNumber: number
   verificationCode: string
   status: string
   description: string
