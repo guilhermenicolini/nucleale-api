@@ -19,7 +19,8 @@ export class WhatsappHelper {
     this.client = await create({
       session: env.whatsappSession,
       autoClose: 0,
-      tokenStore: new GoogleTokenStore()
+      tokenStore: new GoogleTokenStore(),
+      browserArgs: ['--no-sandbox']
     })
   }
 
