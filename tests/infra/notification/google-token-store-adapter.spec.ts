@@ -1,7 +1,15 @@
 import { GoogleTokenStore } from '@/infra/notification'
+import { SessionToken } from '@wppconnect-team/wppconnect/dist/token-store'
 import faker from 'faker'
 
 const sessionName = faker.random.word().toLowerCase()
+const mockSessionToken = (): SessionToken => ({
+  WABrowserId: '',
+  WASecretBundle: '',
+  WAToken1: '',
+  WAToken2: ''
+})
+
 const makeSut = (): GoogleTokenStore => new GoogleTokenStore()
 
 let existsStub = jest.fn().mockImplementation(() => [true])
@@ -12,6 +20,7 @@ jest.mock('@google-cloud/storage', () => ({
       bucket: jest.fn().mockImplementation(() => ({
         file: jest.fn().mockImplementation(() => ({
           exists: existsStub,
+          save: jest.fn(),
           download: jest.fn().mockImplementation(() => Buffer.from(JSON.stringify({ ok: 'ok' }), 'utf8'))
         }))
       }))
@@ -31,5 +40,11 @@ describe('GoogleTokenStore Adapter', () => {
     existsStub = jest.fn().mockImplementation(() => [false])
     const token = await sut.getToken(sessionName)
     expect(token).toBeFalsy()
+  })
+
+  test('Should set token on success', async () => {
+    const sut = makeSut()
+    const result = await sut.setToken(sessionName, mockSessionToken())
+    expect(result).toBe(true)
   })
 })
