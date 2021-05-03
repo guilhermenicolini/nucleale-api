@@ -47,4 +47,11 @@ describe('GoogleTokenStore Adapter', () => {
     const result = await sut.setToken(sessionName, mockSessionToken())
     expect(result).toBe(true)
   })
+
+  test('Should return false if delete token not exists', async () => {
+    const sut = makeSut()
+    existsStub = jest.fn().mockImplementation(() => [false])
+    const token = await sut.removeToken(sessionName)
+    expect(token).toBe(false)
+  })
 })
