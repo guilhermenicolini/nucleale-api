@@ -39,7 +39,6 @@ export class GoogleTokenStore implements tokenStore.TokenStore {
   }
 
   async listTokens (): Promise<string[]> {
-    console.log('listTokens')
     const bucket = new Storage().bucket(env.storageBucket)
     const result = await bucket
       .getFiles({ prefix: `${env.storageTokenFolder}/` })
