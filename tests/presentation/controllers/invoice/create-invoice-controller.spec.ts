@@ -1,6 +1,8 @@
 import { CreateInvoiceController } from '@/presentation/controllers'
 import { ValidationSpy, CreateInvoiceSpy } from '@/tests/presentation/mocks'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { throwError } from '@/tests/domain/mocks'
+import { ServerError } from '@/presentation/errors'
 
 import { ObjectId } from 'mongodb'
 
@@ -58,5 +60,12 @@ describe('CreateInvoice Controller', () => {
       amount: request.amount,
       data: request.data
     })
+  })
+
+  test('Should return 500 if CreateInvoice throws', async () => {
+    const { sut, createInvoiceSpy } = makeSut()
+    jest.spyOn(createInvoiceSpy, 'create').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
