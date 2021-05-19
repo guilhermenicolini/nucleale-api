@@ -3,7 +3,8 @@ import {
   SaveInvoice,
   LoadInvoices,
   LoadInvoice,
-  GenerateInvoice
+  GenerateInvoice,
+  CreateInvoice
 } from '@/domain/usecases'
 import { mockInvoice, mockLoadInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
@@ -61,6 +62,16 @@ export class GenerateInvoiceSpy implements GenerateInvoice {
 
   async generate (model: GenerateInvoice.Model): Promise<GenerateInvoice.Result> {
     this.model = model
+    return this.result
+  }
+}
+
+export class CreateInvoiceSpy implements CreateInvoice {
+  params: CreateInvoice.Params
+  result: CreateInvoice.Result = mockInvoice()
+
+  async create (params: CreateInvoice.Params): Promise<CreateInvoice.Result> {
+    this.params = params
     return this.result
   }
 }
