@@ -3,6 +3,7 @@ export type InvoicePersonModel = {
   name: string
   registryId: string
   address: string
+  cityId: number
   city: string
   state: string
   email: string
@@ -23,6 +24,7 @@ export type InvoiceModel = {
   invoiceDate: number
   issueDate: number
   rpsNumber: number
+  rpsSerie: string
   verificationCode: string
   status: string
   description: string

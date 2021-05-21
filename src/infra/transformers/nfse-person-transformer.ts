@@ -25,6 +25,7 @@ export class NfsePersonTransformer implements Transformer<any> {
           : ''
         } - BAIRRO ${data[`${this.tag}_BAIRRO`].toUpperCase()} - CEP: ${this.maskManipulator.mask(data[`${this.tag}_CEP`], '00000-000')
         }`,
+      cityId: parseInt(data[`${this.tag}_CIDADE_CODIGO`]),
       city: data[`${this.tag}_CIDADE`].toUpperCase(),
       state: data[`${this.tag}_UF`].toUpperCase(),
       email: data[`${this.tag}_EMAIL`],

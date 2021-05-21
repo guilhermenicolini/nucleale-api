@@ -27,6 +27,7 @@ export type ServiceModel = {
   pickupType: string
   service: string
   taxation: string
+  taxable: boolean
 }
 
 export type CompanyModel = {
