@@ -20,7 +20,11 @@ export class CreateInvoiceController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.createInvoice.create(request)
+      const invoice = await this.createInvoice.create(request)
+      if (invoice instanceof Error) {
+        return badRequest(invoice as Error)
+      }
+
       return noContent()
     } catch (error) {
       return serverError(error)
