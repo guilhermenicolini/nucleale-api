@@ -94,4 +94,11 @@ describe('CreateInvoice Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
+
+  test('Should return 400 if SendInvoice returns an error', async () => {
+    const { sut, sendInvoiceSpy } = makeSut()
+    sendInvoiceSpy.result = new Error()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(sendInvoiceSpy.result))
+  })
 })
