@@ -1,7 +1,6 @@
 import { AddressModel } from './address'
 
 export type RpsModel = {
-  current: number
   serie: string
   type: string
 }
@@ -17,6 +16,6 @@ export type CompanyModel = {
   registryId: string
   name: string
   mobilePhone: string
-  address: AddressModel
+  address: Omit<AddressModel, 'id' | 'accountId'>
   settings: SettingsModel
 }
