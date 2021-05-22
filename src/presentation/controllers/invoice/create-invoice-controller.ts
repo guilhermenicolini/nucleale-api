@@ -1,12 +1,13 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { serverError, badRequest, noContent } from '@/presentation/helpers'
-import { CreateInvoice, SendInvoice } from '@/domain/usecases'
+import { CreateInvoice, SaveInvoice, SendInvoice } from '@/domain/usecases'
 
 export class CreateInvoiceController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly createInvoice: CreateInvoice,
-    private readonly sendInvoice: SendInvoice
+    private readonly sendInvoice: SendInvoice,
+    private readonly saveInvoice: SaveInvoice
   ) { }
 
   async handle (httpRequest: CreateInvoiceController.Request): Promise<HttpResponse> {
@@ -29,6 +30,11 @@ export class CreateInvoiceController implements Controller {
       if (sendResult instanceof Error) {
         return badRequest(sendResult as Error)
       }
+
+      invoice.invoiceNo = sendResult.invoiceNo
+      invoice.verificationCode = sendResult.verificationCode
+
+      await this.saveInvoice.save(invoice)
 
       return noContent()
     } catch (error) {
