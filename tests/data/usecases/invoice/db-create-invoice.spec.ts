@@ -93,4 +93,11 @@ describe('DbCreateInvoice Usecase', () => {
     const result = await sut.create(mockParams())
     expect(result).toEqual(new RecordNotFoundError('Address'))
   })
+
+  test('Should call LoadCompanyRepository', async () => {
+    const { sut, loadCompanyRepositorySpy } = makeSut()
+    const spy = jest.spyOn(loadCompanyRepositorySpy, 'load')
+    await sut.create(mockParams())
+    expect(spy).toHaveBeenCalled()
+  })
 })
