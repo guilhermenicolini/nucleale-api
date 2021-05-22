@@ -69,7 +69,7 @@ export class GenerateInvoiceSpy implements GenerateInvoice {
 
 export class CreateInvoiceSpy implements CreateInvoice {
   params: CreateInvoice.Params
-  result: CreateInvoice.Result = mockInvoice()
+  result: CreateInvoice.Result = mockInvoiceDb()
 
   async create (params: CreateInvoice.Params): Promise<CreateInvoice.Result> {
     this.params = params
