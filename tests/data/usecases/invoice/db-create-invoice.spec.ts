@@ -1,4 +1,5 @@
 import { DbCreateInvoice } from '@/data/usecases'
+import { RecordNotFoundError } from '@/presentation/errors'
 import {
   LoadAccountRepositorySpy,
   LoadAddressRepositorySpy,
@@ -64,5 +65,12 @@ describe('DbCreateInvoice Usecase', () => {
     jest.spyOn(loadAccountRepositorySpy, 'loadById').mockImplementationOnce(throwError)
     const promise = sut.create(mockParams())
     expect(promise).rejects.toThrow()
+  })
+
+  test('Should return error if LoadAccountRepository returns null', async () => {
+    const { sut, loadAccountRepositorySpy } = makeSut()
+    loadAccountRepositorySpy.result = null
+    const result = await sut.create(mockParams())
+    expect(result).toEqual(new RecordNotFoundError('Account'))
   })
 })
