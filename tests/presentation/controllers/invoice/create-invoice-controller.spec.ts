@@ -160,4 +160,11 @@ describe('CreateInvoice Controller', () => {
       pdf: generateInvoiceSpy.result.buffer
     })
   })
+
+  test('Should return 500 if MailInvoice throws', async () => {
+    const { sut, mailInvoiceSpy } = makeSut()
+    jest.spyOn(mailInvoiceSpy, 'send').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
 })
