@@ -6,6 +6,7 @@ import {
   LoadProcedureRepositorySpy,
   LoadNextRpsRepositorySpy
 } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
@@ -56,5 +57,12 @@ describe('DbCreateInvoice Usecase', () => {
     const params = mockParams()
     await sut.create(params)
     expect(loadAccountRepositorySpy.userId).toBe(params.userId)
+  })
+
+  test('Should throw if LoadAccountRepository throws', async () => {
+    const { sut, loadAccountRepositorySpy } = makeSut()
+    jest.spyOn(loadAccountRepositorySpy, 'loadById').mockImplementationOnce(throwError)
+    const promise = sut.create(mockParams())
+    expect(promise).rejects.toThrow()
   })
 })
