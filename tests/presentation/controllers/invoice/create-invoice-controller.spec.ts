@@ -1,5 +1,10 @@
 import { CreateInvoiceController } from '@/presentation/controllers'
-import { ValidationSpy, CreateInvoiceSpy, SendInvoiceSpy } from '@/tests/presentation/mocks'
+import {
+  ValidationSpy,
+  CreateInvoiceSpy,
+  SendInvoiceSpy,
+  SaveInvoiceSpy
+} from '@/tests/presentation/mocks'
 import { badRequest, serverError } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
 import { ServerError } from '@/presentation/errors'
@@ -17,22 +22,26 @@ type SutTypes = {
   sut: CreateInvoiceController,
   validationSpy: ValidationSpy,
   createInvoiceSpy: CreateInvoiceSpy,
-  sendInvoiceSpy: SendInvoiceSpy
+  sendInvoiceSpy: SendInvoiceSpy,
+  saveInvoiceSpy: SaveInvoiceSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const createInvoiceSpy = new CreateInvoiceSpy()
   const sendInvoiceSpy = new SendInvoiceSpy()
+  const saveInvoiceSpy = new SaveInvoiceSpy()
   const sut = new CreateInvoiceController(
     validationSpy,
     createInvoiceSpy,
-    sendInvoiceSpy)
+    sendInvoiceSpy,
+    saveInvoiceSpy)
   return {
     sut,
     validationSpy,
     createInvoiceSpy,
-    sendInvoiceSpy
+    sendInvoiceSpy,
+    saveInvoiceSpy
   }
 }
 
@@ -100,5 +109,14 @@ describe('CreateInvoice Controller', () => {
     sendInvoiceSpy.result = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(sendInvoiceSpy.result))
+  })
+
+  test('Should call SaveInvoice with correct values', async () => {
+    const { sut, createInvoiceSpy, sendInvoiceSpy, saveInvoiceSpy } = makeSut()
+    await sut.handle(mockRequest())
+    const sendResult = sendInvoiceSpy.result as any
+    expect(saveInvoiceSpy.param.invoiceNo).toBe(sendResult.invoiceNo)
+    expect(saveInvoiceSpy.param.verificationCode).toBe(sendResult.verificationCode)
+    expect(saveInvoiceSpy.param).toEqual(createInvoiceSpy.result)
   })
 })
