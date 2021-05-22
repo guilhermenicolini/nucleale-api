@@ -11,5 +11,5 @@ export namespace CreateInvoice {
     amount: number
     data: string | string[]
   }
-  export type Result = Omit<InvoiceModel, 'id'> | Error
+  export type Result = InvoiceModel | Error
 }
