@@ -4,7 +4,8 @@ import {
   CreateInvoiceSpy,
   SendInvoiceSpy,
   SaveInvoiceSpy,
-  GenerateInvoiceSpy
+  GenerateInvoiceSpy,
+  MailInvoiceSpy
 } from '@/tests/presentation/mocks'
 import { badRequest, serverError } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
@@ -25,7 +26,8 @@ type SutTypes = {
   createInvoiceSpy: CreateInvoiceSpy,
   sendInvoiceSpy: SendInvoiceSpy,
   saveInvoiceSpy: SaveInvoiceSpy,
-  generateInvoiceSpy: GenerateInvoiceSpy
+  generateInvoiceSpy: GenerateInvoiceSpy,
+  mailInvoiceSpy: MailInvoiceSpy
 }
 
 const makeSut = (): SutTypes => {
@@ -34,19 +36,22 @@ const makeSut = (): SutTypes => {
   const sendInvoiceSpy = new SendInvoiceSpy()
   const saveInvoiceSpy = new SaveInvoiceSpy()
   const generateInvoiceSpy = new GenerateInvoiceSpy()
+  const mailInvoiceSpy = new MailInvoiceSpy()
   const sut = new CreateInvoiceController(
     validationSpy,
     createInvoiceSpy,
     sendInvoiceSpy,
     saveInvoiceSpy,
-    generateInvoiceSpy)
+    generateInvoiceSpy,
+    mailInvoiceSpy)
   return {
     sut,
     validationSpy,
     createInvoiceSpy,
     sendInvoiceSpy,
     saveInvoiceSpy,
-    generateInvoiceSpy
+    generateInvoiceSpy,
+    mailInvoiceSpy
   }
 }
 
@@ -143,5 +148,16 @@ describe('CreateInvoice Controller', () => {
     jest.spyOn(generateInvoiceSpy, 'generate').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should call MailInvoice with correct values', async () => {
+    const { sut, createInvoiceSpy, generateInvoiceSpy, mailInvoiceSpy } = makeSut()
+    const invoice = createInvoiceSpy.result as any
+    await sut.handle(mockRequest())
+    expect(mailInvoiceSpy.param).toEqual({
+      to: invoice.taker,
+      invoiceNo: invoice.invoiceNo,
+      pdf: generateInvoiceSpy.result.buffer
+    })
   })
 })

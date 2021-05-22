@@ -5,7 +5,8 @@ import {
   LoadInvoice,
   GenerateInvoice,
   CreateInvoice,
-  SendInvoice
+  SendInvoice,
+  MailInvoice
 } from '@/domain/usecases'
 import { mockInvoice, mockLoadInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
@@ -87,5 +88,13 @@ export class SendInvoiceSpy implements SendInvoice {
   async send (params: SendInvoice.Params): Promise<SendInvoice.Result> {
     this.params = params
     return this.result
+  }
+}
+
+export class MailInvoiceSpy implements MailInvoice {
+  param: MailInvoice.Param
+
+  async send (param: MailInvoice.Param): Promise<void> {
+    this.param = param
   }
 }
