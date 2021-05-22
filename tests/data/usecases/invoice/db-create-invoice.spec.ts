@@ -73,4 +73,10 @@ describe('DbCreateInvoice Usecase', () => {
     const result = await sut.create(mockParams())
     expect(result).toEqual(new RecordNotFoundError('Account'))
   })
+
+  test('Should call LoadAddressRepository with correct values', async () => {
+    const { sut, loadAccountRepositorySpy, loadAddressRepositorySpy } = makeSut()
+    await sut.create(mockParams())
+    expect(loadAddressRepositorySpy.accountId).toBe(loadAccountRepositorySpy.result.accountId)
+  })
 })
