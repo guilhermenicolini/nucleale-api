@@ -79,4 +79,11 @@ describe('DbCreateInvoice Usecase', () => {
     await sut.create(mockParams())
     expect(loadAddressRepositorySpy.accountId).toBe(loadAccountRepositorySpy.result.accountId)
   })
+
+  test('Should throw if LoadAddressRepository throws', async () => {
+    const { sut, loadAddressRepositorySpy } = makeSut()
+    jest.spyOn(loadAddressRepositorySpy, 'load').mockImplementationOnce(throwError)
+    const promise = sut.create(mockParams())
+    expect(promise).rejects.toThrow()
+  })
 })
