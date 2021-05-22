@@ -100,4 +100,11 @@ describe('DbCreateInvoice Usecase', () => {
     await sut.create(mockParams())
     expect(spy).toHaveBeenCalled()
   })
+
+  test('Should throw if LoadCompanyRepository throws', async () => {
+    const { sut, loadCompanyRepositorySpy } = makeSut()
+    jest.spyOn(loadCompanyRepositorySpy, 'load').mockImplementationOnce(throwError)
+    const promise = sut.create(mockParams())
+    expect(promise).rejects.toThrow()
+  })
 })
