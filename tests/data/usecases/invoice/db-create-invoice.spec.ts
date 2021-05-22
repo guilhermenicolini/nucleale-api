@@ -114,4 +114,12 @@ describe('DbCreateInvoice Usecase', () => {
     const result = await sut.create(mockParams())
     expect(result).toEqual(new RecordNotFoundError('Company'))
   })
+
+  test('Should call LoadProcedureRepository with correct values', async () => {
+    const { sut, loadCompanyRepositorySpy, loadProcedureRepositorySpy } = makeSut()
+    const params = mockParams()
+    await sut.create(params)
+    expect(loadProcedureRepositorySpy.procedureId).toBe(params.procedureId)
+    expect(loadProcedureRepositorySpy.companyId).toBe(loadCompanyRepositorySpy.result.id)
+  })
 })
