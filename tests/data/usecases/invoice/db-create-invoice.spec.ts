@@ -192,4 +192,11 @@ describe('DbCreateInvoice Usecase', () => {
       data: params.data
     })
   })
+
+  test('Should throw if ModelsToInvoiceConverter throws', async () => {
+    const { sut, modelsToInvoiceConverterSpy } = makeSut()
+    jest.spyOn(modelsToInvoiceConverterSpy, 'convert').mockImplementationOnce(throwError)
+    const promise = sut.create(mockParams())
+    expect(promise).rejects.toThrow()
+  })
 })
