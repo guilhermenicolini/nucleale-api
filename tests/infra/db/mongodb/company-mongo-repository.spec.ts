@@ -1,7 +1,7 @@
 import { CompanyMongoRepository, MongoHelper } from '@/infra/db'
 import { mockCompanyModel } from '@/tests/domain/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 const makeSut = (): CompanyMongoRepository => {
   return new CompanyMongoRepository()
@@ -36,6 +36,14 @@ describe('AccountMongoRepository', () => {
       await companiesCollection.insertOne(data)
       const company = await sut.load()
       expect(company).toEqual(MongoHelper.instance.map(data))
+    })
+  })
+
+  describe('loadProcedure()', () => {
+    test('Should return null if procedure not exists', async () => {
+      const sut = makeSut()
+      const procedure = await sut.loadProcedure(new ObjectId().toString())
+      expect(procedure).toBeFalsy()
     })
   })
 })
