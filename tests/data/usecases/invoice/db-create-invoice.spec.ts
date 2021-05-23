@@ -157,4 +157,11 @@ describe('DbCreateInvoice Usecase', () => {
     const result = await sut.create(mockParams())
     expect(result).toEqual(new RecordNotFoundError('Rps'))
   })
+
+  test('Should return error if LoadNextRpsRepository returns 0', async () => {
+    const { sut, loadNextRpsRepositorySpy } = makeSut()
+    loadNextRpsRepositorySpy.result = 0
+    const result = await sut.create(mockParams())
+    expect(result).toEqual(new RecordNotFoundError('Rps'))
+  })
 })
