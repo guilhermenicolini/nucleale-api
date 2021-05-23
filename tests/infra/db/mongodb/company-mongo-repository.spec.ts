@@ -1,5 +1,5 @@
 import { CompanyMongoRepository, MongoHelper } from '@/infra/db'
-import { mockCompanyModel } from '@/tests/domain/mocks'
+import { mockCompanyModel, mockDbServiceWithProcedure } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 
@@ -44,6 +44,33 @@ describe('AccountMongoRepository', () => {
       const sut = makeSut()
       const procedure = await sut.loadProcedure(new ObjectId().toString())
       expect(procedure).toBeFalsy()
+    })
+
+    test('Should return procedure on success', async () => {
+      const sut = makeSut()
+      const data = {
+        services: [mockDbServiceWithProcedure()]
+      }
+      const procedureId = (await companiesCollection.insertOne(data)).ops[0].services[0].procedures[0]._id.toString()
+      const procedure = await sut.loadProcedure(procedureId)
+      expect(procedure).toEqual({
+        id: data.services[0].procedures[0]._id.toString(),
+        name: data.services[0].procedures[0].name,
+        description: data.services[0].procedures[0].description,
+        service: {
+          id: data.services[0]._id.toString(),
+          name: data.services[0].name,
+          activity: data.services[0].activity,
+          aliquote: data.services[0].aliquote,
+          cnae: data.services[0].cnae,
+          operation: data.services[0].operation,
+          pickupType: data.services[0].pickupType,
+          service: data.services[0].service,
+          taxation: data.services[0].taxation,
+          taxable: data.services[0].taxable,
+          procedures: null
+        }
+      })
     })
   })
 })
