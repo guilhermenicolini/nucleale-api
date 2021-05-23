@@ -7,6 +7,7 @@ import {
   LoadNextRpsRepository
 } from '@/data/protocols'
 import { RecordNotFoundError } from '@/presentation/errors'
+import { ObjectConverter } from '@/data/protocols/convertion'
 
 export class DbCreateInvoice implements CreateInvoice {
   constructor (
@@ -14,7 +15,8 @@ export class DbCreateInvoice implements CreateInvoice {
     private readonly loadAddressRepository: LoadAddressRepository,
     private readonly loadCompanyRepository: LoadCompanyRepository,
     private readonly loadProcedureRepository: LoadProcedureRepository,
-    private readonly loadNextRpsRepository: LoadNextRpsRepository
+    private readonly loadNextRpsRepository: LoadNextRpsRepository,
+    private readonly modelsToInvoiceConverter: ObjectConverter<CreateInvoice.ModelToInvoiceInput, CreateInvoice.Result>
   ) { }
 
   async create (params: CreateInvoice.Params): Promise<CreateInvoice.Result> {
@@ -42,6 +44,14 @@ export class DbCreateInvoice implements CreateInvoice {
       return new RecordNotFoundError('Rps')
     }
 
-    return null
+    return await this.modelsToInvoiceConverter.convert({
+      account,
+      address,
+      company,
+      procedure,
+      rpsNumber,
+      amount: params.amount,
+      data: params.data
+    })
   }
 }

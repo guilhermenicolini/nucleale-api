@@ -1,4 +1,4 @@
-import { InvoiceModel } from '@/domain/models'
+import { AccountModel, AddressModel, CompanyModel, InvoiceModel, ProcedureModel } from '@/domain/models'
 
 export interface CreateInvoice {
   create: (params: CreateInvoice.Params) => Promise<CreateInvoice.Result>
@@ -12,4 +12,13 @@ export namespace CreateInvoice {
     data: string | string[]
   }
   export type Result = InvoiceModel | Error
+  export type ModelToInvoiceInput = {
+    account: Omit<AccountModel, 'password'>
+    address: AddressModel
+    company: CompanyModel
+    procedure: ProcedureModel
+    rpsNumber: number
+    amount: number
+    data: string | string[]
+  }
 }
