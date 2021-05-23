@@ -34,7 +34,7 @@ export class DbCreateInvoice implements CreateInvoice {
       return new RecordNotFoundError('Company')
     }
 
-    const procedure = await this.loadProcedureRepository.load(params.procedureId, company.id)
+    const procedure = await this.loadProcedureRepository.loadProcedure(params.procedureId)
     if (!procedure) {
       return new RecordNotFoundError('Procedure')
     }

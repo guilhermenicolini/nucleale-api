@@ -13,12 +13,10 @@ export class LoadCompanyRepositorySpy implements LoadCompanyRepository {
 }
 export class LoadProcedureRepositorySpy implements LoadProcedureRepository {
   procedureId: string
-  companyId: string
   result: LoadProcedureRepository.Result = mockProcedureWithService()
 
-  async load (procedureId: string, companyId: string): Promise<LoadProcedureRepository.Result> {
+  async loadProcedure (procedureId: string): Promise<LoadProcedureRepository.Result> {
     this.procedureId = procedureId
-    this.companyId = companyId
     return this.result
   }
 }

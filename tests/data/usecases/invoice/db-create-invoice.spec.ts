@@ -121,16 +121,15 @@ describe('DbCreateInvoice Usecase', () => {
   })
 
   test('Should call LoadProcedureRepository with correct values', async () => {
-    const { sut, loadCompanyRepositorySpy, loadProcedureRepositorySpy } = makeSut()
+    const { sut, loadProcedureRepositorySpy } = makeSut()
     const params = mockParams()
     await sut.create(params)
     expect(loadProcedureRepositorySpy.procedureId).toBe(params.procedureId)
-    expect(loadProcedureRepositorySpy.companyId).toBe(loadCompanyRepositorySpy.result.id)
   })
 
   test('Should throw if LoadProcedureRepository throws', async () => {
     const { sut, loadProcedureRepositorySpy } = makeSut()
-    jest.spyOn(loadProcedureRepositorySpy, 'load').mockImplementationOnce(throwError)
+    jest.spyOn(loadProcedureRepositorySpy, 'loadProcedure').mockImplementationOnce(throwError)
     const promise = sut.create(mockParams())
     expect(promise).rejects.toThrow()
   })
