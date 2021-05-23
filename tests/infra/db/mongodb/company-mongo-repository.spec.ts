@@ -1,4 +1,5 @@
 import { CompanyMongoRepository, MongoHelper } from '@/infra/db'
+import { mockCompanyModel } from '@/tests/domain/mocks'
 
 import { Collection } from 'mongodb'
 
@@ -23,10 +24,18 @@ describe('AccountMongoRepository', () => {
   })
 
   describe('load()', () => {
-    test('Should returns null if company not exists', async () => {
+    test('Should return null if company not exists', async () => {
       const sut = makeSut()
       const company = await sut.load()
       expect(company).toBeFalsy()
+    })
+
+    test('Should return company on success', async () => {
+      const sut = makeSut()
+      const data = mockCompanyModel()
+      await companiesCollection.insertOne(data)
+      const company = await sut.load()
+      expect(company).toEqual(MongoHelper.instance.map(data))
     })
   })
 })
