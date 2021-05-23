@@ -5,7 +5,8 @@ import {
   LoadAddressRepositorySpy,
   LoadCompanyRepositorySpy,
   LoadProcedureRepositorySpy,
-  LoadNextRpsRepositorySpy
+  LoadNextRpsRepositorySpy,
+  ModelsToInvoiceConverterSpy
 } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
@@ -25,7 +26,8 @@ type SutTypes = {
   loadAddressRepositorySpy: LoadAddressRepositorySpy,
   loadCompanyRepositorySpy: LoadCompanyRepositorySpy,
   loadProcedureRepositorySpy: LoadProcedureRepositorySpy
-  loadNextRpsRepositorySpy: LoadNextRpsRepositorySpy
+  loadNextRpsRepositorySpy: LoadNextRpsRepositorySpy,
+  modelsToInvoiceConverterSpy: ModelsToInvoiceConverterSpy
 }
 
 const makeSut = (): SutTypes => {
@@ -34,12 +36,14 @@ const makeSut = (): SutTypes => {
   const loadCompanyRepositorySpy = new LoadCompanyRepositorySpy()
   const loadProcedureRepositorySpy = new LoadProcedureRepositorySpy()
   const loadNextRpsRepositorySpy = new LoadNextRpsRepositorySpy()
+  const modelsToInvoiceConverterSpy = new ModelsToInvoiceConverterSpy()
   const sut = new DbCreateInvoice(
     loadAccountRepositorySpy,
     loadAddressRepositorySpy,
     loadCompanyRepositorySpy,
     loadProcedureRepositorySpy,
-    loadNextRpsRepositorySpy
+    loadNextRpsRepositorySpy,
+    modelsToInvoiceConverterSpy
   )
 
   return {
@@ -48,7 +52,8 @@ const makeSut = (): SutTypes => {
     loadAddressRepositorySpy,
     loadCompanyRepositorySpy,
     loadProcedureRepositorySpy,
-    loadNextRpsRepositorySpy
+    loadNextRpsRepositorySpy,
+    modelsToInvoiceConverterSpy
   }
 }
 
@@ -163,5 +168,28 @@ describe('DbCreateInvoice Usecase', () => {
     loadNextRpsRepositorySpy.result = 0
     const result = await sut.create(mockParams())
     expect(result).toEqual(new RecordNotFoundError('Rps'))
+  })
+
+  test('Should call ModelsToInvoiceConverter with correct values', async () => {
+    const {
+      sut,
+      loadAccountRepositorySpy,
+      loadAddressRepositorySpy,
+      loadCompanyRepositorySpy,
+      loadProcedureRepositorySpy,
+      loadNextRpsRepositorySpy,
+      modelsToInvoiceConverterSpy
+    } = makeSut()
+    const params = mockParams()
+    await sut.create(params)
+    expect(modelsToInvoiceConverterSpy.data).toEqual({
+      account: loadAccountRepositorySpy.result,
+      address: loadAddressRepositorySpy.result,
+      company: loadCompanyRepositorySpy.result,
+      procedure: loadProcedureRepositorySpy.result,
+      rpsNumber: loadNextRpsRepositorySpy.result,
+      amount: params.amount,
+      data: params.data
+    })
   })
 })
