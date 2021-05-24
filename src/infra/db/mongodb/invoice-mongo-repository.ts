@@ -2,14 +2,16 @@ import { MongoHelper } from '@/infra/db'
 import {
   SaveInvoiceRepository,
   LoadInvoicesRepository,
-  LoadInvoiceRepository
+  LoadInvoiceRepository,
+  LoadNextRpsRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
 export class InvoiceMongoRepository implements
   SaveInvoiceRepository,
   LoadInvoicesRepository,
-  LoadInvoiceRepository {
+  LoadInvoiceRepository,
+  LoadNextRpsRepository {
   async save (data: SaveInvoiceRepository.Param): Promise<void> {
     const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
 
@@ -110,5 +112,25 @@ export class InvoiceMongoRepository implements
         }
       ]).toArray()
     return invoice.length === 1 ? MongoHelper.instance.map(invoice[0]) : null
+  }
+
+  async next (): Promise<number> {
+    const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
+    const result = await invoicesCollection
+      .aggregate([
+        {
+          $project: {
+            _id: 0,
+            rpsNumber: 1
+          }
+        },
+        {
+          $sort: { rpsNumber: -1 }
+        },
+        {
+          $limit: 1
+        }
+      ]).toArray()
+    return result.length === 1 ? (result[0].rpsNumber || -1) + 1 : 0
   }
 }
