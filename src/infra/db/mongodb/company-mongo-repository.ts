@@ -6,7 +6,8 @@ import {
 import { ObjectId } from 'bson'
 
 export class CompanyMongoRepository implements
-LoadCompanyRepository {
+LoadCompanyRepository,
+LoadProcedureRepository {
   async load (): Promise<LoadCompanyRepository.Result> {
     const companiesCollection = await MongoHelper.instance.getCollection('companies')
     const company = await companiesCollection.findOne({}, {

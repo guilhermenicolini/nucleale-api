@@ -39,7 +39,7 @@ export class DbCreateInvoice implements CreateInvoice {
       return new RecordNotFoundError('Procedure')
     }
 
-    const rpsNumber = await this.loadNextRpsRepository.load()
+    const rpsNumber = await this.loadNextRpsRepository.next()
     if (!rpsNumber) {
       return new RecordNotFoundError('Rps')
     }

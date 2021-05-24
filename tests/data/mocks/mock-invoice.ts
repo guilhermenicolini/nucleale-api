@@ -44,7 +44,7 @@ export class LoadInvoiceRepositorySpy implements LoadInvoiceRepository {
 export class LoadNextRpsRepositorySpy implements LoadNextRpsRepository {
   result = faker.datatype.number()
 
-  async load (): Promise<number> {
+  async next (): Promise<number> {
     return this.result
   }
 }

@@ -1,3 +1,3 @@
 export interface LoadNextRpsRepository {
-  load: () => Promise<number>
+  next: () => Promise<number>
 }

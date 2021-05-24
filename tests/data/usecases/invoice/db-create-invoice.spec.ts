@@ -143,14 +143,14 @@ describe('DbCreateInvoice Usecase', () => {
 
   test('Should call LoadNextRpsRepository', async () => {
     const { sut, loadNextRpsRepositorySpy } = makeSut()
-    const spy = jest.spyOn(loadNextRpsRepositorySpy, 'load')
+    const spy = jest.spyOn(loadNextRpsRepositorySpy, 'next')
     await sut.create(mockParams())
     expect(spy).toHaveBeenCalled()
   })
 
   test('Should throw if LoadNextRpsRepository throws', async () => {
     const { sut, loadNextRpsRepositorySpy } = makeSut()
-    jest.spyOn(loadNextRpsRepositorySpy, 'load').mockImplementationOnce(throwError)
+    jest.spyOn(loadNextRpsRepositorySpy, 'next').mockImplementationOnce(throwError)
     const promise = sut.create(mockParams())
     expect(promise).rejects.toThrow()
   })
