@@ -131,6 +131,6 @@ export class InvoiceMongoRepository implements
           $limit: 1
         }
       ]).toArray()
-    return result.length === 1 ? (result[0].rpsNumber || -1) + 1 : 0
+    return result.length === 1 ? (result[0].rpsNumber || 0) + 1 : 1
   }
 }
