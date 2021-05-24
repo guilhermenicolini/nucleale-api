@@ -116,4 +116,12 @@ describe('InvoiceMongoRepository', () => {
       expect(result).toBeFalsy()
     })
   })
+
+  describe('next()', () => {
+    test('Should return 0 if there are no invoices', async () => {
+      const sut = makeSut()
+      const result = await sut.next()
+      expect(result).toBe(0)
+    })
+  })
 })
