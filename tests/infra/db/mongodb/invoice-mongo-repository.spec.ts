@@ -123,5 +123,23 @@ describe('InvoiceMongoRepository', () => {
       const result = await sut.next()
       expect(result).toBe(1)
     })
+
+    test('Should return 1 if there are invoices with no rpsNumber', async () => {
+      const sut = makeSut()
+      const invoice = mockInvoice()
+      invoice.rpsNumber = null
+      await invoicesCollection.insertOne(invoice)
+      const result = await sut.next()
+      expect(result).toBe(1)
+    })
+
+    test('Should return the max rpsNumber', async () => {
+      const sut = makeSut()
+      const invoice = mockInvoice()
+      invoice.rpsNumber = 200
+      await invoicesCollection.insertMany([mockInvoice(), mockInvoice(), invoice, mockInvoice()])
+      const result = await sut.next()
+      expect(result).toBe(201)
+    })
   })
 })
