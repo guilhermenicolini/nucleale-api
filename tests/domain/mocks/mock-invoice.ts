@@ -3,6 +3,7 @@ import { InvoiceModel, InvoicePersonModel, InvoiceItemModel } from '@/domain/mod
 import faker from 'faker'
 import fs from 'fs'
 import { ObjectId } from 'mongodb'
+import { mockAddAddressModel } from './mock-address'
 
 export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
@@ -61,10 +62,7 @@ export const mockPerson = (taxId?: string): InvoicePersonModel => ({
   taxId: taxId || faker.address.zipCode('###########'),
   name: faker.name.findName(),
   registryId: faker.address.zipCode('########'),
-  address: faker.address.streetAddress(true),
-  cityId: faker.datatype.number(),
-  city: faker.address.city(),
-  state: faker.address.stateAbbr(),
+  address: mockAddAddressModel(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber('+55##9########')
 })

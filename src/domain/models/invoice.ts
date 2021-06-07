@@ -1,11 +1,10 @@
+import { AddressModel } from '@/domain/models'
+
 export type InvoicePersonModel = {
   taxId: string
   name: string
   registryId: string
-  address: string
-  cityId: number
-  city: string
-  state: string
+  address: Omit<AddressModel, 'id' | 'accountId'>
   email: string
   phone: string
 }

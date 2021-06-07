@@ -14,6 +14,8 @@ export class InvoicePdfMessageConverter implements Converter {
   ) { }
 
   convert (invoice: InvoiceModel) {
+    const phone = invoice.taker.phone.replace('+55', '')
+    const phoneMask = `(00) ${phone.length === 9 ? '0' : ''}0000-0000`
     const message = {
       invoiceNo: invoice.invoiceNo.toString().padStart(8, '0'),
       invoiceDate: this.timeManipulator.toDateAndTime(invoice.invoiceDate),
@@ -22,11 +24,15 @@ export class InvoicePdfMessageConverter implements Converter {
       name: invoice.taker.name,
       taxId: this.maskManipulator.mask(invoice.taker.taxId, '000.000.000-00'),
       registryId: null,
-      address: invoice.taker.address,
-      city: invoice.taker.city,
-      state: invoice.taker.state,
+      address: `${invoice.taker.address.address}, Nº ${invoice.taker.address.number}${invoice.taker.address.complement
+        ? ' ' + invoice.taker.address.complement
+        : ''
+      } - BAIRRO ${invoice.taker.address.district} - CEP: ${this.maskManipulator.mask(invoice.taker.address.zip, '00000-000')
+      }`,
+      city: invoice.taker.address.city,
+      state: invoice.taker.address.state,
       email: invoice.taker.email,
-      phone: invoice.taker.phone,
+      phone: this.maskManipulator.mask(phone, phoneMask),
       description: invoice.description,
       items: invoice.items.map((i) => {
         return {
