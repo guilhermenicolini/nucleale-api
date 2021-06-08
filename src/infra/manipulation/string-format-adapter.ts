@@ -33,6 +33,5 @@ export class StringFormatAdapter implements StringManipulator {
       .replace(/&AMP;LT;BR/g, '')
       .replace(/\/&AMP;GT;/g, '')
       .replace('  ', ' ')
-      .toUpperCase()
   }
 }

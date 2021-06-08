@@ -45,7 +45,7 @@ describe('StringFormat Adapter', () => {
     test('Should normalize all string', () => {
       const sut = makeSut()
       const text = sut.normalize('ÀÁÂÃÄÅĄĀāàáâãäåąßÒÓÔÕÕÖØŐòóôőõöøĎďDŽdžÈÉÊËĘèéêëęðÇçČčĆćÐÌÍÎÏĪìíîïīÙÚÛÜŰùűúûüĽĹŁľĺłÑŇŃňñńŔŕŠŚŞšśşŤťŸÝÿýŽŻŹžżźđĢĞģğ')
-      expect(text).toBe('AAAAAAAAAAAAAAAASOOOOOOOOOOOOOOODDDZDZEEEEEEEEEEECCCCCCDIIIIIIIIIIUUUUUUUUUULLLLLLNNNNNNRRSSSSSSTTYYYYZZZZZZDGGGG')
+      expect(text).toBe('AAAAAAAAaaaaaaaasOOOOOOOOoooooooDdDZdzEEEEEeeeeeeCcCcCcDIIIIIiiiiiUUUUUuuuuuLLLlllNNNnnnRrSSSsssTtYYyyZZZzzzdGGgg')
     })
   })
 })
