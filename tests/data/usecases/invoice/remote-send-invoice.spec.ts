@@ -3,7 +3,7 @@ import { RemoteSendInvoice } from '@/data/usecases'
 import {
   InvoiceToRpsConverterSpy
 } from '@/tests/data/mocks'
-import { mockInvoice } from '@/tests/domain/mocks'
+import { mockInvoice, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: RemoteSendInvoice,
@@ -28,5 +28,12 @@ describe('RemoteSendInvoice Usecase', () => {
     const params = mockInvoice()
     await sut.send(params)
     expect(invoiceToRpsConverterSpy.data).toEqual(params)
+  })
+
+  test('Should return error if InvoiceToRpsConvverter throws', async () => {
+    const { sut, invoiceToRpsConverterSpy } = makeSut()
+    jest.spyOn(invoiceToRpsConverterSpy, 'convert').mockImplementationOnce(throwError)
+    const result = await sut.send(mockInvoice())
+    expect(result).toEqual(new Error())
   })
 })
