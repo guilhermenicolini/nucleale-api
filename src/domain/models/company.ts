@@ -16,6 +16,7 @@ export type CompanyModel = {
   registryId: string
   name: string
   mobilePhone: string
+  email: string
   address: Omit<AddressModel, 'id' | 'accountId'>
   settings: SettingsModel
 }

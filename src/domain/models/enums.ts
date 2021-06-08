@@ -16,3 +16,7 @@ export enum Gender {
 export enum LinkTypes {
   passwordRecovery = 'passwordRecovery'
 }
+
+export enum InvoiceStatus {
+  normal = 'N'
+}

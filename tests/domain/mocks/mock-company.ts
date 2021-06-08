@@ -18,6 +18,7 @@ export const mockCompanyModel = (): CompanyModel => ({
   registryId: faker.address.zipCode('########'),
   name: faker.company.companyName(),
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
+  email: faker.internet.email(),
   address: {
     address: faker.address.streetName(),
     number: faker.datatype.number(1000).toString(),
