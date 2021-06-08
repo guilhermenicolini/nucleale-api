@@ -1,4 +1,4 @@
-import { TimeManipulator, MoneyManipulator, MaskManipulator } from '@/data/protocols'
+import { TimeManipulator, MoneyManipulator, MaskManipulator, StringManipulator } from '@/data/protocols'
 
 export class TimeManipulatorSpy implements TimeManipulator {
   millis: number
@@ -56,5 +56,22 @@ export class MaskManipulatorSpy implements MaskManipulator {
     this.value = value
     this.format = format
     return this.result
+  }
+}
+
+export class StringManipulatorSpy implements StringManipulator {
+  value: any
+  args: any | any[]
+  resultStr = 'any_string'
+
+  format (value: string, args: any | any[]): string {
+    this.value = value
+    this.args = args
+    return this.resultStr
+  }
+
+  normalize (value: string): string {
+    this.value = value
+    return this.resultStr
   }
 }
