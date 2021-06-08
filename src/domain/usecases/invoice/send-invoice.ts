@@ -1,4 +1,4 @@
-import { InvoiceModel } from '@/domain/models'
+import { InvoiceModel, RpsLoteModel } from '@/domain/models'
 
 export interface SendInvoice {
   send: (params: SendInvoice.Params) => Promise<SendInvoice.Result>
@@ -10,4 +10,5 @@ export namespace SendInvoice {
     invoiceNo: number
     verificationCode: string
   } | Error
+  export type Rps = RpsLoteModel
 }
