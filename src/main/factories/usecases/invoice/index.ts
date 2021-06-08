@@ -1,3 +1,4 @@
+export * from './create-invoice-factory'
 export * from './generate-invoice-factory'
 export * from './io-load-invoices-factory'
 export * from './load-invoice-factory'
