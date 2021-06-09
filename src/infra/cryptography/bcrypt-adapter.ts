@@ -2,7 +2,7 @@ import { Hasher, HashComparer } from '@/data/protocols'
 
 import bcrypt from 'bcrypt'
 
-export class BCryptAdapter implements Hasher, HashComparer {
+export class BCryptAdapter implements Hasher<string, string>, HashComparer {
   constructor (private readonly salt: number) { }
 
   async hash (plainText: string): Promise<string> {

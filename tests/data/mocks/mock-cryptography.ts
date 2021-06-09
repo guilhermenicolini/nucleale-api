@@ -2,7 +2,7 @@ import { Hasher, Signer, HashComparer, Decrypter, Transformer, Converter } from 
 
 import faker from 'faker'
 
-export class HasherSpy implements Hasher {
+export class HasherSpy implements Hasher<string, string> {
   plainText: string
   result = faker.datatype.uuid()
 

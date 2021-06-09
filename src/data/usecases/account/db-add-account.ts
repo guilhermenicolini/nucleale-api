@@ -3,7 +3,7 @@ import { Hasher, AddAccountRepository, CheckAccountByEmailRepository } from '@/d
 
 export class DbAddAccount implements AddAccount {
   constructor (
-    private readonly hasher: Hasher,
+    private readonly hasher: Hasher<string, string>,
     private readonly addAccountRepository: AddAccountRepository,
     private readonly checkAccountByEmailRepository: CheckAccountByEmailRepository
   ) { }
