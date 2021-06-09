@@ -28,6 +28,7 @@ export class NfseTransformer implements Transformer<Omit<InvoiceModel, 'id' | 'p
       competence: data.MES_COMPETENCIA,
       pickupType: data.TIPO_RECOLHIMENTO,
       taxation: data.TRIBUTACAO_PRESTACAO,
+      operation: data.OPERACAO_TRIBUTACAO,
       cnae: data.CODIGO_ATIVIDADE,
       activity: data.DESCRICAO_ATIVIDADE,
       service: data.DESCRICAO_SERVICO,

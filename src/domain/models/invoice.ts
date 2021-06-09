@@ -34,6 +34,7 @@ export type InvoiceModel = {
   competence: string
   pickupType: string
   taxation: string
+  operation: string
   cnae: string
   activity: string
   service: string

@@ -27,6 +27,7 @@ export class ModelsToInvoiceConverter implements ObjectConverter<ModelsToInvoice
       competence: this.timeManipulator.toMonthAndYear(today),
       pickupType: data.procedure.service.pickupType,
       taxation: data.procedure.service.taxation,
+      operation: data.procedure.service.operation,
       cnae: data.procedure.service.cnae,
       activity: this.stringManipulator.normalize(data.procedure.service.activity).toUpperCase(),
       service: data.procedure.service.service,
