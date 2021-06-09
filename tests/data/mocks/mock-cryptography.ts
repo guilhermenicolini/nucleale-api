@@ -1,4 +1,5 @@
 import { Hasher, Signer, HashComparer, Decrypter, Transformer, Converter } from '@/data/protocols'
+import { InvoiceModel } from '@/domain/models'
 
 import faker from 'faker'
 
@@ -8,6 +9,16 @@ export class HasherSpy implements Hasher<string, string> {
 
   async hash (plainText: string): Promise<string> {
     this.plainText = plainText
+    return this.result
+  }
+}
+
+export class HasherInvoiceSpy implements Hasher<InvoiceModel, string> {
+  plain: InvoiceModel
+  result = faker.datatype.uuid()
+
+  async hash (plain: InvoiceModel): Promise<string> {
+    this.plain = plain
     return this.result
   }
 }
