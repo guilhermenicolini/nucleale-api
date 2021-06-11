@@ -1,19 +1,19 @@
 import {
-  Converter,
+  ObjectConverter,
   TimeManipulator,
   MoneyManipulator,
   MaskManipulator
 } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 
-export class InvoicePdfMessageConverter implements Converter {
+export class InvoicePdfMessageConverter implements ObjectConverter<InvoiceModel, any> {
   constructor (
     private readonly timeManipulator: TimeManipulator,
     private readonly moneyManipulator: MoneyManipulator,
     private readonly maskManipulator: MaskManipulator
   ) { }
 
-  convert (invoice: InvoiceModel) {
+  convert (invoice: InvoiceModel): any {
     const phone = invoice.taker.phone.replace('+55', '')
     const phoneMask = `(00) ${phone.length === 9 ? '0' : ''}0000-0000`
     const message = {

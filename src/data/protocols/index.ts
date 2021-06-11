@@ -1,3 +1,4 @@
+export * from './convertion'
 export * from './cryptography'
 export * from './db'
 export * from './manipulation'
