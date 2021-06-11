@@ -1,8 +1,8 @@
-import { Converter, Decrypter } from '@/data/protocols'
+import { ObjectConverter, Decrypter } from '@/data/protocols'
 
 import builder, { convert as builderConvert } from 'xmlbuilder2'
 
-export class XmlConverterAdapter implements Converter, Decrypter {
+export class XmlConverterAdapter implements ObjectConverter, Decrypter {
   constructor (
     private readonly encoding: string
   ) { }

@@ -1,4 +1,4 @@
-import { Hasher, Signer, HashComparer, Decrypter, Transformer, Converter } from '@/data/protocols'
+import { Hasher, Signer, HashComparer, Decrypter, Transformer, ObjectConverter } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 
 import faker from 'faker'
@@ -95,7 +95,7 @@ export class PdfTransformerSpy implements Transformer {
   }
 }
 
-export class ConverterSpy implements Converter {
+export class ObjectConverterSpy implements ObjectConverter {
   data: any
   result: any = faker.random.word()
 

@@ -1,3 +1,3 @@
-export interface ObjectConverter<T, R> {
+export interface ObjectConverter<T = any, R = any> {
   convert: (data: T) => Promise<R>
 }

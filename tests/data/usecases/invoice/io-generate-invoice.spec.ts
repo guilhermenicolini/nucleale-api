@@ -1,43 +1,43 @@
 import { IoGenerateInvoice } from '@/data/usecases'
-import { ConverterSpy, PdfTransformerSpy } from '@/tests/data/mocks'
+import { ObjectConverterSpy, PdfTransformerSpy } from '@/tests/data/mocks'
 import { mockInvoiceDb, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: IoGenerateInvoice,
-  converterSpy: ConverterSpy,
+  objectConverterSpy: ObjectConverterSpy,
   transformerSpy: PdfTransformerSpy
 }
 
 const makeSut = (): SutTypes => {
-  const converterSpy = new ConverterSpy()
+  const objectConverterSpy = new ObjectConverterSpy()
   const transformerSpy = new PdfTransformerSpy()
-  const sut = new IoGenerateInvoice(converterSpy, transformerSpy)
+  const sut = new IoGenerateInvoice(objectConverterSpy, transformerSpy)
   return {
     sut,
-    converterSpy,
+    objectConverterSpy,
     transformerSpy
   }
 }
 
 describe('IoGenerateInvoice Usecase', () => {
-  test('Should call Converter with correct values', async () => {
-    const { sut, converterSpy } = makeSut()
+  test('Should call ObjectConverter with correct values', async () => {
+    const { sut, objectConverterSpy } = makeSut()
     const model = mockInvoiceDb()
     await sut.generate(model)
-    expect(converterSpy.data).toEqual(model)
+    expect(objectConverterSpy.data).toEqual(model)
   })
 
-  test('Should throw if Converter throws', async () => {
-    const { sut, converterSpy } = makeSut()
-    jest.spyOn(converterSpy, 'convert').mockImplementationOnce(throwError)
+  test('Should throw if ObjectConverter throws', async () => {
+    const { sut, objectConverterSpy } = makeSut()
+    jest.spyOn(objectConverterSpy, 'convert').mockImplementationOnce(throwError)
     const promise = sut.generate(mockInvoiceDb())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call Transformer with correct values', async () => {
-    const { sut, converterSpy, transformerSpy } = makeSut()
+    const { sut, objectConverterSpy, transformerSpy } = makeSut()
     await sut.generate(mockInvoiceDb())
-    expect(transformerSpy.data).toEqual(converterSpy.result)
+    expect(transformerSpy.data).toEqual(objectConverterSpy.result)
   })
 
   test('Should throw if Transformer throws', async () => {
