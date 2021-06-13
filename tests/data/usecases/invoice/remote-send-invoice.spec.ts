@@ -1,28 +1,33 @@
 import { RemoteSendInvoice } from '@/data/usecases'
 import {
   InvoiceToRpsConverterSpy,
-  RpsEncoderSpy
+  RpsEncoderSpy,
+  SignerSpy
 } from '@/tests/data/mocks'
 import { mockInvoice, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: RemoteSendInvoice,
   invoiceToRpsConverterSpy: InvoiceToRpsConverterSpy,
-  rpsEncoderSpy: RpsEncoderSpy
+  rpsEncoderSpy: RpsEncoderSpy,
+  signerSpy: SignerSpy
 }
 
 const makeSut = (): SutTypes => {
   const invoiceToRpsConverterSpy = new InvoiceToRpsConverterSpy()
   const rpsEncoderSpy = new RpsEncoderSpy()
+  const signerSpy = new SignerSpy()
   const sut = new RemoteSendInvoice(
     invoiceToRpsConverterSpy,
-    rpsEncoderSpy
+    rpsEncoderSpy,
+    signerSpy
   )
 
   return {
     sut,
     invoiceToRpsConverterSpy,
-    rpsEncoderSpy
+    rpsEncoderSpy,
+    signerSpy
   }
 }
 
