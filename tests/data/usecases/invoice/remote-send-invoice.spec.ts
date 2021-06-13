@@ -1,24 +1,28 @@
 import { RemoteSendInvoice } from '@/data/usecases'
-
 import {
-  InvoiceToRpsConverterSpy
+  InvoiceToRpsConverterSpy,
+  RpsEncoderSpy
 } from '@/tests/data/mocks'
 import { mockInvoice, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: RemoteSendInvoice,
-  invoiceToRpsConverterSpy: InvoiceToRpsConverterSpy
+  invoiceToRpsConverterSpy: InvoiceToRpsConverterSpy,
+  rpsEncoderSpy: RpsEncoderSpy
 }
 
 const makeSut = (): SutTypes => {
   const invoiceToRpsConverterSpy = new InvoiceToRpsConverterSpy()
+  const rpsEncoderSpy = new RpsEncoderSpy()
   const sut = new RemoteSendInvoice(
-    invoiceToRpsConverterSpy
+    invoiceToRpsConverterSpy,
+    rpsEncoderSpy
   )
 
   return {
     sut,
-    invoiceToRpsConverterSpy
+    invoiceToRpsConverterSpy,
+    rpsEncoderSpy
   }
 }
 
@@ -35,5 +39,11 @@ describe('RemoteSendInvoice Usecase', () => {
     jest.spyOn(invoiceToRpsConverterSpy, 'convert').mockImplementationOnce(throwError)
     const result = await sut.send(mockInvoice())
     expect(result).toEqual(new Error())
+  })
+
+  test('Should call Encoder with correct values', async () => {
+    const { sut, invoiceToRpsConverterSpy, rpsEncoderSpy } = makeSut()
+    await sut.send(mockInvoice())
+    expect(rpsEncoderSpy.data).toEqual(invoiceToRpsConverterSpy.result)
   })
 })

@@ -5,7 +5,8 @@ import {
   Decrypter,
   Transformer,
   ObjectConverter,
-  Decoder
+  Decoder,
+  Encoder
 } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 
@@ -108,6 +109,16 @@ export class ObjectConverterSpy implements ObjectConverter {
   result: any = faker.random.word()
 
   convert (data: any): any {
+    this.data = data
+    return this.result
+  }
+}
+
+export class RpsEncoderSpy implements Encoder {
+  data: any
+  result = {}
+
+  async encode (data: any): Promise<any> {
     this.data = data
     return this.result
   }
