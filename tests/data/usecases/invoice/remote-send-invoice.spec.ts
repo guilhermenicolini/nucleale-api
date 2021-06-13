@@ -58,4 +58,10 @@ describe('RemoteSendInvoice Usecase', () => {
     const result = await sut.send(mockInvoice())
     expect(result).toEqual(new Error())
   })
+
+  test('Should call Signer with correct values', async () => {
+    const { sut, rpsEncoderSpy, signerSpy } = makeSut()
+    await sut.send(mockInvoice())
+    expect(signerSpy.data).toEqual(rpsEncoderSpy.result)
+  })
 })
