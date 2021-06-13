@@ -123,3 +123,13 @@ export class RpsEncoderSpy implements Encoder {
     return this.result
   }
 }
+
+export class DecoderSpy implements Decoder {
+  data: any
+  result = 'any_message'
+
+  async decode (data: any): Promise<any> {
+    this.data = data
+    return this.result
+  }
+}
