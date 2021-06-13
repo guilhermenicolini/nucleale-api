@@ -1,4 +1,12 @@
-import { Hasher, Signer, HashComparer, Decrypter, Transformer, ObjectConverter } from '@/data/protocols'
+import {
+  Hasher,
+  Signer,
+  HashComparer,
+  Decrypter,
+  Transformer,
+  ObjectConverter,
+  Decoder
+} from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 
 import faker from 'faker'
@@ -59,16 +67,16 @@ export class DecrypterSpy implements Decrypter {
   }
 }
 
-export class NfseDecrypterSpy implements Decrypter {
-  buffer: any
+export class NfseDecoderSpy implements Decoder {
+  data: any
   result = {
     NOTAS_FISCAIS: {
       NOTA_FISCAL: ['any_nfse_1', 'any_nfse_2']
     }
   }
 
-  async decrypt (buffer: any): Promise<any> {
-    this.buffer = buffer
+  async decode (data: any): Promise<any> {
+    this.data = data
     return this.result
   }
 }

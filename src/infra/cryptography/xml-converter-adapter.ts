@@ -1,19 +1,18 @@
-import { ObjectConverter, Decrypter } from '@/data/protocols'
+import { Encoder, Decoder } from '@/data/protocols'
 
-import builder, { convert as builderConvert } from 'xmlbuilder2'
+import { create, convert } from 'xmlbuilder2'
 
-export class XmlConverterAdapter implements ObjectConverter, Decrypter {
+export class XmlConverterAdapter implements Encoder, Decoder {
   constructor (
     private readonly encoding: string
   ) { }
 
-  async convert (obj: any): Promise<any> {
-    return builder
-      .create(obj, { encoding: this.encoding })
+  async encode (data: any): Promise<any> {
+    return create(data, { encoding: this.encoding })
       .end({ prettyPrint: true })
   }
 
-  async decrypt (xml: any): Promise<any> {
-    return builderConvert(xml.toString(this.encoding), { format: 'object' })
+  async decode (xml: any): Promise<any> {
+    return convert(xml.toString(this.encoding), { format: 'object' })
   }
 }
