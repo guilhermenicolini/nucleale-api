@@ -16,13 +16,17 @@ export class RemoteSendInvoice implements SendInvoice {
       const xml = await this.encoder.encode(rps)
       const xmlSigned = await this.signer.sign(xml)
 
-      await this.soapClient.send({
+      const response = await this.soapClient.send({
         url: env.nfse.url,
         method: env.nfse.methods.lote,
         message: {
           mensagemXml: xmlSigned
         }
       })
+      if (!response.success) {
+        return response.error
+      }
+
       return null
     } catch (error) {
       return error

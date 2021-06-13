@@ -89,4 +89,14 @@ describe('RemoteSendInvoice Usecase', () => {
       }
     })
   })
+
+  test('Should return error if SoapClient returns false', async () => {
+    const { sut, soapClientSpy } = makeSut()
+    soapClientSpy.result = {
+      success: false,
+      error: new Error()
+    }
+    const result = await sut.send(mockInvoice())
+    expect(result).toEqual(new Error())
+  })
 })
