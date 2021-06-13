@@ -1,8 +1,10 @@
 import { RemoteSendInvoice } from '@/data/usecases'
+import env from '@/main/config/env'
 import {
   InvoiceToRpsConverterSpy,
   RpsEncoderSpy,
-  SignerSpy
+  SignerSpy,
+  SoapClientSpy
 } from '@/tests/data/mocks'
 import { mockInvoice, throwError } from '@/tests/domain/mocks'
 
@@ -10,24 +12,28 @@ type SutTypes = {
   sut: RemoteSendInvoice,
   invoiceToRpsConverterSpy: InvoiceToRpsConverterSpy,
   rpsEncoderSpy: RpsEncoderSpy,
-  signerSpy: SignerSpy
+  signerSpy: SignerSpy,
+  soapClientSpy: SoapClientSpy
 }
 
 const makeSut = (): SutTypes => {
   const invoiceToRpsConverterSpy = new InvoiceToRpsConverterSpy()
   const rpsEncoderSpy = new RpsEncoderSpy()
   const signerSpy = new SignerSpy()
+  const soapClientSpy = new SoapClientSpy()
   const sut = new RemoteSendInvoice(
     invoiceToRpsConverterSpy,
     rpsEncoderSpy,
-    signerSpy
+    signerSpy,
+    soapClientSpy
   )
 
   return {
     sut,
     invoiceToRpsConverterSpy,
     rpsEncoderSpy,
-    signerSpy
+    signerSpy,
+    soapClientSpy
   }
 }
 
@@ -70,5 +76,17 @@ describe('RemoteSendInvoice Usecase', () => {
     jest.spyOn(signerSpy, 'sign').mockImplementationOnce(throwError)
     const result = await sut.send(mockInvoice())
     expect(result).toEqual(new Error())
+  })
+
+  test('Should call SoapClient with correct values', async () => {
+    const { sut, signerSpy, soapClientSpy } = makeSut()
+    await sut.send(mockInvoice())
+    expect(soapClientSpy.request).toEqual({
+      url: env.nfse.url,
+      method: env.nfse.methods.lote,
+      message: {
+        mensagemXml: signerSpy.result
+      }
+    })
   })
 })
