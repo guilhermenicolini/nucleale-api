@@ -46,4 +46,11 @@ describe('RemoteSendInvoice Usecase', () => {
     await sut.send(mockInvoice())
     expect(rpsEncoderSpy.data).toEqual(invoiceToRpsConverterSpy.result)
   })
+
+  test('Should return error if Encoder throws', async () => {
+    const { sut, rpsEncoderSpy } = makeSut()
+    jest.spyOn(rpsEncoderSpy, 'encode').mockImplementationOnce(throwError)
+    const result = await sut.send(mockInvoice())
+    expect(result).toEqual(new Error())
+  })
 })
