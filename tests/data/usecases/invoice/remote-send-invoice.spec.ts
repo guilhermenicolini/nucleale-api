@@ -117,4 +117,11 @@ describe('RemoteSendInvoice Usecase', () => {
     await sut.send(mockInvoice())
     expect(decoderSpy.data).toEqual(soapClientSpy.result.response)
   })
+
+  test('Should return error if Decoder throws', async () => {
+    const { sut, decoderSpy } = makeSut()
+    jest.spyOn(decoderSpy, 'decode').mockImplementationOnce(throwError)
+    const result = await sut.send(mockInvoice())
+    expect(result).toEqual(new Error())
+  })
 })
