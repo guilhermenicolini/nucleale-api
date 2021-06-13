@@ -10,5 +10,11 @@ export default {
   appUrl: process.env.APP_URL || 'http://localhost:5051',
   whatsappSession: process.env.WHATSAPP_SESSION || 'attendance',
   storageBucket: process.env.STORAGE_BUCKET || 'my-bucket',
-  storageTokenFolder: process.env.STORAGE_TOKEN_FOLDER || 'tokens'
+  storageTokenFolder: process.env.STORAGE_TOKEN_FOLDER || 'tokens',
+  nfse: {
+    url: 'http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws?wsdl',
+    methods: {
+      lote: 'testeEnviar'
+    }
+  }
 }
