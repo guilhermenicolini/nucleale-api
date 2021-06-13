@@ -20,3 +20,15 @@ export const hasValue = (value: any): boolean => {
 export const trimZeros = (value: string): string => {
   return value ? value.trim().replace(/^0+/, '') : ''
 }
+
+export const nfseEnvelope = (method: string, data: any): any => {
+  const xml = {}
+  xml[`ns1:${method}`] = {
+    '@xmlns:ns1': 'http://localhost:8080/WsNFe2/lote',
+    '@xmlns:tipos': 'http://localhost:8080/WsNFe2/tp',
+    '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    '@xsi:schemaLocation': `http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/${method}.xsd`,
+    ...data
+  }
+  return xml
+}

@@ -1,6 +1,7 @@
 import { Hasher, PhoneManipulator, TimeManipulator } from '@/data/protocols'
 import { ObjectConverter } from '@/data/protocols/convertion'
 import { InvoiceModel, RpsLoteModel } from '@/domain/models'
+import { nfseEnvelope } from '../utils'
 
 export class InvoiceToRpsConverter implements ObjectConverter<InvoiceToRpsConverter.Input, InvoiceToRpsConverter.Output> {
   constructor (
@@ -10,7 +11,7 @@ export class InvoiceToRpsConverter implements ObjectConverter<InvoiceToRpsConver
   ) { }
 
   async convert (data: InvoiceToRpsConverter.Input): Promise<InvoiceToRpsConverter.Output> {
-    return {
+    const message = {
       Cabecalho: {
         CodCidade: data.provider.address.cityId,
         CPFCNPJRemetente: data.provider.taxId,
@@ -90,6 +91,7 @@ export class InvoiceToRpsConverter implements ObjectConverter<InvoiceToRpsConver
         ]
       }
     }
+    return nfseEnvelope('ReqEnvioLoteRPS', message)
   }
 }
 
