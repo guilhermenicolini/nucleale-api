@@ -1,4 +1,4 @@
-import { Signer } from '@/data/protocols'
+import { FileStorage, Signer } from '@/data/protocols'
 
 import { SignedXml } from 'xml-crypto'
 
@@ -20,13 +20,14 @@ function KeyProvider (certificate) {
 export class XmlSignerAdapter implements Signer {
   constructor (
     private readonly tag: string,
-    private readonly key: Buffer,
-    private readonly certificate: Buffer
+    private readonly fileStorage: FileStorage
   ) { }
 
   async sign (data: any): Promise<any> {
+    const certificate = await this.fileStorage.get('certificate/certificate.cer')
+    const privateKey = await this.fileStorage.get('certificate/private.key')
     const signer = new SignedXml()
-    signer.keyInfoProvider = new KeyProvider(this.certificate)
+    signer.keyInfoProvider = new KeyProvider(certificate)
     signer.canonicalizationAlgorithm =
       'http://www.w3.org/TR/2001/REC-xml-c14n-20010315'
     signer.addReference(
@@ -41,7 +42,7 @@ export class XmlSignerAdapter implements Signer {
       '',
       false
     )
-    signer.signingKey = this.key
+    signer.signingKey = privateKey
     signer.computeSignature(data)
     return signer.getSignedXml()
   }
