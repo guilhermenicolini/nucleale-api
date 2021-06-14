@@ -1,11 +1,12 @@
 import { RemoteSendInvoice } from '@/data/usecases'
 import env from '@/main/config/env'
+import { SoapError } from '@/presentation/errors'
 import {
   InvoiceToRpsConverterSpy,
   RpsEncoderSpy,
   SignerSpy,
   SoapClientSpy,
-  DecoderSpy
+  RpsDecoderSpy
 } from '@/tests/data/mocks'
 import { mockInvoice, throwError } from '@/tests/domain/mocks'
 
@@ -15,7 +16,7 @@ type SutTypes = {
   rpsEncoderSpy: RpsEncoderSpy
   signerSpy: SignerSpy
   soapClientSpy: SoapClientSpy
-  decoderSpy: DecoderSpy
+  decoderSpy: RpsDecoderSpy
 }
 
 const makeSut = (): SutTypes => {
@@ -23,7 +24,7 @@ const makeSut = (): SutTypes => {
   const rpsEncoderSpy = new RpsEncoderSpy()
   const signerSpy = new SignerSpy()
   const soapClientSpy = new SoapClientSpy()
-  const decoderSpy = new DecoderSpy()
+  const decoderSpy = new RpsDecoderSpy()
   const sut = new RemoteSendInvoice(
     invoiceToRpsConverterSpy,
     rpsEncoderSpy,
@@ -123,5 +124,21 @@ describe('RemoteSendInvoice Usecase', () => {
     jest.spyOn(decoderSpy, 'decode').mockImplementationOnce(throwError)
     const result = await sut.send(mockInvoice())
     expect(result).toEqual(new Error())
+  })
+
+  test('Should return error if Decoder returns error', async () => {
+    const { sut, decoderSpy } = makeSut()
+    decoderSpy.result = {
+      'ns1:RetornoEnvioLoteRPS': {
+        Erros: {
+          Erro: {
+            Codigo: 1,
+            Descricao: 'Teste'
+          }
+        }
+      }
+    }
+    const result = await sut.send(mockInvoice())
+    expect(result).toEqual(new SoapError('1 Teste'))
   })
 })
