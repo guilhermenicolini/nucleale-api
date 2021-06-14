@@ -1,6 +1,6 @@
 import { PhoneManipulator } from '@/data/protocols'
 
-export class NfsePhoneManipulator implements PhoneManipulator {
+export class NfsePhoneAdapter implements PhoneManipulator {
   private isValid = (phone: string): boolean => {
     return [13, 14].includes(phone?.length) && phone?.startsWith('+55')
   }

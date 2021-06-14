@@ -1,6 +1,6 @@
-import { NfsePhoneManipulator } from '@/infra/manipulation'
+import { NfsePhoneAdapter } from '@/infra/manipulation'
 
-const makeSut = (): NfsePhoneManipulator => new NfsePhoneManipulator()
+const makeSut = (): NfsePhoneAdapter => new NfsePhoneAdapter()
 
 describe('NfsePhone Adapter', () => {
   describe('isValid()', () => {
