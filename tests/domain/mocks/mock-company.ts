@@ -1,8 +1,8 @@
-import { CompanyModel, SettingsModel, RpsModel, ServiceModel, ProcedureModel } from '@/domain/models'
+import { CompanyModel, SettingsModel, RpsSettingsModel, ServiceModel, ProcedureModel } from '@/domain/models'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
-const mockRps = (): RpsModel => ({
+const mockRps = (): RpsSettingsModel => ({
   serie: faker.random.alpha({ count: 2 }),
   type: faker.random.alpha({ count: 2 })
 })

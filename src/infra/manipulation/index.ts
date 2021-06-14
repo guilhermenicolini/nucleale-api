@@ -1,5 +1,6 @@
 export * from './moment-adapter'
 export * from './money-adapter'
+export * from './nfse-phone-adapter'
 export * from './nfse-time-adapter'
 export * from './string-format-adapter'
 export * from './string-mask-adapter'
