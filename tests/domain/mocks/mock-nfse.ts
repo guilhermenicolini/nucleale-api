@@ -1,5 +1,6 @@
 import { CabecalhoModel, RpsDeducaoModel, RpsItemModel, RpsLoteModel } from '@/domain/models'
 import { RpsModel } from '@/domain/models/nfse'
+import env from '@/main/config/env'
 
 import faker from 'faker'
 
@@ -93,11 +94,17 @@ export const mockRps = (): RpsModel => ({
 })
 
 export const mockRpsLoteModel = (): RpsLoteModel => ({
-  Cabecalho: mockCabecalho(),
-  Lote: {
-    '@Id': 'lote:1',
-    RPS: [
-      mockRps()
-    ]
+  'ns1:ReqEnvioLoteRPS': {
+    '@xmlns:ns1': env.nfse.ns1,
+    '@xmlns:tipos': env.nfse.tipos,
+    '@xmlns:xsi': env.nfse.xsi,
+    '@xsi:schemaLocation': env.nfse.schemaLocation('ReqEnvioLoteRPS'),
+    Cabecalho: mockCabecalho(),
+    Lote: {
+      '@Id': 'lote:1',
+      RPS: [
+        mockRps()
+      ]
+    }
   }
 })
