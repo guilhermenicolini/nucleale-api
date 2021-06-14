@@ -116,5 +116,12 @@ describe('Invoices Routes', () => {
         .post('/invoices')
         .expect(401)
     })
+
+    test('Should return 403 if token is not admin', async () => {
+      await request(app)
+        .post('/invoices')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(403)
+    })
   })
 })
