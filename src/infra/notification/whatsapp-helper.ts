@@ -29,10 +29,17 @@ export class WhatsappHelper {
     this.client = null
   }
 
-  async sendMessage (phone: string, message: string): Promise<void> {
+  async sendMessage (phone: string, content: string): Promise<void> {
     if (!this.client) {
       await this.connect()
     }
-    await this.client.sendText(`${phone}@c.us`, message)
+    await this.client.sendText(`${phone}@c.us`, content)
+  }
+
+  async sendFile (phone: string, base64: string, filename: string): Promise<void> {
+    if (!this.client) {
+      await this.connect()
+    }
+    await this.client.sendFileFromBase64(`${phone}@c.us`, base64, filename)
   }
 }

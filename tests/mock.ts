@@ -1,9 +1,10 @@
-export const sendMessageStub = jest.fn().mockImplementation((phone, text) => console.log(phone, text))
-
+export const sendMessageStub = jest.fn().mockImplementation((phone, content) => console.log(phone, content))
+export const sendFileFromBase64Stub = jest.fn().mockImplementation((phone, base64, filename) => console.log(phone, filename, base64))
 jest.mock('@wppconnect-team/wppconnect', jest.fn().mockImplementation(() => {
   return {
     create: jest.fn().mockImplementation(() => ({
       sendText: sendMessageStub,
+      sendFileFromBase64: sendFileFromBase64Stub,
       close: jest.fn()
     }))
   }
