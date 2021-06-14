@@ -1,3 +1,3 @@
-export interface Decoder {
-  decode: (data: any) => Promise<any>
+export interface Decoder<R = any> {
+  decode: (data: any) => Promise<R>
 }

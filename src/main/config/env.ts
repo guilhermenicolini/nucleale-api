@@ -15,6 +15,12 @@ export default {
     url: 'http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws?wsdl',
     methods: {
       lote: 'testeEnviar'
+    },
+    ns1: 'http://localhost:8080/WsNFe2/lote',
+    tipos: 'http://localhost:8080/WsNFe2/tp',
+    xsi: 'http://www.w3.org/2001/XMLSchema-instance',
+    schemaLocation (method: string): string {
+      return `http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/${method}.xsd`
     }
   }
 }

@@ -8,7 +8,7 @@ import {
   Decoder,
   Encoder
 } from '@/data/protocols'
-import { InvoiceModel } from '@/domain/models'
+import { InvoiceModel, RpsLoteResultModel } from '@/domain/models'
 
 import faker from 'faker'
 
@@ -124,9 +124,9 @@ export class RpsEncoderSpy implements Encoder {
   }
 }
 
-export class DecoderSpy implements Decoder {
+export class RpsDecoderSpy implements Decoder {
   data: any
-  result = 'any_message'
+  result: RpsLoteResultModel = null
 
   async decode (data: any): Promise<any> {
     this.data = data

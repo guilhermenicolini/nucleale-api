@@ -94,9 +94,34 @@ export type RpsModel = {
 }
 
 export type RpsLoteModel = {
-  Cabecalho: CabecalhoModel,
-  Lote: {
-    '@Id': string,
-    RPS: RpsModel[]
+  'ns1:ReqEnvioLoteRPS': {
+    '@xmlns:ns1': string
+    '@xmlns:tipos': string
+    '@xmlns:xsi': string
+    '@xsi:schemaLocation': string
+    Cabecalho: CabecalhoModel,
+    Lote: {
+      '@Id': string,
+      RPS: RpsModel[]
+    }
+  }
+}
+
+export type RpsLoteResultModel = {
+  'ns1:RetornoEnvioLoteRPS': {
+    Erros?: {
+      Erro: {
+        Codigo: number
+        Descricao: string
+      }
+    }
+    ChavesNFSeRPS?: {
+      ChaveNFSeRPS: {
+        ChaveNFe: {
+          NumeroNFe: number
+          CodigoVerificacao: string
+        }
+      }
+    }
   }
 }
