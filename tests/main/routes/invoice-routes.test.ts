@@ -109,4 +109,12 @@ describe('Invoices Routes', () => {
         .expect('Content-Type', 'application/pdf')
     })
   })
+
+  describe('POST /invoices', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .post('/invoices')
+        .expect(401)
+    })
+  })
 })
