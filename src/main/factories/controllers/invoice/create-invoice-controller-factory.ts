@@ -1,10 +1,13 @@
-import {
-  makeDbCreateInvoice
-} from '@/main/factories'
 import { CreateInvoiceController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
-import { makeDbSaveInvoice, makeIoGenerateInvoice, makeRemoteSendInvoice } from '../../usecases'
-import { makeCreateInvoiceValidation } from './create-invoice-validation-factory'
+import {
+  makeDbCreateInvoice,
+  makeCreateInvoiceValidation,
+  makeDbSaveInvoice,
+  makeIoGenerateInvoice,
+  makeRemoteSendInvoice,
+  makeRemoteMailInvoice
+} from '@/main/factories'
 
 export const makeCreateInvoiceController = (): Controller => {
   return new CreateInvoiceController(
@@ -13,6 +16,6 @@ export const makeCreateInvoiceController = (): Controller => {
     makeRemoteSendInvoice(),
     makeDbSaveInvoice(),
     makeIoGenerateInvoice(),
-    null
+    makeRemoteMailInvoice()
   )
 }
