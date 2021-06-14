@@ -126,7 +126,18 @@ export class RpsEncoderSpy implements Encoder {
 
 export class RpsDecoderSpy implements Decoder {
   data: any
-  result: RpsLoteResultModel = null
+  result: RpsLoteResultModel = {
+    'ns1:RetornoEnvioLoteRPS': {
+      ChavesNFSeRPS: {
+        ChaveNFSeRPS: {
+          ChaveNFe: {
+            NumeroNFe: faker.datatype.number(),
+            CodigoVerificacao: faker.random.alphaNumeric(12)
+          }
+        }
+      }
+    }
+  }
 
   async decode (data: any): Promise<any> {
     this.data = data
