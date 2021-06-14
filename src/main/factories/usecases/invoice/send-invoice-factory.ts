@@ -7,7 +7,7 @@ import { SoapClientAdapter } from '@/infra/soap'
 import { GoogleCloudStorageAdapter } from '@/infra/storage/google-cloud-storage-adapter'
 import env from '@/main/config/env'
 
-export const makeSendInvoice = (): SendInvoice => {
+export const makeRemoteSendInvoice = (): SendInvoice => {
   const xmlConverterAdapter = new XmlConverterAdapter('latin1')
   return new RemoteSendInvoice(
     new InvoiceToRpsConverter(new NfseTimeAdapter(), new NfsePhoneAdapter(), new NfseHasherAdapter()),

@@ -5,7 +5,7 @@ import { AccountMongoRepository, AddressMongoRepository, CompanyMongoRepository,
 import { MomentAdapter } from '@/infra/manipulation'
 import { StringFormatAdapter } from '@/infra/manipulation/string-format-adapter'
 
-export const makeCreateInvoice = (): CreateInvoice => {
+export const makeDbCreateInvoice = (): CreateInvoice => {
   const companyMongoRepository = new CompanyMongoRepository()
   return new DbCreateInvoice(
     new AccountMongoRepository(),
