@@ -123,5 +123,12 @@ describe('Invoices Routes', () => {
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(403)
     })
+
+    test('Should return 400 if body is invalid', async () => {
+      await request(app)
+        .post('/invoices')
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
+        .expect(400)
+    })
   })
 })
