@@ -1,3 +1,4 @@
+export * from './create-invoice-controller-factory'
 export * from './create-invoice-validation-factory'
 export * from './download-invoice-controller-factory'
 export * from './download-invoice-validation-factory'
