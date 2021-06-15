@@ -14,11 +14,11 @@ describe('CreateInvoiceValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
     makeCreateInvoiceValidation()
     const validations: Validation[] = []
-    for (const field of ['user', 'procedure', 'amount']) {
+    for (const field of ['userId', 'procedureId', 'amount']) {
       validations.push(new RequiredFieldValidation(field))
     }
     const idValidatioAdapter = new IdValidatorAdapter()
-    for (const field of ['user', 'procedure']) {
+    for (const field of ['userId', 'procedureId']) {
       validations.push(new IdValidation(field, idValidatioAdapter))
     }
     validations.push(new NumberValidation('amount'))
