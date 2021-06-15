@@ -1,32 +1,46 @@
 import {
-  Converter,
+  ObjectConverter,
   TimeManipulator,
   MoneyManipulator,
   MaskManipulator
 } from '@/data/protocols'
-import { InvoiceModel } from '@/domain/models'
+import { InvoiceModel, InvoicePersonModel } from '@/domain/models'
 
-export class InvoicePdfMessageConverter implements Converter {
+export class InvoicePdfMessageConverter implements ObjectConverter<InvoiceModel, any> {
   constructor (
     private readonly timeManipulator: TimeManipulator,
     private readonly moneyManipulator: MoneyManipulator,
     private readonly maskManipulator: MaskManipulator
   ) { }
 
-  convert (invoice: InvoiceModel) {
+  private getPerson (person: InvoicePersonModel): any {
+    const phone = person.phone.replace('+55', '')
+    const phoneMask = `(00) ${phone.length === 9 ? '0' : ''}0000-0000`
+
+    return {
+      name: person.name,
+      taxId: this.maskManipulator.mask(person.taxId, '000.000.000-00'),
+      registryId: person.registryId ? this.maskManipulator.mask(person.registryId, '00000000-0') : null,
+      address: `${person.address.address}, Nº ${person.address.number}${person.address.complement
+        ? ' ' + person.address.complement
+        : ''
+      } - BAIRRO ${person.address.district} - CEP: ${this.maskManipulator.mask(person.address.zip, '00000-000')
+      }`,
+      city: person.address.city,
+      state: person.address.state,
+      email: person.email,
+      phone: this.maskManipulator.mask(phone, phoneMask)
+    }
+  }
+
+  convert (invoice: InvoiceModel): any {
     const message = {
       invoiceNo: invoice.invoiceNo.toString().padStart(8, '0'),
       invoiceDate: this.timeManipulator.toDateAndTime(invoice.invoiceDate),
       invoiceValue: this.moneyManipulator.format(invoice.invoiceValue),
       verificationCode: invoice.verificationCode.substring(0, 8),
-      name: invoice.taker.name,
-      taxId: this.maskManipulator.mask(invoice.taker.taxId, '000.000.000-00'),
-      registryId: null,
-      address: invoice.taker.address,
-      city: invoice.taker.city,
-      state: invoice.taker.state,
-      email: invoice.taker.email,
-      phone: invoice.taker.phone,
+      provider: this.getPerson(invoice.provider),
+      taker: this.getPerson(invoice.taker),
       description: invoice.description,
       items: invoice.items.map((i) => {
         return {

@@ -1,13 +1,33 @@
-import { Hasher, Signer, HashComparer, Decrypter, Transformer, Converter } from '@/data/protocols'
+import {
+  Hasher,
+  Signer,
+  HashComparer,
+  Decrypter,
+  Transformer,
+  ObjectConverter,
+  Decoder,
+  Encoder
+} from '@/data/protocols'
+import { InvoiceModel, RpsLoteResultModel } from '@/domain/models'
 
 import faker from 'faker'
 
-export class HasherSpy implements Hasher {
+export class HasherSpy implements Hasher<string, string> {
   plainText: string
   result = faker.datatype.uuid()
 
   async hash (plainText: string): Promise<string> {
     this.plainText = plainText
+    return this.result
+  }
+}
+
+export class HasherInvoiceSpy implements Hasher<InvoiceModel, string> {
+  plain: InvoiceModel
+  result = faker.datatype.uuid()
+
+  async hash (plain: InvoiceModel): Promise<string> {
+    this.plain = plain
     return this.result
   }
 }
@@ -48,16 +68,16 @@ export class DecrypterSpy implements Decrypter {
   }
 }
 
-export class NfseDecrypterSpy implements Decrypter {
-  buffer: any
+export class NfseDecoderSpy implements Decoder {
+  data: any
   result = {
     NOTAS_FISCAIS: {
       NOTA_FISCAL: ['any_nfse_1', 'any_nfse_2']
     }
   }
 
-  async decrypt (buffer: any): Promise<any> {
-    this.buffer = buffer
+  async decode (data: any): Promise<any> {
+    this.data = data
     return this.result
   }
 }
@@ -84,11 +104,42 @@ export class PdfTransformerSpy implements Transformer {
   }
 }
 
-export class ConverterSpy implements Converter {
+export class ObjectConverterSpy implements ObjectConverter {
   data: any
   result: any = faker.random.word()
 
   convert (data: any): any {
+    this.data = data
+    return this.result
+  }
+}
+
+export class RpsEncoderSpy implements Encoder {
+  data: any
+  result = {}
+
+  async encode (data: any): Promise<any> {
+    this.data = data
+    return this.result
+  }
+}
+
+export class RpsDecoderSpy implements Decoder {
+  data: any
+  result: RpsLoteResultModel = {
+    'ns1:RetornoEnvioLoteRPS': {
+      ChavesNFSeRPS: {
+        ChaveNFSeRPS: {
+          ChaveNFe: {
+            NumeroNFe: faker.datatype.number(),
+            CodigoVerificacao: faker.random.alphaNumeric(12)
+          }
+        }
+      }
+    }
+  }
+
+  async decode (data: any): Promise<any> {
     this.data = data
     return this.result
   }

@@ -3,12 +3,14 @@ import { InvoiceModel, InvoicePersonModel, InvoiceItemModel } from '@/domain/mod
 import faker from 'faker'
 import fs from 'fs'
 import { ObjectId } from 'mongodb'
+import { mockAddAddressModel } from './mock-address'
 
 export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
   invoiceDate: faker.date.past().valueOf(),
   issueDate: faker.date.past().valueOf(),
   rpsNumber: faker.datatype.number({ min: 1, max: 99 }),
+  rpsSerie: faker.random.alphaNumeric(2).toUpperCase(),
   verificationCode: faker.random.alphaNumeric(8),
   status: 'Normal',
   description: faker.random.words(3),
@@ -19,6 +21,7 @@ export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
   competence: faker.random.word(),
   pickupType: faker.random.word()[0].toUpperCase(),
   taxation: faker.random.word(),
+  operation: faker.random.word()[0].toUpperCase(),
   cnae: faker.random.word(),
   activity: faker.random.word(),
   service: faker.random.word(),
@@ -35,6 +38,7 @@ export const mockInvoiceDb = (taxId?: string): InvoiceModel => ({
   invoiceDate: 1619481600000,
   issueDate: 1619481600000,
   rpsNumber: faker.datatype.number({ min: 1, max: 99 }),
+  rpsSerie: faker.random.alphaNumeric(2).toUpperCase(),
   verificationCode: faker.random.alphaNumeric(8),
   status: faker.random.word(),
   description: faker.random.words(3),
@@ -45,6 +49,7 @@ export const mockInvoiceDb = (taxId?: string): InvoiceModel => ({
   competence: faker.random.word(),
   pickupType: 'A',
   taxation: faker.random.word(),
+  operation: faker.random.word()[0].toUpperCase(),
   cnae: faker.random.word(),
   activity: faker.random.word(),
   service: faker.random.word(),
@@ -59,9 +64,7 @@ export const mockPerson = (taxId?: string): InvoicePersonModel => ({
   taxId: taxId || faker.address.zipCode('###########'),
   name: faker.name.findName(),
   registryId: faker.address.zipCode('########'),
-  address: faker.address.streetAddress(true),
-  city: faker.address.city(),
-  state: faker.address.stateAbbr(),
+  address: mockAddAddressModel(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber('+55##9########')
 })

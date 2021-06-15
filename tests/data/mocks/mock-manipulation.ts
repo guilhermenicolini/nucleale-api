@@ -1,4 +1,10 @@
-import { TimeManipulator, MoneyManipulator, MaskManipulator } from '@/data/protocols'
+import {
+  TimeManipulator,
+  MoneyManipulator,
+  MaskManipulator,
+  StringManipulator,
+  PhoneManipulator
+} from '@/data/protocols'
 
 export class TimeManipulatorSpy implements TimeManipulator {
   millis: number
@@ -17,6 +23,11 @@ export class TimeManipulatorSpy implements TimeManipulator {
   }
 
   toDate (millis: number): string {
+    this.millis = millis
+    return this.resultStr
+  }
+
+  toIsoDate (millis: number): string {
     this.millis = millis
     return this.resultStr
   }
@@ -56,5 +67,38 @@ export class MaskManipulatorSpy implements MaskManipulator {
     this.value = value
     this.format = format
     return this.result
+  }
+}
+
+export class StringManipulatorSpy implements StringManipulator {
+  value: any
+  args: any | any[]
+  resultStr = 'any_string'
+
+  format (value: string, args: any | any[]): string {
+    this.value = value
+    this.args = args
+    return this.resultStr
+  }
+
+  normalize (value: string): string {
+    this.value = value
+    return this.resultStr
+  }
+}
+
+export class PhoneManipulatorSpy implements PhoneManipulator {
+  phone: string
+  resultArea = 'any_area'
+  resultNumber = 'any_number'
+
+  getArea (phone: string): string {
+    this.phone = phone
+    return this.resultArea
+  }
+
+  getNumber (phone: string): string {
+    this.phone = phone
+    return this.resultNumber
   }
 }

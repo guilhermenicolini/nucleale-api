@@ -1,9 +1,9 @@
-import { Converter, Transformer } from '@/data/protocols'
+import { ObjectConverter, Transformer } from '@/data/protocols'
 import { GenerateInvoice } from '@/domain/usecases'
 
 export class IoGenerateInvoice implements GenerateInvoice {
   constructor (
-    private readonly converter: Converter,
+    private readonly converter: ObjectConverter,
     private readonly transformer: Transformer
   ) { }
 

@@ -10,5 +10,17 @@ export default {
   appUrl: process.env.APP_URL || 'http://localhost:5051',
   whatsappSession: process.env.WHATSAPP_SESSION || 'attendance',
   storageBucket: process.env.STORAGE_BUCKET || 'my-bucket',
-  storageTokenFolder: process.env.STORAGE_TOKEN_FOLDER || 'tokens'
+  storageTokenFolder: process.env.STORAGE_TOKEN_FOLDER || 'tokens',
+  nfse: {
+    url: 'http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws?wsdl',
+    methods: {
+      lote: process.env.NODE_ENV === 'production' ? 'Enviar' : 'testeEnviar'
+    },
+    ns1: 'http://localhost:8080/WsNFe2/lote',
+    tipos: 'http://localhost:8080/WsNFe2/tp',
+    xsi: 'http://www.w3.org/2001/XMLSchema-instance',
+    schemaLocation (method: string): string {
+      return `http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/${method}.xsd`
+    }
+  }
 }

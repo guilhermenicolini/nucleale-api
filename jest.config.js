@@ -17,6 +17,6 @@ module.exports = {
     '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1'
   },
-  watchPathIgnorePatterns: ['globalConfig', 'tokens'],
+  watchPathIgnorePatterns: ['globalConfig', 'tokens', 'index'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
 }

@@ -3,7 +3,10 @@ import {
   SaveInvoice,
   LoadInvoices,
   LoadInvoice,
-  GenerateInvoice
+  GenerateInvoice,
+  CreateInvoice,
+  SendInvoice,
+  MailInvoice
 } from '@/domain/usecases'
 import { mockInvoice, mockLoadInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
@@ -62,5 +65,36 @@ export class GenerateInvoiceSpy implements GenerateInvoice {
   async generate (model: GenerateInvoice.Model): Promise<GenerateInvoice.Result> {
     this.model = model
     return this.result
+  }
+}
+
+export class CreateInvoiceSpy implements CreateInvoice {
+  params: CreateInvoice.Params
+  result: CreateInvoice.Result = mockInvoiceDb()
+
+  async create (params: CreateInvoice.Params): Promise<CreateInvoice.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class SendInvoiceSpy implements SendInvoice {
+  params: SendInvoice.Params
+  result: SendInvoice.Result = {
+    invoiceNo: faker.datatype.number(),
+    verificationCode: faker.random.alphaNumeric(20)
+  }
+
+  async send (params: SendInvoice.Params): Promise<SendInvoice.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class MailInvoiceSpy implements MailInvoice {
+  param: MailInvoice.Param
+
+  async send (param: MailInvoice.Param): Promise<void> {
+    this.param = param
   }
 }

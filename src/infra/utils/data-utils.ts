@@ -16,3 +16,7 @@ export const hasValue = (value: any): boolean => {
 
   return value.trim().length > 0
 }
+
+export const trimZeros = (value: string): string => {
+  return value ? value.trim().replace(/^0+/, '') : ''
+}

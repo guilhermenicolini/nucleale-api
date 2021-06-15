@@ -1,10 +1,10 @@
+import { AddressModel } from '@/domain/models'
+
 export type InvoicePersonModel = {
   taxId: string
   name: string
   registryId: string
-  address: string
-  city: string
-  state: string
+  address: Omit<AddressModel, 'id' | 'accountId'>
   email: string
   phone: string
 }
@@ -23,6 +23,8 @@ export type InvoiceModel = {
   invoiceDate: number
   issueDate: number
   rpsNumber: number
+  rpsSerie: string
+  provideSerie: number
   verificationCode: string
   status: string
   description: string
@@ -33,6 +35,7 @@ export type InvoiceModel = {
   competence: string
   pickupType: string
   taxation: string
+  operation: string
   cnae: string
   activity: string
   service: string
