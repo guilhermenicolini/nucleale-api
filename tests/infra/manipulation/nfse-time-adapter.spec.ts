@@ -40,6 +40,15 @@ describe('NfseTime Adapter', () => {
     })
   })
 
+  describe('toIsoDate()', () => {
+    test('Should call moment-timezone format with correct values', async () => {
+      const sut = makeSut()
+      sut.toIsoDate(millis)
+      expect(moment).toHaveBeenCalledWith(millis)
+      expect(formatStub).toHaveBeenCalledWith('YYYYMMDD')
+    })
+  })
+
   describe('toMonthAndYear()', () => {
     test('Should call moment-timezone format with correct values', async () => {
       const sut = makeSut()

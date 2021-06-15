@@ -15,12 +15,12 @@ export class NfseTimeAdapter implements TimeManipulator {
     return moment(millis).format('YYYY-MM-DD')
   }
 
-  toMonthAndYear (millis: number): string {
-    return moment(millis).format('MM/YYYY')
-  }
-
   toIsoDate (millis: number): string {
     return moment(millis).format('YYYYMMDD')
+  }
+
+  toMonthAndYear (millis: number): string {
+    return moment(millis).format('MM/YYYY')
   }
 
   fromDate (value: string): number {

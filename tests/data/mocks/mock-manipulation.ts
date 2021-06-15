@@ -27,6 +27,11 @@ export class TimeManipulatorSpy implements TimeManipulator {
     return this.resultStr
   }
 
+  toIsoDate (millis: number): string {
+    this.millis = millis
+    return this.resultStr
+  }
+
   toMonthAndYear (millis: number): string {
     this.millis = millis
     return this.resultStr

@@ -30,6 +30,10 @@ export class MomentAdapter implements TimeManipulator {
     return moment(millis).format(`${this.firstPart}${this.separator}${this.secondPart}${this.separator}${this.thirdPart}`)
   }
 
+  toIsoDate (millis: number): string {
+    return moment(millis).format('YYYYMMDD')
+  }
+
   toMonthAndYear (millis: number): string {
     return moment(millis).format(`${this.separator}MM${this.separator}YYYY`)
   }
