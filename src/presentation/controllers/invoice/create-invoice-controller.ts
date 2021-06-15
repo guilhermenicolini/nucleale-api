@@ -38,6 +38,7 @@ export class CreateInvoiceController implements Controller {
 
       await this.saveInvoice.save(invoice)
       const pdf = await this.generateInvoice.generate(invoice)
+
       await this.mailInvoice.send({
         to: invoice.taker,
         invoiceNo: invoice.invoiceNo,

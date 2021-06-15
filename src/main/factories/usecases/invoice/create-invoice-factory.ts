@@ -2,7 +2,7 @@ import { DbCreateInvoice } from '@/data/usecases'
 import { CreateInvoice } from '@/domain/usecases'
 import { ModelsToInvoiceConverter } from '@/infra/converters'
 import { AccountMongoRepository, AddressMongoRepository, CompanyMongoRepository, InvoiceMongoRepository } from '@/infra/db'
-import { MomentAdapter } from '@/infra/manipulation'
+import { NfseTimeAdapter } from '@/infra/manipulation'
 import { StringFormatAdapter } from '@/infra/manipulation/string-format-adapter'
 
 export const makeDbCreateInvoice = (): CreateInvoice => {
@@ -15,7 +15,7 @@ export const makeDbCreateInvoice = (): CreateInvoice => {
     new InvoiceMongoRepository(),
     new ModelsToInvoiceConverter(
       new StringFormatAdapter(),
-      new MomentAdapter()
+      new NfseTimeAdapter()
     )
   )
 }
