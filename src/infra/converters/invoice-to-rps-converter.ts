@@ -43,7 +43,7 @@ export class InvoiceToRpsConverter implements ObjectConverter<InvoiceToRpsConver
               NumeroRPS: data.rpsNumber,
               DataEmissaoRPS: this.timeManipulator.toDateAndTime(data.invoiceDate),
               SituacaoRPS: 'N',
-              SeriePrestacao: data.rpsSerie,
+              SeriePrestacao: data.provideSerie,
               InscricaoMunicipalTomador: data.taker.registryId || '0000000',
               CPFCNPJTomador: data.taker.taxId,
               RazaoSocialTomador: data.taker.name,

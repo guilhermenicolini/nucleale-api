@@ -1,15 +1,10 @@
-import { CompanyModel, SettingsModel, RpsSettingsModel, ServiceModel, ProcedureModel } from '@/domain/models'
+import { CompanyModel, SettingsModel, ServiceModel, ProcedureModel } from '@/domain/models'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
-const mockRps = (): RpsSettingsModel => ({
-  serie: faker.random.alpha({ count: 2 }),
-  type: faker.random.alpha({ count: 2 })
-})
-
 const mockSettings = (): SettingsModel => ({
-  serie: faker.random.alpha({ count: 2 }),
-  rps: mockRps()
+  provideSerie: 99,
+  rpsSerie: 'NF'
 })
 
 export const mockCompanyModel = (): CompanyModel => ({
@@ -66,10 +61,10 @@ export const mockDbServiceWithProcedure = () => ({
   activity: faker.random.words(4),
   aliquote: faker.datatype.number(),
   cnae: faker.address.zipCode('#########'),
-  operation: 'X',
-  pickupType: 'X',
+  operation: 'A',
+  pickupType: 'A',
   service: faker.random.words(3),
-  taxation: 'X',
+  taxation: 'H',
   taxable: true,
   procedures: [mockDbProcedureWithoutService()]
 })

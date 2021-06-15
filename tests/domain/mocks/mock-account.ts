@@ -45,7 +45,7 @@ export const mockAccountModel = (): AccountModel => ({
   taxId: faker.address.zipCode('###########'),
   name: faker.name.findName(),
   email: faker.internet.email(),
-  mobilePhone: faker.phone.phoneNumber(),
+  mobilePhone: faker.phone.phoneNumber('+55##9########'),
   birth: faker.datatype.number({
     min: 315543600000,
     max: 631159200000

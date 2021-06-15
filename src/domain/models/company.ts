@@ -1,13 +1,8 @@
 import { AddressModel } from './address'
 
-export type RpsSettingsModel = {
-  serie: string
-  type: string
-}
-
 export type SettingsModel = {
-  serie: string
-  rps: RpsSettingsModel
+  provideSerie: number
+  rpsSerie: string
 }
 
 export type CompanyModel = {

@@ -24,6 +24,7 @@ export type InvoiceModel = {
   issueDate: number
   rpsNumber: number
   rpsSerie: string
+  provideSerie: number
   verificationCode: string
   status: string
   description: string

@@ -46,7 +46,7 @@ export type RpsModel = {
   NumeroRPS: number
   DataEmissaoRPS: string
   SituacaoRPS: string
-  SeriePrestacao: string
+  SeriePrestacao: number
   InscricaoMunicipalTomador: string
   CPFCNPJTomador: string
   RazaoSocialTomador: string
