@@ -62,7 +62,7 @@ export const mockDbServiceWithProcedure = () => ({
   aliquote: faker.datatype.number(),
   cnae: faker.address.zipCode('#########'),
   operation: 'A',
-  pickupType: 'A',
+  pickupType: 'R',
   service: faker.random.words(3),
   taxation: 'H',
   taxable: true,
