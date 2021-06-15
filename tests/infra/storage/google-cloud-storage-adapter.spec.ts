@@ -1,4 +1,4 @@
-import { GoogleCloudStorageAdapter } from '@/infra/storage/google-cloud-storage-adapter'
+import { GoogleCloudStorageAdapter } from '@/infra/storage'
 
 let saveStub = jest.fn()
 let deleteStub = jest.fn()
