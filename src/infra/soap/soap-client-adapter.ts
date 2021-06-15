@@ -1,4 +1,5 @@
 import { SoapClient, SoapRequest, SoapResponse } from '@/data/protocols'
+import { SoapError } from '@/presentation/errors'
 import { createClient } from 'soap'
 
 export class SoapClientAdapter implements SoapClient<any> {
@@ -15,9 +16,16 @@ export class SoapClientAdapter implements SoapClient<any> {
               error: err
             })
           } else {
+            const value = result[`${request.method}Return`]?.$value || 'missing $value'
+            if (!value.includes('?xml')) {
+              return resolve({
+                success: false,
+                error: new SoapError(value)
+              })
+            }
             return resolve({
               success: true,
-              response: result
+              response: value
             })
           }
         })

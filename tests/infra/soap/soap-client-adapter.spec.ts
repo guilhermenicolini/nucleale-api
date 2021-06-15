@@ -1,5 +1,6 @@
 import { SoapRequest } from '@/data/protocols'
 import { SoapClientAdapter } from '@/infra/soap/soap-client-adapter'
+import { SoapError } from '@/presentation/errors'
 import soap from 'soap'
 
 let methodStub: any
@@ -17,7 +18,11 @@ const mockRequest = (): SoapRequest => ({
 const makeSut = (): SoapClientAdapter => new SoapClientAdapter()
 
 beforeEach(() => {
-  methodStub = jest.fn().mockImplementation((message, cb) => cb(null, {}))
+  methodStub = jest.fn().mockImplementation((message, cb) => cb(null, {
+    any_methodReturn: {
+      $value: '<?xml>ok</xml>'
+    }
+  }))
 })
 
 describe('SoapClient Adapter', () => {
@@ -52,12 +57,48 @@ describe('SoapClient Adapter', () => {
     })
   })
 
+  test('Should return error if return method not exists', async () => {
+    const sut = makeSut()
+    methodStub = jest.fn().mockImplementationOnce((message, cb) => cb(null, {}))
+    const result = await sut.send(mockRequest())
+    expect(result).toEqual({
+      success: false,
+      error: new SoapError('missing $value')
+    })
+  })
+
+  test('Should return error if return method does not has $value', async () => {
+    const sut = makeSut()
+    methodStub = jest.fn().mockImplementationOnce((message, cb) => cb(null, {
+      any_methodReturn: {}
+    }))
+    const result = await sut.send(mockRequest())
+    expect(result).toEqual({
+      success: false,
+      error: new SoapError('missing $value')
+    })
+  })
+
+  test('Should return error if return method is not xml', async () => {
+    const sut = makeSut()
+    methodStub = jest.fn().mockImplementationOnce((message, cb) => cb(null, {
+      any_methodReturn: {
+        $value: 'any_message'
+      }
+    }))
+    const result = await sut.send(mockRequest())
+    expect(result).toEqual({
+      success: false,
+      error: new SoapError('any_message')
+    })
+  })
+
   test('Should return true on sucess', async () => {
     const sut = makeSut()
     const result = await sut.send(mockRequest())
     expect(result).toEqual({
       success: true,
-      response: {}
+      response: '<?xml>ok</xml>'
     })
   })
 })
