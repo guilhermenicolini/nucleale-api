@@ -9,31 +9,31 @@ table(cellspacing='0' cellpadding='0' style='width: 100%; border-collapse: colla
     td(style='padding: 3px;' colspan='3')
       label(style='padding-right: 3px;') Nome/Razão Social:
       span
-        b PROMEDICIN SERVICOS MEDICOS EIRELI
+        b #{provider.name}
   tr
     td(style='padding: 3px;')
       label(style='padding-right: 3px;') CPF/CNPJ:
       span
-        b 27.480.074/0001-29
+        b #{provider.taxId}
     td(style='padding: 3px;' colspan='2')
       label(style='padding-right: 3px;') Inscrição Municipal:
       span
-        b 00433848-0
+        b #{provider.registryId}
   tr
     td(style='padding: 3px;' colspan='3')
       label(style='padding-right: 3px;') Endereço:
       span
-        b RUA MONTEVIDEU, N° 600 - BAIRRO PARQUE SAO QUIRINO - CEP: 13088-160
+        b #{provider.address}
   tr
     td(style='width: 40%;padding: 3px;')
       label(style='padding-right: 3px;') Município:
       span
-        b CAMPINAS
+        b #{provider.city}
     td(style='width: 30%;padding: 3px;')
       label(style='normal; padding-right: 3px;') UF:
       span
-        b SP
+        b #{provider.state}
     td(style='width: 20%;padding: 3px;')
       label(style='padding-right: 3px;') Telefone:
       span
-        b (19) 97169-1939
+        b #{provider.phone}

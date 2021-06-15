@@ -4,7 +4,7 @@ import {
   MoneyManipulator,
   MaskManipulator
 } from '@/data/protocols'
-import { InvoiceModel } from '@/domain/models'
+import { InvoiceModel, InvoicePersonModel } from '@/domain/models'
 
 export class InvoicePdfMessageConverter implements ObjectConverter<InvoiceModel, any> {
   constructor (
@@ -13,26 +13,34 @@ export class InvoicePdfMessageConverter implements ObjectConverter<InvoiceModel,
     private readonly maskManipulator: MaskManipulator
   ) { }
 
-  convert (invoice: InvoiceModel): any {
-    const phone = invoice.taker.phone.replace('+55', '')
+  private getPerson (person: InvoicePersonModel): any {
+    const phone = person.phone.replace('+55', '')
     const phoneMask = `(00) ${phone.length === 9 ? '0' : ''}0000-0000`
+
+    return {
+      name: person.name,
+      taxId: this.maskManipulator.mask(person.taxId, '000.000.000-00'),
+      registryId: person.registryId ? this.maskManipulator.mask(person.taxId, '00000000-0') : null,
+      address: `${person.address.address}, Nº ${person.address.number}${person.address.complement
+        ? ' ' + person.address.complement
+        : ''
+      } - BAIRRO ${person.address.district} - CEP: ${this.maskManipulator.mask(person.address.zip, '00000-000')
+      }`,
+      city: person.address.city,
+      state: person.address.state,
+      email: person.email,
+      phone: this.maskManipulator.mask(phone, phoneMask)
+    }
+  }
+
+  convert (invoice: InvoiceModel): any {
     const message = {
       invoiceNo: invoice.invoiceNo.toString().padStart(8, '0'),
       invoiceDate: this.timeManipulator.toDateAndTime(invoice.invoiceDate),
       invoiceValue: this.moneyManipulator.format(invoice.invoiceValue),
       verificationCode: invoice.verificationCode.substring(0, 8),
-      name: invoice.taker.name,
-      taxId: this.maskManipulator.mask(invoice.taker.taxId, '000.000.000-00'),
-      registryId: null,
-      address: `${invoice.taker.address.address}, Nº ${invoice.taker.address.number}${invoice.taker.address.complement
-        ? ' ' + invoice.taker.address.complement
-        : ''
-      } - BAIRRO ${invoice.taker.address.district} - CEP: ${this.maskManipulator.mask(invoice.taker.address.zip, '00000-000')
-      }`,
-      city: invoice.taker.address.city,
-      state: invoice.taker.address.state,
-      email: invoice.taker.email,
-      phone: this.maskManipulator.mask(phone, phoneMask),
+      provider: this.getPerson(invoice.provider),
+      taker: this.getPerson(invoice.taker),
       description: invoice.description,
       items: invoice.items.map((i) => {
         return {

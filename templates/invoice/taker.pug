@@ -6,36 +6,36 @@ table(cellspacing='0' cellpadding='0' style='width: 100%; border-collapse: colla
     td(style='padding: 3px;' colspan='4')
       label(style='padding-right: 3px;') Nome/Razão Social:
       span
-        b #{name}
+        b #{taker.name}
   tr
     td(style='padding: 3px;' colspan='2')
       label(style='padding-right: 3px;') CPF/CNPJ:
       span
-        b #{taxId}
-    if registryId
+        b #{taker.taxId}
+    if taker.registryId
       td(style='padding: 3px;' colspan='2')
         label(style='padding-right: 3px;') Inscrição Municipal:
         span
-          b #{registryId}
+          b #{taker.registryId}
   tr
     td(style='padding: 3px;' colspan='4')
       label(style='padding-right: 3px;') Endereço:
       span
-        b #{address}
+        b #{taker.address}
   tr
     td(style='width: 25%;padding: 3px;')
       label(style='padding-right: 3px;') Município:
       span
-        b #{city}
+        b #{taker.city}
     td(style='width: 10%;padding: 3px;')
       label(style='padding-right: 3px;') UF:
       span
-        b #{state}
+        b #{taker.state}
     td(style='width: 45%;padding: 3px;')
       label(style='padding-right: 3px;') E-mail:
       span
-        b #{email}
+        b #{taker.email}
     td(style='width: 20%;padding: 3px;')
       label(style='padding-right: 3px;') Telefone:
       span
-        b #{phone}
+        b #{taker.phone}
