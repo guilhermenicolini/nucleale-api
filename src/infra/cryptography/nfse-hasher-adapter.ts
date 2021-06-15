@@ -1,15 +1,17 @@
-import { Hasher } from '@/data/protocols'
+import { Hasher, TimeManipulator } from '@/data/protocols'
 import { InvoiceModel } from '@/domain/models'
 
 import Crypto from 'crypto'
 
 export class NfseHasherAdapter implements Hasher<InvoiceModel, string> {
+  constructor (private readonly timeManipulator: TimeManipulator) {}
+
   async hash (plain: InvoiceModel): Promise<string> {
     const signature = []
     signature.push(plain.provider.registryId.padStart(11, '0'))
     signature.push(plain.rpsSerie.padEnd(5, ' '))
     signature.push(plain.rpsNumber.toString().padStart(12, '0'))
-    signature.push(plain.invoiceDate)
+    signature.push(this.timeManipulator.toIsoDate(plain.invoiceDate))
     signature.push(plain.taxation.padEnd(2, ' '))
     signature.push(plain.status)
     signature.push(plain.pickupType === 'A' ? 'N' : 'S')

@@ -1,4 +1,5 @@
 import { NfseHasherAdapter } from '@/infra/cryptography'
+import { TimeManipulatorSpy } from '@/tests/data/mocks'
 import { mockInvoiceDb } from '@/tests/domain/mocks'
 
 import Crypto from 'crypto'
@@ -13,7 +14,7 @@ jest.mock('crypto', () => ({
   }))
 }))
 
-const makeSut = (): NfseHasherAdapter => new NfseHasherAdapter()
+const makeSut = (): NfseHasherAdapter => new NfseHasherAdapter(new TimeManipulatorSpy())
 
 describe('NfseHasher Adapter', () => {
   describe('createHash()', () => {

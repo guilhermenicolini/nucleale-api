@@ -9,8 +9,9 @@ import env from '@/main/config/env'
 
 export const makeRemoteSendInvoice = (): SendInvoice => {
   const xmlConverterAdapter = new XmlConverterAdapter('latin1')
+  const nfseTimeAdapter = new NfseTimeAdapter()
   return new RemoteSendInvoice(
-    new InvoiceToRpsConverter(new NfseTimeAdapter(), new NfsePhoneAdapter(), new NfseHasherAdapter()),
+    new InvoiceToRpsConverter(nfseTimeAdapter, new NfsePhoneAdapter(), new NfseHasherAdapter(nfseTimeAdapter)),
     xmlConverterAdapter,
     new XmlSignerAdapter('Lote', new GoogleCloudStorageAdapter(env.storageBucket)),
     new SoapClientAdapter(),
