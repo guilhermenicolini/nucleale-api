@@ -44,6 +44,11 @@ const makeSut = (): SutTypes => {
 }
 
 describe('RemoteSendInvoice Usecase', () => {
+  beforeEach(() => {
+    jest.resetModules() // Most important - it clears the cache
+    process.env.NODE_ENV = 'development'
+  })
+
   test('Should call InvoiceToRpsConvverter with correct values', async () => {
     const { sut, invoiceToRpsConverterSpy } = makeSut()
     const params = mockInvoice()
@@ -94,6 +99,12 @@ describe('RemoteSendInvoice Usecase', () => {
         mensagemXml: signerSpy.result
       }
     })
+  })
+
+  test('Should call SoapClient with production method', async () => {
+    process.env.NODE_ENV = 'production'
+    const newEnv = require('@/main/config/env').default
+    expect(newEnv.nfse.methods.lote).toBe('Enviar')
   })
 
   test('Should return error if SoapClient returns false', async () => {

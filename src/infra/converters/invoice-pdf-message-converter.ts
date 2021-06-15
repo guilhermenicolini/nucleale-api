@@ -15,7 +15,7 @@ export class InvoicePdfMessageConverter implements ObjectConverter<InvoiceModel,
 
   private getPerson (person: InvoicePersonModel): any {
     const phone = person.phone.replace('+55', '')
-    const phoneMask = `(00) ${phone.length === 9 ? '0' : ''}0000-0000`
+    const phoneMask = `(00) ${phone.length === 11 ? '0' : ''}0000-0000`
 
     return {
       name: person.name,
