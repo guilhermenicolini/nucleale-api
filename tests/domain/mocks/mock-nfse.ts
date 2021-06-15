@@ -46,7 +46,7 @@ export const mockRps = (): RpsModel => ({
   NumeroRPS: 1,
   DataEmissaoRPS: '2020-05-10T10:00:00',
   SituacaoRPS: 'N',
-  SeriePrestacao: '99',
+  SeriePrestacao: 99,
   InscricaoMunicipalTomador: faker.address.zipCode('########'),
   CPFCNPJTomador: faker.address.zipCode('###########'),
   RazaoSocialTomador: faker.name.findName(),
