@@ -6,10 +6,11 @@ export class SendInvoiceMessage implements Messagefy {
     return {
       email: data.to.email,
       phone: data.to.phone,
-      text: `Olá, ${data.to.name}. Sua nota fiscal foi gerada`,
+      text: `Olá, ${data.to.name}. Sua nota fiscal foi gerada e já estamos te encaminhado.`,
       file: {
         name: `nf${data.invoiceNo}.pdf`,
-        base64: data.pdf.toString('base64')
+        base64: data.pdf.toString('base64'),
+        mimeType: 'application/pdf'
       }
     }
   }

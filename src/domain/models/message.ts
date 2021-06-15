@@ -6,5 +6,6 @@ export type MessageModel = {
   file?: {
     name: string
     base64: string
+    mimeType: string
   }
 }

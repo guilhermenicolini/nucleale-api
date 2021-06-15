@@ -16,10 +16,11 @@ describe('SendInvoiceMessage', () => {
     expect(message).toEqual({
       email: model.to.email,
       phone: model.to.phone,
-      text: `Olá, ${model.to.name}. Sua nota fiscal foi gerada`,
+      text: `Olá, ${model.to.name}. Sua nota fiscal foi gerada e já estamos te encaminhado.`,
       file: {
         name: `nf${model.invoiceNo}.pdf`,
-        base64: model.pdf.toString('base64')
+        base64: model.pdf.toString('base64'),
+        mimeType: 'application/pdf'
       }
     })
   })

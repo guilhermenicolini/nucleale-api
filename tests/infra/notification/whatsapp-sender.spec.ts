@@ -27,13 +27,14 @@ describe('Whatsapp Sender', () => {
     const data = mockData()
     data.file = {
       base64: Buffer.from('any_text').toString('base64'),
-      name: faker.system.commonFileName('pdf')
+      name: faker.system.commonFileName('pdf'),
+      mimeType: 'application/pdf'
     }
     WhatsappHelper.instance.sendMessage = jest.fn()
     WhatsappHelper.instance.sendFile = jest.fn()
     await sut.send(data)
     expect(WhatsappHelper.instance.sendMessage).toHaveBeenLastCalledWith(data.phone, data.text)
-    expect(WhatsappHelper.instance.sendFile).toHaveBeenLastCalledWith(data.phone, data.file.base64, data.file.name)
+    expect(WhatsappHelper.instance.sendFile).toHaveBeenLastCalledWith(data.phone, data.file.base64, data.file.name, data.file.mimeType)
   })
 
   test('Should return null if WhatsappHelper sendMessage throws', async () => {
@@ -49,7 +50,8 @@ describe('Whatsapp Sender', () => {
     const data = mockData()
     data.file = {
       base64: Buffer.from('any_text').toString('base64'),
-      name: faker.system.commonFileName('pdf')
+      name: faker.system.commonFileName('pdf'),
+      mimeType: 'application/pdf'
     }
     WhatsappHelper.instance.sendMessage = jest.fn()
     WhatsappHelper.instance.sendFile = jest.fn().mockImplementation(throwError)

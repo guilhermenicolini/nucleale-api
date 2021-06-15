@@ -20,7 +20,7 @@ export class InvoicePdfMessageConverter implements ObjectConverter<InvoiceModel,
     return {
       name: person.name,
       taxId: this.maskManipulator.mask(person.taxId, '000.000.000-00'),
-      registryId: person.registryId ? this.maskManipulator.mask(person.taxId, '00000000-0') : null,
+      registryId: person.registryId ? this.maskManipulator.mask(person.registryId, '00000000-0') : null,
       address: `${person.address.address}, Nº ${person.address.number}${person.address.complement
         ? ' ' + person.address.complement
         : ''
