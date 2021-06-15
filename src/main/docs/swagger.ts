@@ -24,7 +24,8 @@ import {
   idSchema,
   childrensSchema,
   invoiceSchema,
-  invoicesSchema
+  invoicesSchema,
+  createInvoiceSchema
 } from './components'
 
 import map from './utils/mapper'
@@ -76,7 +77,8 @@ export const components = {
     childrens: childrensSchema,
     id: idSchema,
     invoice: invoiceSchema,
-    invoices: invoicesSchema
+    invoices: invoicesSchema,
+    createInvoice: createInvoiceSchema
   },
   errors: {
     badRequest: badRequestError,
