@@ -14,7 +14,7 @@ export default {
   nfse: {
     url: 'http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws?wsdl',
     methods: {
-      lote: process.env.NODE_ENV === 'production' ? 'Enviar' : 'testeEnviar'
+      lote: process.env.NODE_ENV === 'production' ? 'enviarSincrono' : 'testeEnviar'
     },
     ns1: 'http://localhost:8080/WsNFe2/lote',
     tipos: 'http://localhost:8080/WsNFe2/tp',
@@ -22,5 +22,6 @@ export default {
     schemaLocation (method: string): string {
       return `http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/${method}.xsd`
     }
-  }
+  },
+  mode: process.env.NODE_ENV || 'development'
 }

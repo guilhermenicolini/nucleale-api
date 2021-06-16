@@ -104,7 +104,7 @@ describe('RemoteSendInvoice Usecase', () => {
   test('Should call SoapClient with production method', async () => {
     process.env.NODE_ENV = 'production'
     const newEnv = require('@/main/config/env').default
-    expect(newEnv.nfse.methods.lote).toBe('Enviar')
+    expect(newEnv.nfse.methods.lote).toBe('enviarSincrono')
   })
 
   test('Should return error if SoapClient returns false', async () => {
