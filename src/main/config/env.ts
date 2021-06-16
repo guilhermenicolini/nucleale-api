@@ -23,5 +23,5 @@ export default {
       return `http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/${method}.xsd`
     }
   },
-  mode: process.env.NODE_ENV || 'development'
+  mode: process.env.NODE_ENV
 }

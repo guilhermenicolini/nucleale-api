@@ -3,7 +3,8 @@ import {
   accountsPaths,
   addressesPaths,
   childrensPaths,
-  invoicesPaths
+  invoicesPaths,
+  whatsappPaths
 } from './paths'
 import {
   signupSchema,
@@ -25,7 +26,8 @@ import {
   childrensSchema,
   invoiceSchema,
   invoicesSchema,
-  createInvoiceSchema
+  createInvoiceSchema,
+  messageSchema
 } from './components'
 
 import map from './utils/mapper'
@@ -51,6 +53,10 @@ export const tags = {
     {
       name: 'Invoices',
       description: 'Invoices related APIs'
+    },
+    {
+      name: 'Whatsapp',
+      description: 'Whatsapp related APIs'
     }
   ]
 }
@@ -60,7 +66,8 @@ export const paths = {
   ...accountsPaths,
   ...addressesPaths,
   ...childrensPaths,
-  ...invoicesPaths
+  ...invoicesPaths,
+  ...whatsappPaths
 }
 
 export const components = {
@@ -78,7 +85,8 @@ export const components = {
     id: idSchema,
     invoice: invoiceSchema,
     invoices: invoicesSchema,
-    createInvoice: createInvoiceSchema
+    createInvoice: createInvoiceSchema,
+    whatsappMessage: messageSchema
   },
   errors: {
     badRequest: badRequestError,
