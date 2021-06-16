@@ -142,4 +142,20 @@ describe('InvoiceMongoRepository', () => {
       expect(result).toBe(201)
     })
   })
+
+  describe('loadByNumber()', () => {
+    test('Should return invoice on success', async () => {
+      const sut = makeSut()
+      const invoice = mockInvoice()
+      await invoicesCollection.insertOne(invoice)
+      const result = await sut.loadByNumber(invoice.invoiceNo)
+      expect(result).toBeTruthy()
+    })
+
+    test('Should not return invoice if not exists', async () => {
+      const sut = makeSut()
+      const result = await sut.loadByNumber(1)
+      expect(result).toBeFalsy()
+    })
+  })
 })
