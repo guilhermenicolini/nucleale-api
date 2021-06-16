@@ -2,7 +2,8 @@ import {
   SaveInvoiceRepository,
   LoadInvoicesRepository,
   LoadInvoiceRepository,
-  LoadNextRpsRepository
+  LoadNextRpsRepository,
+  LoadInvoiceByNumberRepository
 } from '@/data/protocols'
 import { mockInvoiceDb, mockLoadInvoice } from '@/tests/domain/mocks'
 
@@ -45,6 +46,16 @@ export class LoadNextRpsRepositorySpy implements LoadNextRpsRepository {
   result = faker.datatype.number()
 
   async next (): Promise<number> {
+    return this.result
+  }
+}
+
+export class LoadInvoiceByNumberRepositorySpy implements LoadInvoiceByNumberRepository {
+  invoiceNo: number
+  result: LoadInvoiceByNumberRepository.Result = mockInvoiceDb()
+
+  async loadByNumber (invoiceNo: number): Promise<LoadInvoiceByNumberRepository.Result> {
+    this.invoiceNo = invoiceNo
     return this.result
   }
 }
