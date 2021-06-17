@@ -3,7 +3,8 @@ import {
   SaveInvoiceRepository,
   LoadInvoicesRepository,
   LoadInvoiceRepository,
-  LoadNextRpsRepository
+  LoadNextRpsRepository,
+  LoadInvoiceByNumberRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
@@ -11,7 +12,8 @@ export class InvoiceMongoRepository implements
   SaveInvoiceRepository,
   LoadInvoicesRepository,
   LoadInvoiceRepository,
-  LoadNextRpsRepository {
+  LoadNextRpsRepository,
+  LoadInvoiceByNumberRepository {
   async save (data: SaveInvoiceRepository.Param): Promise<void> {
     const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
 
@@ -132,5 +134,11 @@ export class InvoiceMongoRepository implements
         }
       ]).toArray()
     return result.length === 1 ? (result[0].rpsNumber || 0) + 1 : 1
+  }
+
+  async loadByNumber (invoiceNo: number): Promise<LoadInvoiceByNumberRepository.Result> {
+    const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
+    const invoice = await invoicesCollection.findOne({ invoiceNo })
+    return invoice
   }
 }

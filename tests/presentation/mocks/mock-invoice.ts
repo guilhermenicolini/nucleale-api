@@ -6,7 +6,8 @@ import {
   GenerateInvoice,
   CreateInvoice,
   SendInvoice,
-  MailInvoice
+  MailInvoice,
+  LoadInvoiceByNumber
 } from '@/domain/usecases'
 import { mockInvoice, mockLoadInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
@@ -96,5 +97,15 @@ export class MailInvoiceSpy implements MailInvoice {
 
   async send (param: MailInvoice.Param): Promise<void> {
     this.param = param
+  }
+}
+
+export class LoadInvoiceByNumberSpy implements LoadInvoiceByNumber {
+  invoiceNo: number
+  result: LoadInvoiceByNumber.Result = mockInvoiceDb()
+
+  async loadByNumber (invoiceNo: number): Promise<LoadInvoiceByNumber.Result> {
+    this.invoiceNo = invoiceNo
+    return this.result
   }
 }

@@ -1,3 +1,4 @@
+export * from './load-invoice-by-number-repository'
 export * from './load-invoice-repository'
 export * from './load-invoices-repository'
 export * from './load-next-rps-repository'

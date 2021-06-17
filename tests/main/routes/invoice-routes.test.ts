@@ -1,7 +1,7 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
 import { mockId, mockAccessToken, mockAdminAccessToken } from '@/tests/main/mocks'
-import { mockInvoice } from '@/tests/domain/mocks'
+import { mockInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
@@ -149,6 +149,30 @@ describe('Invoices Routes', () => {
         .post('/invoices')
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .send(data)
+        .expect(204)
+    })
+  })
+
+  describe('POST /invoices/:invoiceNo/resend', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .post('/invoices/1/resend')
+        .expect(401)
+    })
+
+    test('Should return 403 if token is not admin', async () => {
+      await request(app)
+        .post('/invoices/1/resend')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(403)
+    })
+
+    test('Should return 204 on success', async () => {
+      const invoice = mockInvoiceDb()
+      await invoicesCollection.insertOne(invoice)
+      await request(app)
+        .post(`/invoices/${invoice.invoiceNo}/resend`)
+        .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .expect(204)
     })
   })

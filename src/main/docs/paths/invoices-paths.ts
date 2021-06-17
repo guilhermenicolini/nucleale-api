@@ -155,5 +155,46 @@ export const invoicesPaths = {
         }
       }
     }
+  },
+  '/invoices/{invoiceNo}/resend': {
+    post: {
+      tags: ['Invoices'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to resend invoice',
+      description: 'This API is closed and can only be executed by **admins**',
+      operationId: 'resendInvoice',
+      parameters: [{
+        in: 'path',
+        name: 'invoiceNo',
+        description: 'Invoice number to be resent',
+        required: true,
+        schema: {
+          type: 'number',
+          format: 'int32'
+        }
+      }],
+      responses: {
+        204: {
+          description: 'No Content'
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        403: {
+          $ref: '#/components/errors/forbidden'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }
