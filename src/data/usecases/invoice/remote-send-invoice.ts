@@ -35,7 +35,7 @@ export class RemoteSendInvoice implements SendInvoice {
         return new SoapError(`${response['ns1:RetornoEnvioLoteRPS'].Erros.Erro.Codigo} ${response['ns1:RetornoEnvioLoteRPS'].Erros.Erro.Descricao}`)
       }
       return {
-        invoiceNo: response['ns1:RetornoEnvioLoteRPS'].ChavesNFSeRPS.ChaveNFSeRPS.ChaveNFe.NumeroNFe,
+        invoiceNo: parseInt(response['ns1:RetornoEnvioLoteRPS'].ChavesNFSeRPS.ChaveNFSeRPS.ChaveNFe.NumeroNFe),
         verificationCode: response['ns1:RetornoEnvioLoteRPS'].ChavesNFSeRPS.ChaveNFSeRPS.ChaveNFe.CodigoVerificacao
       }
     } catch (error) {

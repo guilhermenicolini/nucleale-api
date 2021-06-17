@@ -11,7 +11,6 @@ export class ModelsToInvoiceConverter implements ObjectConverter<ModelsToInvoice
   async convert (data: ModelsToInvoiceConverter.Input): Promise<ModelsToInvoiceConverter.Output> {
     const today = new Date().valueOf()
     return {
-      id: null,
       invoiceNo: null,
       invoiceDate: today,
       issueDate: today,
@@ -93,5 +92,5 @@ export namespace ModelsToInvoiceConverter {
       amount: number
       data: string | string[]
     }
-    export type Output = InvoiceModel
+    export type Output = Omit<InvoiceModel, 'id'>
   }

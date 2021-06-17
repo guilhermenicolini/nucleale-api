@@ -118,7 +118,7 @@ export type RpsLoteResultModel = {
     ChavesNFSeRPS?: {
       ChaveNFSeRPS: {
         ChaveNFe: {
-          NumeroNFe: number
+          NumeroNFe: string
           CodigoVerificacao: string
         }
       }
