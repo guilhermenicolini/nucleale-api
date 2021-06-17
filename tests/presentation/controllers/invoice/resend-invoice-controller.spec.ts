@@ -7,7 +7,7 @@ import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 import faker from 'faker'
 
 const mockRequest = () => ({
-  invoiceNo: faker.datatype.number()
+  invoiceNo: faker.datatype.number().toString()
 })
 
 type SutTypes = {
@@ -53,7 +53,7 @@ describe('ResendInvoice Controller', () => {
     const { sut, loadInvoiceByNumberSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadInvoiceByNumberSpy.invoiceNo).toBe(request.invoiceNo)
+    expect(loadInvoiceByNumberSpy.invoiceNo).toBe(parseInt(request.invoiceNo))
   })
 
   test('Should return 500 if LoadInvoiceByNumber throws', async () => {

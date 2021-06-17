@@ -20,7 +20,8 @@ export class ResendInvoiceController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const invoice = await this.loadInvoiceByNumber.loadByNumber(request.invoiceNo)
+      console.log('resend', request)
+      const invoice = await this.loadInvoiceByNumber.loadByNumber(parseInt(request.invoiceNo))
       if (!invoice) {
         return notFound(new RecordNotFoundError('Invoice'))
       }
@@ -42,6 +43,6 @@ export class ResendInvoiceController implements Controller {
 
 export namespace ResendInvoiceController {
   export type Request = {
-    invoiceNo: number
+    invoiceNo: string
   }
 }
