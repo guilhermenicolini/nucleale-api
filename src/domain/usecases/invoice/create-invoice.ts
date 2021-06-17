@@ -11,7 +11,7 @@ export namespace CreateInvoice {
     amount: number
     data: string | string[]
   }
-  export type Result = InvoiceModel | Error
+  export type Result = Omit<InvoiceModel, 'id'> | Error
   export type ModelToInvoiceInput = {
     account: Omit<AccountModel, 'password'>
     address: AddressModel

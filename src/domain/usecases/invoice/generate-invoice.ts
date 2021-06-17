@@ -4,7 +4,7 @@ export interface GenerateInvoice {
 }
 
 export namespace GenerateInvoice {
-  export type Model = InvoiceModel
+  export type Model = Omit<InvoiceModel, 'id'>
   export type Result = {
     fileName: string
     buffer: any

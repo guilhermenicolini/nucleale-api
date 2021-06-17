@@ -131,7 +131,7 @@ export class RpsDecoderSpy implements Decoder {
       ChavesNFSeRPS: {
         ChaveNFSeRPS: {
           ChaveNFe: {
-            NumeroNFe: faker.datatype.number(),
+            NumeroNFe: faker.datatype.number().toString(),
             CodigoVerificacao: faker.random.alphaNumeric(12)
           }
         }
