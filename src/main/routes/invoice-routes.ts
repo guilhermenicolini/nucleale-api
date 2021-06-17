@@ -3,7 +3,8 @@ import {
   makeUploadInvoicesController,
   makeLoadInvoicesController,
   makeDownloadInvoiceController,
-  makeCreateInvoiceController
+  makeCreateInvoiceController,
+  makeResendInvoiceController
 } from '@/main/factories'
 import { adminAuth, auth } from '@/main/middlewares'
 
@@ -14,4 +15,5 @@ export default (router: Router): void => {
   router.get('/invoices', auth, adaptRoute(makeLoadInvoicesController()))
   router.get('/invoices/:id/download', auth, adaptRoute(makeDownloadInvoiceController()))
   router.post('/invoices', adminAuth, adaptRoute(makeCreateInvoiceController()))
+  router.post('/invoices/:invoiceNo/resend', adminAuth, adaptRoute(makeResendInvoiceController()))
 }
