@@ -111,7 +111,7 @@ export const invoicesPaths = {
       }
     }
   },
-  '/invoices/{id}/download': {
+  '/invoices/{invoiceNo}/download': {
     get: {
       tags: ['Invoices'],
       security: [{
@@ -122,11 +122,12 @@ export const invoicesPaths = {
       operationId: 'downloadInvoice',
       parameters: [{
         in: 'path',
-        name: 'id',
-        description: 'Invoice id to be downloaded',
+        name: 'invoiceNo',
+        description: 'Invoice number to be downloaded',
         required: true,
         schema: {
-          type: 'string'
+          type: 'number',
+          format: 'int32'
         }
       }],
       responses: {

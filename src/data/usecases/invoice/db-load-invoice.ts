@@ -6,8 +6,8 @@ export class DbLoadInvoice implements LoadInvoice {
     private readonly loadInvoiceRepository: LoadInvoiceRepository
   ) { }
 
-  async load (id: string, accountId: string): Promise<LoadInvoiceRepository.Result> {
-    const invoice = this.loadInvoiceRepository.loadOne(id, accountId)
+  async load (invoiceNo: number, accountId: string): Promise<LoadInvoiceRepository.Result> {
+    const invoice = this.loadInvoiceRepository.loadOne(invoiceNo, accountId)
     return invoice
   }
 }

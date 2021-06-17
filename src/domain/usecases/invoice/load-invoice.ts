@@ -1,7 +1,7 @@
 import { InvoiceModel } from '@/domain/models'
 
 export interface LoadInvoice {
-  load: (id: string, accountId: string) => Promise<LoadInvoice.Result>
+  load: (invoiceNo: number, accountId: string) => Promise<LoadInvoice.Result>
 }
 
 export namespace LoadInvoice {

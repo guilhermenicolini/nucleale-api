@@ -1,6 +1,6 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
-import { mockId, mockAccessToken, mockAdminAccessToken } from '@/tests/main/mocks'
+import { mockAccessToken, mockAdminAccessToken } from '@/tests/main/mocks'
 import { mockInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
@@ -84,10 +84,10 @@ describe('Invoices Routes', () => {
     })
   })
 
-  describe('GET /invoices/:id/download', () => {
+  describe('GET /invoices/:invoiceNo/download', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .get(`/invoices/${mockId()}/download`)
+        .get(`/invoices/${faker.datatype.number()}/download`)
         .expect(401)
     })
 
@@ -100,7 +100,7 @@ describe('Invoices Routes', () => {
 
     test('Should return 404 if invoice does not exists', async () => {
       await request(app)
-        .get(`/invoices/${mockId()}/download`)
+        .get(`/invoices/${faker.datatype.number()}/download`)
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(404)
     })
@@ -110,9 +110,9 @@ describe('Invoices Routes', () => {
       const taxId = faker.address.zipCode('###########')
       const invoice = mockInvoice(taxId)
       await accountsCollection.insertOne({ accountId: new ObjectId(token.accoundId), taxId, status: 'active' })
-      const insertedInvoice = await invoicesCollection.insertOne(invoice)
+      await invoicesCollection.insertOne(invoice)
       await request(app)
-        .get(`/invoices/${insertedInvoice.ops[0]._id.toString()}/download`)
+        .get(`/invoices/${invoice.invoiceNo}/download`)
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect(200)
         .expect('Content-Type', 'application/pdf')

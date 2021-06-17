@@ -88,8 +88,8 @@ describe('InvoiceMongoRepository', () => {
       const taxId = faker.address.zipCode('###########')
       const invoice = mockInvoice(taxId)
       await accountsCollection.insertOne({ accountId, taxId, status: 'active' })
-      const insertedInvoice = await invoicesCollection.insertOne(invoice)
-      const result = await sut.loadOne(insertedInvoice.ops[0]._id.toString(), accountId.toString())
+      await invoicesCollection.insertOne(invoice)
+      const result = await sut.loadOne(invoice.invoiceNo, accountId.toString())
       expect(result).toBeTruthy()
     })
 
@@ -99,8 +99,8 @@ describe('InvoiceMongoRepository', () => {
       const taxId = faker.address.zipCode('###########')
       const invoice = mockInvoice(taxId)
       await accountsCollection.insertOne({ accountId, taxId, status: 'inactive' })
-      const insertedInvoice = await invoicesCollection.insertOne(invoice)
-      const result = await sut.loadOne(insertedInvoice.ops[0]._id.toString(), accountId.toString())
+      await invoicesCollection.insertOne(invoice)
+      const result = await sut.loadOne(invoice.invoiceNo, accountId.toString())
       expect(result).toBeFalsy()
     })
 
@@ -111,8 +111,8 @@ describe('InvoiceMongoRepository', () => {
       const invoice = mockInvoice(taxId)
       invoice.status = 'Cancelado'
       await accountsCollection.insertOne({ accountId, taxId, status: 'active' })
-      const insertedInvoice = await invoicesCollection.insertOne(invoice)
-      const result = await sut.loadOne(insertedInvoice.ops[0]._id.toString(), accountId.toString())
+      await invoicesCollection.insertOne(invoice)
+      const result = await sut.loadOne(invoice.invoiceNo, accountId.toString())
       expect(result).toBeFalsy()
     })
   })

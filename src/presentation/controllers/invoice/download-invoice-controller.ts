@@ -13,7 +13,7 @@ export class DownloadInvoiceController implements Controller {
   async handle (httpRequest: DownloadInvoiceController.Request): Promise<HttpResponse> {
     try {
       const request = {
-        id: httpRequest.id,
+        invoiceNo: httpRequest.invoiceNo,
         accountId: httpRequest.accountId
       }
 
@@ -22,7 +22,7 @@ export class DownloadInvoiceController implements Controller {
         return badRequest(error)
       }
 
-      const invoice = await this.loadInvoice.load(request.id, request.accountId)
+      const invoice = await this.loadInvoice.load(parseInt(request.invoiceNo), request.accountId)
       if (!invoice) {
         return notFound(new RecordNotFoundError('Invoice'))
       }
@@ -36,7 +36,7 @@ export class DownloadInvoiceController implements Controller {
 
 export namespace DownloadInvoiceController {
   export type Request = {
-    id: string
+    invoiceNo: string
     accountId: string
   }
 }

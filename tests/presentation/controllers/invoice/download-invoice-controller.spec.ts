@@ -43,7 +43,7 @@ describe('DownloadInvoice Controller', () => {
     const { sut, loadInvoiceSpy } = makeSut()
     const request = mockDownloadRequest()
     await sut.handle(request)
-    expect(loadInvoiceSpy.id).toBe(request.id)
+    expect(loadInvoiceSpy.invoiceNo).toBe(parseInt(request.invoiceNo))
     expect(loadInvoiceSpy.accountId).toBe(request.accountId)
   })
 

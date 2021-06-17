@@ -20,28 +20,28 @@ const makeSut = (): SutTypes => {
 describe('DbLoadInvoice Usecase', () => {
   test('Should call LoadInvoiceRepository with correct values', async () => {
     const { sut, loadInvoiceRepositorySpy } = makeSut()
-    await sut.load('any_id', 'any_account_id')
-    expect(loadInvoiceRepositorySpy.id).toBe('any_id')
+    await sut.load(1, 'any_account_id')
+    expect(loadInvoiceRepositorySpy.invoiceNo).toBe(1)
     expect(loadInvoiceRepositorySpy.accountId).toBe('any_account_id')
   })
 
   test('Should throw if LoadInvoiceRepository throws', async () => {
     const { sut, loadInvoiceRepositorySpy } = makeSut()
     jest.spyOn(loadInvoiceRepositorySpy, 'loadOne').mockImplementationOnce(throwError)
-    const promise = sut.load('any_id', 'any_account_id')
+    const promise = sut.load(1, 'any_account_id')
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if LoadInvoiceRepository returns null', async () => {
     const { sut, loadInvoiceRepositorySpy } = makeSut()
     loadInvoiceRepositorySpy.result = null
-    const result = await sut.load('any_id', 'any_account_id')
+    const result = await sut.load(1, 'any_account_id')
     expect(result).toBeNull()
   })
 
   test('Should return an account on success', async () => {
     const { sut, loadInvoiceRepositorySpy } = makeSut()
-    const result = await sut.load('any_id', 'any_account_id')
+    const result = await sut.load(1, 'any_account_id')
     expect(result).toEqual(loadInvoiceRepositorySpy.result)
   })
 })

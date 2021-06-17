@@ -78,13 +78,13 @@ export class InvoiceMongoRepository implements
     return MongoHelper.instance.mapCollection(invoices)
   }
 
-  async loadOne (id: string, accountId: string): Promise<LoadInvoiceRepository.Result> {
+  async loadOne (invoiceNo: number, accountId: string): Promise<LoadInvoiceRepository.Result> {
     const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
     const invoice = await invoicesCollection
       .aggregate([
         {
           $match: {
-            _id: new ObjectId(id),
+            invoiceNo,
             status: 'Normal'
           }
         },

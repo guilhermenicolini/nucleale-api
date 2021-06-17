@@ -45,12 +45,12 @@ export class LoadInvoicesSpy implements LoadInvoices {
 }
 
 export class LoadInvoiceSpy implements LoadInvoice {
-  id: string
+  invoiceNo: number
   accountId: string
   result: LoadInvoice.Result = mockInvoiceDb()
 
-  async load (id: string, accountId: string): Promise<LoadInvoice.Result> {
-    this.id = id
+  async load (invoiceNo: number, accountId: string): Promise<LoadInvoice.Result> {
+    this.invoiceNo = invoiceNo
     this.accountId = accountId
     return this.result
   }

@@ -31,12 +31,12 @@ export class LoadInvoicesRepositorySpy implements LoadInvoicesRepository {
 }
 
 export class LoadInvoiceRepositorySpy implements LoadInvoiceRepository {
-  id: string
+  invoiceNo: number
   accountId: string
   result: LoadInvoiceRepository.Result = mockInvoiceDb()
 
-  async loadOne (id: string, accountId: string): Promise<LoadInvoiceRepository.Result> {
-    this.id = id
+  async loadOne (invoiceNo: number, accountId: string): Promise<LoadInvoiceRepository.Result> {
+    this.invoiceNo = invoiceNo
     this.accountId = accountId
     return this.result
   }

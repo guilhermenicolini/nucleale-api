@@ -92,6 +92,6 @@ export const mockLoadInvoice = (): Pick<InvoiceModel, 'id' | 'invoiceNo' | 'invo
 })
 
 export const mockDownloadRequest = () => ({
-  id: new ObjectId().toString(),
+  invoiceNo: faker.datatype.number().toString(),
   accountId: new ObjectId().toString()
 })
