@@ -157,7 +157,7 @@ describe('RemoteSendInvoice Usecase', () => {
     const { sut, decoderSpy } = makeSut()
     const result = await sut.send(mockInvoice())
     expect(result).toEqual({
-      invoiceNo: decoderSpy.result['ns1:RetornoEnvioLoteRPS'].ChavesNFSeRPS.ChaveNFSeRPS.ChaveNFe.NumeroNFe,
+      invoiceNo: parseInt(decoderSpy.result['ns1:RetornoEnvioLoteRPS'].ChavesNFSeRPS.ChaveNFSeRPS.ChaveNFe.NumeroNFe),
       verificationCode: decoderSpy.result['ns1:RetornoEnvioLoteRPS'].ChavesNFSeRPS.ChaveNFSeRPS.ChaveNFe.CodigoVerificacao
     })
   })
