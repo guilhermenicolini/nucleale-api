@@ -33,13 +33,13 @@ export class WhatsappHelper {
     if (!this.client) {
       await this.connect()
     }
-    await this.client.sendText(`${phone}@c.us`, content)
+    this.client.sendText(`${phone}@c.us`, content)
   }
 
   async sendFile (phone: string, base64: string, filename: string, mimetype: string): Promise<void> {
     if (!this.client) {
       await this.connect()
     }
-    await this.client.sendFileFromBase64(`${phone}@c.us`, `data:${mimetype};base64,${base64}`, filename)
+    this.client.sendFileFromBase64(`${phone}@c.us`, `data:${mimetype};base64,${base64}`, filename)
   }
 }
