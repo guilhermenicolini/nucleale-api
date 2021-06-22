@@ -7,7 +7,8 @@ import {
   LoadInvitationRepository,
   LoadAccountRepository,
   SaveAccountRepository,
-  InviteAccountRepository
+  InviteAccountRepository,
+  LoadAccountsRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 import { SaveAccount } from '@/domain/usecases'
@@ -115,5 +116,19 @@ export class AccountMongoRepository implements
       accountId: new ObjectId(accountId)
     }, { upsert: true })
     return true
+  }
+
+  async loadAll (accountId: string, userId: string): Promise<LoadAccountsRepository.Result> {
+    const accountCollection = await MongoHelper.instance.getCollection('accounts')
+    const accounts = await accountCollection.find({
+      accountId: new ObjectId(accountId),
+      _id: { $ne: new ObjectId(userId) }
+    }, {
+      projection: {
+        password: 0
+      }
+    }).toArray()
+
+    return MongoHelper.instance.mapCollection(accounts, accountMapper())
   }
 }
