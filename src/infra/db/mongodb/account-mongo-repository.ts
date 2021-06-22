@@ -127,7 +127,7 @@ export class AccountMongoRepository implements
       projection: {
         password: 0
       }
-    }).toArray()
+    }).sort({ name: 1 }).toArray()
 
     return MongoHelper.instance.mapCollection(accounts, accountMapper())
   }

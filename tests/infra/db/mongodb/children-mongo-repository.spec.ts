@@ -46,14 +46,6 @@ describe('ChildrenMongoRepository', () => {
       childrensCollection.insertMany(data)
       const childrens = await sut.load(accountId)
       expect(childrens.length).toBe(2)
-      expect(childrens[0].id.toString()).toBe(data[0]._id.toString())
-      expect(childrens[0].name).toBe(data[0].name)
-      expect(childrens[0].birth).toBe(data[0].birth)
-      expect(childrens[0].gender).toBe(data[0].gender)
-      expect(childrens[1].id.toString()).toBe(data[1]._id.toString())
-      expect(childrens[1].name).toBe(data[1].name)
-      expect(childrens[1].birth).toBe(data[1].birth)
-      expect(childrens[1].gender).toBe(data[1].gender)
     })
 
     test('Should return empty array if not exists', async () => {

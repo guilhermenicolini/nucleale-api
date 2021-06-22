@@ -174,4 +174,19 @@ describe('Account Routes', () => {
         .expect(200)
     })
   })
+
+  describe('GET /accounts', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/accounts')
+        .expect(401)
+    })
+
+    test('Should return accounts on success', async () => {
+      await request(app)
+        .get('/accounts')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(200)
+    })
+  })
 })
