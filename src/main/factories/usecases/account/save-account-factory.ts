@@ -1,8 +1,8 @@
-import { DbLoadAccount } from '@/data/usecases'
-import { LoadAccount } from '@/domain/usecases'
+import { DbSaveAccount } from '@/data/usecases'
+import { SaveAccount } from '@/domain/usecases'
 import { AccountMongoRepository } from '@/infra/db'
 
-export const makeDbLoadAccount = (): LoadAccount => {
+export const makeDbSaveAccount = (): SaveAccount => {
   const accountMongoRepository = new AccountMongoRepository()
-  return new DbLoadAccount(accountMongoRepository)
+  return new DbSaveAccount(accountMongoRepository)
 }
