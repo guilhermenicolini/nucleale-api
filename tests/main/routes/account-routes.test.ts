@@ -1,6 +1,6 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db'
-import { mockAccountModel } from '@/tests/domain/mocks'
+import { mockAccountModel, mockDbAccountModel } from '@/tests/domain/mocks'
 import { mockAccessToken, mockAdminAccessToken, mockId } from '@/tests/main/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
@@ -147,6 +147,46 @@ describe('Account Routes', () => {
         .post(`/accounts/invite/${faker.internet.email()}`)
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect({})
+    })
+  })
+
+  describe('GET /accounts/me', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/accounts/me')
+        .expect(401)
+    })
+
+    test('Should return 404 if user not exists', async () => {
+      await request(app)
+        .get('/accounts/me')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(404)
+    })
+
+    test('Should return current user account on success', async () => {
+      const token = mockAccessToken()
+      await accountCollection.insertOne(mockDbAccountModel(new ObjectId(token.userId), null))
+
+      await request(app)
+        .get('/accounts/me')
+        .set('authorization', `Bearer ${token.accessToken}`)
+        .expect(200)
+    })
+  })
+
+  describe('GET /accounts', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/accounts')
+        .expect(401)
+    })
+
+    test('Should return accounts on success', async () => {
+      await request(app)
+        .get('/accounts')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(200)
     })
   })
 })

@@ -7,7 +7,8 @@ import {
   LoadAccount,
   SaveAccount,
   InviteAccount,
-  LoadAccountByEmail
+  LoadAccountByEmail,
+  LoadAccounts
 } from '@/domain/usecases'
 import { mockAccountModel } from '@/tests/domain/mocks'
 
@@ -119,6 +120,18 @@ export class LoadAccountByEmailSpy implements LoadAccountByEmail {
 
   async load (email: string): Promise<LoadAccountByEmail.Result> {
     this.email = email
+    return this.result
+  }
+}
+
+export class LoadAccountsSpy implements LoadAccounts {
+  accountId: string
+  userId: string
+  result: LoadAccounts.Result = [mockAccountModel(), mockAccountModel()]
+
+  async loadAll (accountId: string, userId: string): Promise<LoadAccounts.Result> {
+    this.accountId = accountId
+    this.userId = userId
     return this.result
   }
 }

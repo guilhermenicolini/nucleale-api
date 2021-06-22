@@ -55,6 +55,22 @@ export const mockAccountModel = (): AccountModel => ({
   role: AccountRoles.user
 })
 
+export const mockDbAccountModel = (id, accountId) => ({
+  _id: id || new ObjectId(),
+  accountId: accountId || new ObjectId(),
+  taxId: faker.address.zipCode('###########'),
+  name: faker.name.findName(),
+  email: faker.internet.email(),
+  mobilePhone: faker.phone.phoneNumber('+55##9########'),
+  birth: faker.datatype.number({
+    min: 315543600000,
+    max: 631159200000
+  }),
+  password: faker.internet.password(),
+  status: AccountStatus.awaitingVerification,
+  role: AccountRoles.user
+})
+
 export const mockInvitation = (): any => ({
   accountId: faker.datatype.uuid(),
   email: faker.internet.email()

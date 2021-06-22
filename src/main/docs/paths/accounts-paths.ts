@@ -124,5 +124,69 @@ export const accountsPaths = {
         }
       }
     }
+  },
+  '/accounts/me': {
+    get: {
+      tags: ['Accounts'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to retrieve current user account',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'getAccount',
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#components/schemas/account'
+              }
+            }
+          }
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        403: {
+          $ref: '#/components/errors/forbidden'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
+  },
+  '/accounts': {
+    get: {
+      tags: ['Accounts'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to retrieve current user accounts',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'getAccounts',
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#components/schemas/accounts'
+              }
+            }
+          }
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        403: {
+          $ref: '#/components/errors/forbidden'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }

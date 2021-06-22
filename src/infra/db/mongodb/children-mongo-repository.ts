@@ -28,7 +28,7 @@ export class ChildrenMongoRepository implements
         projection: {
           accountId: 0
         }
-      }).toArray()
+      }).sort({ name: 1 }).toArray()
     return MongoHelper.instance.mapCollection(childrens)
   }
 
