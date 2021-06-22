@@ -166,7 +166,7 @@ describe('Account Routes', () => {
 
     test('Should return current user account on success', async () => {
       const token = mockAccessToken()
-      await accountCollection.insertOne({ _id: new ObjectId(token.userId), ...mockDbAccountModel() })
+      await accountCollection.insertOne(mockDbAccountModel(new ObjectId(token.userId), null))
 
       await request(app)
         .get('/accounts/me')

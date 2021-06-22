@@ -1,6 +1,6 @@
 import { AccountStatus } from '@/domain/models'
 import { AccountMongoRepository, MongoHelper } from '@/infra/db'
-import { mockAddAccountParams, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
+import { mockAddAccountParams, mockDbAccountModel, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 import faker from 'faker'
@@ -99,12 +99,12 @@ describe('AccountMongoRepository', () => {
       expect(accounts[0].status).toBe(data.status)
       expect(accounts[0].taxId).toBe(data.taxId)
     })
-  })
 
-  test('Should return empty array if no records found', async () => {
-    const sut = makeSut()
-    const accounts = await sut.loadByStatus(AccountStatus.awaitingVerification)
-    expect(accounts.length).toBe(0)
+    test('Should return empty array if no records found', async () => {
+      const sut = makeSut()
+      const accounts = await sut.loadByStatus(AccountStatus.awaitingVerification)
+      expect(accounts.length).toBe(0)
+    })
   })
 
   describe('loadInvitation()', () => {
@@ -203,6 +203,23 @@ describe('AccountMongoRepository', () => {
       expect(invitations.length).toBe(1)
       expect(invitations[0].accountId.toString()).toBe(accountId)
       expect(invitations[0].email).toBe(email)
+    })
+  })
+
+  describe('loadAll()', () => {
+    test('Should return empty array if no records found', async () => {
+      const sut = makeSut()
+      const accounts = await sut.loadAll(new ObjectId().toString(), new ObjectId().toString())
+      expect(accounts.length).toBe(0)
+    })
+
+    test('Should return accounts that isnt the current user', async () => {
+      const sut = makeSut()
+      const userId = new ObjectId()
+      const accountId = new ObjectId()
+      await accountCollection.insertMany([mockDbAccountModel(userId, accountId), mockDbAccountModel(null, accountId)])
+      const accounts = await sut.loadAll(accountId.toString(), userId.toString())
+      expect(accounts.length).toBe(1)
     })
   })
 })

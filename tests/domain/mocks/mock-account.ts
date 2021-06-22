@@ -55,8 +55,9 @@ export const mockAccountModel = (): AccountModel => ({
   role: AccountRoles.user
 })
 
-export const mockDbAccountModel = (): Omit<AccountModel, 'id'> => ({
-  accountId: new ObjectId().toString(),
+export const mockDbAccountModel = (id, accountId) => ({
+  _id: id || new ObjectId(),
+  accountId: accountId || new ObjectId(),
   taxId: faker.address.zipCode('###########'),
   name: faker.name.findName(),
   email: faker.internet.email(),
