@@ -43,7 +43,7 @@ describe('ChildrenMongoRepository', () => {
       const accountId = new ObjectId().toString()
       const sut = makeSut()
       const data = [mockChildrenModel(accountId), mockChildrenModel(accountId)]
-      childrensCollection.insertMany(data)
+      await childrensCollection.insertMany(data)
       const childrens = await sut.load(accountId)
       expect(childrens.length).toBe(2)
     })
