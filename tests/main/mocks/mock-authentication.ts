@@ -3,16 +3,18 @@ import { sign } from 'jsonwebtoken'
 import env from '@/main/config/env'
 
 export const mockAccessToken = () => {
+  const sub = new ObjectId().toString()
   const acc = new ObjectId().toString()
   return {
     accessToken: sign({
-      sub: new ObjectId().toString(),
+      sub,
       acc,
       role: 'user',
       iss: env.iss,
       aud: env.aud
     }, env.secret, { expiresIn: env.exp }),
-    accoundId: acc
+    accoundId: acc,
+    userId: sub
   }
 }
 
