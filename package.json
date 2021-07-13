@@ -69,7 +69,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^5.8.4",
-    "@wppconnect-team/wppconnect": "^1.6.0",
+    "@wppconnect-team/wppconnect": "^1.7.0",
     "bcrypt": "^5.0.1",
     "email-templates": "^8.0.4",
     "express": "^4.17.1",
