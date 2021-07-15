@@ -13,7 +13,8 @@
     "test:ci": "npm test -- --coverage",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "node dist/main/server.js",
-    "test:coveralls": "npm run test:ci && coveralls -v < coverage/lcov.info"
+    "test:coveralls": "npm run test:ci && coveralls -v < coverage/lcov.info",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -57,7 +58,7 @@
     "eslint-plugin-promise": "^5.1.0",
     "faker": "^5.5.3",
     "git-commit-msg-linter": "^3.2.6",
-    "husky": "^4.3.8",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
     "lint-staged": "^11.0.1",
     "mockdate": "^3.0.5",
