@@ -81,7 +81,7 @@
     "moment-timezone": "^0.5.33",
     "mongodb": "^3.6.8",
     "pug": "^3.0.2",
-    "puppeteer": "^10.1.0",
+    "puppeteer-core": "^10.1.0",
     "soap": "^0.40.0",
     "string-mask": "^0.3.0",
     "swagger-ui-express": "^4.1.6",
