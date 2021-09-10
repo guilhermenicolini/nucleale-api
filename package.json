@@ -73,7 +73,7 @@
     "@google-cloud/storage": "^5.8.5",
     "@wppconnect-team/wppconnect": "^1.8.3",
     "bcrypt": "^5.0.1",
-    "email-templates": "^8.0.7",
+    "email-templates": "^8.0.8",
     "express": "^4.17.1",
     "express-multipart-file-parser": "^0.1.2",
     "html-pdf": "^3.0.1",
