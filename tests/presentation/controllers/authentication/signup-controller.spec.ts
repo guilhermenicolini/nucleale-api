@@ -56,7 +56,7 @@ describe('SignUp Controller', () => {
       ...request,
       accountId: loadInvitationSpy.result,
       role: 'user',
-      status: 'active'
+      status: 'awaitingVerification'
     })
   })
 

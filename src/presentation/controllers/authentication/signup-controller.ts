@@ -31,7 +31,7 @@ export class SignUpController implements Controller {
         password,
         mobilePhone,
         birth,
-        status: AccountStatus.active,
+        status: AccountStatus.awaitingVerification,
         role: AccountRoles.user
       })
       if (!result.isValid) {
