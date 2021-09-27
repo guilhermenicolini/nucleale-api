@@ -1,6 +1,6 @@
-export class InvalidStatusError extends Error {
+export class InvalidCredentialsError extends Error {
   constructor () {
-    super('Invalid status')
-    this.name = 'InvalidStatusError'
+    super('Usuário ou senha inválida')
+    this.name = 'InvalidCredentialsError'
   }
 }

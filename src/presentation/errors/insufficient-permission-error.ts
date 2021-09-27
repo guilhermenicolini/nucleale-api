@@ -1,6 +1,6 @@
 export class InsufficientPermissionError extends Error {
   constructor () {
-    super('Insufficient permission to access this resource')
+    super('Permissão insuficiente para acessar este recurso')
     this.name = 'InsufficientPermissionError'
   }
 }
