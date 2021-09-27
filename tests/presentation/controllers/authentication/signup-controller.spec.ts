@@ -1,11 +1,11 @@
 import { SignUpController } from '@/presentation/controllers'
 import { AddAccountSpy, ValidationSpy, AuthenticationSpy, LoadInvitationSpy } from '@/tests/presentation/mocks'
-import { throwError, mockAddAccountParams } from '@/tests/domain/mocks'
+import { throwError, mockSignUpRequest } from '@/tests/domain/mocks'
 import { serverError, badRequest, conflict, created } from '@/presentation/helpers'
 import { ServerError, EmailInUseError } from '@/presentation/errors'
 
 const mockRequest = (): SignUpController.Request => {
-  const params = mockAddAccountParams()
+  const params = mockSignUpRequest()
   return { ...params, passwordConfirmation: params.password }
 }
 
@@ -52,7 +52,12 @@ describe('SignUp Controller', () => {
     const request = mockRequest()
     delete request.passwordConfirmation
     await sut.handle(request)
-    expect(addAccountSpy.params).toEqual({ ...request, accountId: loadInvitationSpy.result })
+    expect(addAccountSpy.params).toEqual({
+      ...request,
+      accountId: loadInvitationSpy.result,
+      role: 'user',
+      status: 'active'
+    })
   })
 
   test('Should return 500 if AddAccount throws ', async () => {

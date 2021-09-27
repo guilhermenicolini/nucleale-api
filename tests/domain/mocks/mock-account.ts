@@ -1,5 +1,6 @@
 import { AccountStatus, AccountModel, AccountRoles } from '@/domain/models'
 import { AddAccount, VerifyAccount, LoadAccountsByStatus, SaveAccount } from '@/domain/usecases'
+import { SignUpController } from '@/presentation/controllers'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
@@ -16,6 +17,19 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
   }),
   status: AccountStatus.awaitingVerification,
   role: 'user'
+})
+
+export const mockSignUpRequest = (): SignUpController.Request => ({
+  taxId: faker.address.zipCode('###########'),
+  name: faker.name.findName(),
+  email: faker.internet.email(),
+  password: 'P@ssw0rd',
+  passwordConfirmation: 'P@ssw0rd',
+  mobilePhone: faker.phone.phoneNumber('+55##9########'),
+  birth: faker.datatype.number({
+    min: 315543600000,
+    max: 631159200000
+  })
 })
 
 export const mockSaveAccountParams = (): SaveAccount.Params => ({
