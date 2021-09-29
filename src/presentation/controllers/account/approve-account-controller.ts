@@ -22,7 +22,7 @@ export class ApproveAccountController implements Controller {
 
       const account = await this.loadAccount.load(id)
       if (!account) {
-        return notFound(new RecordNotFoundError('Account'))
+        return notFound(new RecordNotFoundError('Conta não encontrada'))
       }
 
       if (account.status !== AccountStatus.awaitingVerification) {

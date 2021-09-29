@@ -61,7 +61,7 @@ describe('DeleteChildren Controller', () => {
     const { sut, deleteChildrenSpy } = makeSut()
     deleteChildrenSpy.result = false
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Children')))
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Filho não encontrado')))
   })
 
   test('Should return 204 on success', async () => {

@@ -58,7 +58,7 @@ describe('DownloadInvoice Controller', () => {
     const { sut, loadInvoiceSpy } = makeSut()
     loadInvoiceSpy.result = null
     const httpResponse = await sut.handle(mockDownloadRequest())
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Invoice')))
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Nota fiscal não encontrada')))
   })
 
   test('Should call GenerateInvoice with correct values', async () => {

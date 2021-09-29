@@ -24,7 +24,7 @@ export class DownloadInvoiceController implements Controller {
 
       const invoice = await this.loadInvoice.load(parseInt(request.invoiceNo), request.accountId)
       if (!invoice) {
-        return notFound(new RecordNotFoundError('Invoice'))
+        return notFound(new RecordNotFoundError('Nota fiscal não encontrada'))
       }
       const document = await this.generateInvoice.generate(invoice)
       return ok(document)

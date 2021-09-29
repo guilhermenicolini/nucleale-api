@@ -21,7 +21,7 @@ export class PasswordRecoveryController implements Controller {
 
       const account = await this.loadAccountByEmail.load(request.email)
       if (!account) {
-        return notFound(new RecordNotFoundError('Account'))
+        return notFound(new RecordNotFoundError('E-mail não encontrado'))
       }
       await this.generatePasswordRecoveryLink.generate(account)
       return noContent()

@@ -27,7 +27,7 @@ export class UpdateChildrenController implements Controller {
 
       const result = await this.updateChildren.update(request)
       if (!result) {
-        return notFound(new RecordNotFoundError('Children'))
+        return notFound(new RecordNotFoundError('Filho não encontrado'))
       }
 
       return noContent()

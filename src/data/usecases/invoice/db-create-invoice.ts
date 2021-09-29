@@ -22,26 +22,26 @@ export class DbCreateInvoice implements CreateInvoice {
   async create (params: CreateInvoice.Params): Promise<CreateInvoice.Result> {
     const account = await this.loadAccountRepository.loadById(params.userId)
     if (!account) {
-      return new RecordNotFoundError('Account')
+      return new RecordNotFoundError('Conta não encontrada')
     }
     const address = await this.loadAddressRepository.load(account.accountId)
     if (!address) {
-      return new RecordNotFoundError('Address')
+      return new RecordNotFoundError('Endereço não encontrado')
     }
 
     const company = await this.loadCompanyRepository.load()
     if (!company) {
-      return new RecordNotFoundError('Company')
+      return new RecordNotFoundError('Empresa não encontrada')
     }
 
     const procedure = await this.loadProcedureRepository.loadProcedure(params.procedureId)
     if (!procedure) {
-      return new RecordNotFoundError('Procedure')
+      return new RecordNotFoundError('Procedimento não encontrado')
     }
 
     const rpsNumber = await this.loadNextRpsRepository.next()
     if (!rpsNumber) {
-      return new RecordNotFoundError('Rps')
+      return new RecordNotFoundError('Rps não encontrado')
     }
 
     return await this.modelsToInvoiceConverter.convert({

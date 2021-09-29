@@ -67,7 +67,7 @@ describe('ResendInvoice Controller', () => {
     const { sut, loadInvoiceByNumberSpy } = makeSut()
     loadInvoiceByNumberSpy.result = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Invoice')))
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Nota fiscal não encontrada')))
   })
 
   test('Should call GenerateInvoice with correct values', async () => {

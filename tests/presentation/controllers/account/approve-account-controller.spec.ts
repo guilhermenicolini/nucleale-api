@@ -66,7 +66,7 @@ describe('ApproveAccount Controller', () => {
     const { sut, loadAccountSpy } = makeSut()
     loadAccountSpy.result = null
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Account')))
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Conta não encontrada')))
   })
 
   test('Should call SaveAccount with correct values', async () => {

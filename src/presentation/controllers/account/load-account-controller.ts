@@ -12,7 +12,7 @@ export class LoadAccountController implements Controller {
     try {
       const account = await this.loadAccount.load(request.userId)
       if (!account) {
-        return notFound(new RecordNotFoundError('Account'))
+        return notFound(new RecordNotFoundError('Conta não encontrada'))
       }
       return ok(account)
     } catch (error) {

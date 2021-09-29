@@ -57,7 +57,7 @@ describe('PasswordRecovery Controller', () => {
     const { sut, loadAccountByEmailSpy } = makeSut()
     loadAccountByEmailSpy.result = null
     const httpResponse = await sut.handle(mockPasswordRecoveryRequest())
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Account')))
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('E-mail não encontrado')))
   })
 
   test('Should call GeneratePasswordRecoveryLink with correct values', async () => {

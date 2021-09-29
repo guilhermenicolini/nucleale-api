@@ -54,7 +54,7 @@ describe('UpdateChildren Controller', () => {
     const { sut, updateChildrenSpy } = makeSut()
     updateChildrenSpy.result = false
     const httpResponse = await sut.handle(mockUpdateChildrenModel())
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Children')))
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Filho não encontrado')))
   })
 
   test('Should return 204 on success', async () => {

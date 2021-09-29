@@ -1,6 +1,6 @@
 export class RecordNotFoundError extends Error {
-  constructor (model: string) {
-    super(`${model} não encontrado`)
+  constructor (message: string) {
+    super(message)
     this.name = 'RecordNotFoundError'
   }
 }

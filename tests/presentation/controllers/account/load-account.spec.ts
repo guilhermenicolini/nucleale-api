@@ -46,7 +46,7 @@ describe('LoadAccount Controller', () => {
     loadAccountSpy.result = null
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Account')))
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Conta não encontrada')))
   })
 
   test('Should return 200 on success', async () => {

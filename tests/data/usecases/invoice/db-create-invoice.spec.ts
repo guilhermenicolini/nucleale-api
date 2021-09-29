@@ -76,7 +76,7 @@ describe('DbCreateInvoice Usecase', () => {
     const { sut, loadAccountRepositorySpy } = makeSut()
     loadAccountRepositorySpy.result = null
     const result = await sut.create(mockParams())
-    expect(result).toEqual(new RecordNotFoundError('Account'))
+    expect(result).toEqual(new RecordNotFoundError('Conta não encontrada'))
   })
 
   test('Should call LoadAddressRepository with correct values', async () => {
@@ -96,7 +96,7 @@ describe('DbCreateInvoice Usecase', () => {
     const { sut, loadAddressRepositorySpy } = makeSut()
     loadAddressRepositorySpy.result = null
     const result = await sut.create(mockParams())
-    expect(result).toEqual(new RecordNotFoundError('Address'))
+    expect(result).toEqual(new RecordNotFoundError('Endereço não encontrado'))
   })
 
   test('Should call LoadCompanyRepository', async () => {
@@ -117,7 +117,7 @@ describe('DbCreateInvoice Usecase', () => {
     const { sut, loadCompanyRepositorySpy } = makeSut()
     loadCompanyRepositorySpy.result = null
     const result = await sut.create(mockParams())
-    expect(result).toEqual(new RecordNotFoundError('Company'))
+    expect(result).toEqual(new RecordNotFoundError('Empresa não encontrada'))
   })
 
   test('Should call LoadProcedureRepository with correct values', async () => {
@@ -138,7 +138,7 @@ describe('DbCreateInvoice Usecase', () => {
     const { sut, loadProcedureRepositorySpy } = makeSut()
     loadProcedureRepositorySpy.result = null
     const result = await sut.create(mockParams())
-    expect(result).toEqual(new RecordNotFoundError('Procedure'))
+    expect(result).toEqual(new RecordNotFoundError('Procedimento não encontrado'))
   })
 
   test('Should call LoadNextRpsRepository', async () => {
@@ -159,14 +159,14 @@ describe('DbCreateInvoice Usecase', () => {
     const { sut, loadNextRpsRepositorySpy } = makeSut()
     loadNextRpsRepositorySpy.result = null
     const result = await sut.create(mockParams())
-    expect(result).toEqual(new RecordNotFoundError('Rps'))
+    expect(result).toEqual(new RecordNotFoundError('Rps não encontrado'))
   })
 
   test('Should return error if LoadNextRpsRepository returns 0', async () => {
     const { sut, loadNextRpsRepositorySpy } = makeSut()
     loadNextRpsRepositorySpy.result = 0
     const result = await sut.create(mockParams())
-    expect(result).toEqual(new RecordNotFoundError('Rps'))
+    expect(result).toEqual(new RecordNotFoundError('Rps não encontrado'))
   })
 
   test('Should call ModelsToInvoiceConverter with correct values', async () => {

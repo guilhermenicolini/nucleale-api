@@ -23,7 +23,7 @@ export class DeleteChildrenController implements Controller {
 
       const result = await this.deleteChildren.delete(request)
       if (!result) {
-        return notFound(new RecordNotFoundError('Children'))
+        return notFound(new RecordNotFoundError('Filho não encontrado'))
       }
 
       return noContent()
