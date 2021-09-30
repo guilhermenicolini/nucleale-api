@@ -42,4 +42,30 @@ describe('LinkMongoRepository', () => {
       expect(result.expiration).toBe(moment(now).add(1, 'hour').valueOf())
     })
   })
+
+  describe('load()', () => {
+    test('Should return null if token not exists', async () => {
+      const sut = makeSut()
+      const type = LinkTypes.passwordRecovery
+      const token = new ObjectId().toString()
+
+      const result = await sut.load({
+        token,
+        type
+      })
+      expect(result).toBeFalsy()
+    })
+
+    test('Should return link if token exists', async () => {
+      const sut = makeSut()
+      const type = LinkTypes.passwordRecovery
+      const token = await (await linksCollection.insertOne({ type })).ops[0]._id.toString()
+
+      const result = await sut.load({
+        token,
+        type
+      })
+      expect(result).toBeTruthy()
+    })
+  })
 })

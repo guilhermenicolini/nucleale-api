@@ -11,3 +11,7 @@ export const mockAuthenticationParams = (): Authentication.Params => ({
 export const mockPasswordRecoveryRequest = () => ({
   email: faker.internet.email()
 })
+
+export const mockCheckPasswordRequest = () => ({
+  token: faker.datatype.uuid()
+})

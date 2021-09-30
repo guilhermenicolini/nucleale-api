@@ -1,4 +1,5 @@
-import { AddLinkRepository } from '@/data/protocols'
+import { AddLinkRepository, LoadLinkRepository } from '@/data/protocols'
+import { mockLinkModel } from '@/tests/domain/mocks/mock-link'
 
 import faker from 'faker'
 import moment from 'moment-timezone'
@@ -12,6 +13,16 @@ export class AddLinkRepositorySpy implements AddLinkRepository {
 
   async add (data: AddLinkRepository.Params): Promise<AddLinkRepository.Result> {
     this.data = data
+    return this.result
+  }
+}
+
+export class LoadLinkRepositorySpy implements LoadLinkRepository {
+  params: LoadLinkRepository.Params
+  result: LoadLinkRepository.Result = mockLinkModel()
+
+  async load (params: LoadLinkRepository.Params): Promise<LoadLinkRepository.Result> {
+    this.params = params
     return this.result
   }
 }

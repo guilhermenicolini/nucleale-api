@@ -1,13 +1,15 @@
 import { MongoHelper } from '@/infra/db'
 import {
-  AddLinkRepository
+  AddLinkRepository,
+  LoadLinkRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 
 import moment from 'moment-timezone'
 
 export class LinkMongoRepository implements
-  AddLinkRepository {
+  AddLinkRepository,
+  LoadLinkRepository {
   async add (data: AddLinkRepository.Params): Promise<AddLinkRepository.Result> {
     const linksCollection = await MongoHelper.instance.getCollection('links')
     const cmd = await linksCollection.insertOne(
@@ -20,5 +22,14 @@ export class LinkMongoRepository implements
       link: cmd.ops[0]._id.toString(),
       expiration: cmd.ops[0].expiration
     }
+  }
+
+  async load (data: LoadLinkRepository.Params): Promise<LoadLinkRepository.Result> {
+    const linksCollection = await MongoHelper.instance.getCollection('links')
+    const link = await linksCollection.findOne({
+      _id: new ObjectId(data.token),
+      type: data.type
+    })
+    return link
   }
 }
