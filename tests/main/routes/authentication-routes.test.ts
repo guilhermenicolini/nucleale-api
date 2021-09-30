@@ -3,11 +3,12 @@ import { MongoHelper } from '@/infra/db'
 import { mockAccountModel } from '@/tests/domain/mocks'
 import env from '@/main/config/env'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
 import { hash } from 'bcrypt'
 import { decode } from 'jsonwebtoken'
+import { LinkTypes } from '@/domain/models'
 
 const mockAddRequest = () => {
   const password = 'P@ssw0rd'
@@ -34,7 +35,8 @@ const mockLoginRequest = () => {
   }
 }
 
-let accountCollection: Collection
+let accountsCollection: Collection
+let linksCollection: Collection
 
 const validateToken = (obj) => {
   return function (res) {
@@ -58,8 +60,10 @@ describe('Account Routes', () => {
   })
 
   beforeEach(async () => {
-    accountCollection = await MongoHelper.instance.getCollection('accounts')
-    await accountCollection.deleteMany({})
+    accountsCollection = await MongoHelper.instance.getCollection('accounts')
+    linksCollection = await MongoHelper.instance.getCollection('links')
+    await accountsCollection.deleteMany({})
+    await linksCollection.deleteMany({})
   })
 
   describe('POST /signup', () => {
@@ -72,7 +76,7 @@ describe('Account Routes', () => {
 
     test('Should return 400 on signup if body is ivalid', async () => {
       const params = mockAddRequest()
-      await accountCollection.insertOne({ email: params.email })
+      await accountsCollection.insertOne({ email: params.email })
       await request(app)
         .post('/signup')
         .send({})
@@ -81,7 +85,7 @@ describe('Account Routes', () => {
 
     test('Should return 409 on signup if email was taken', async () => {
       const params = mockAddRequest()
-      await accountCollection.insertOne({ email: params.email })
+      await accountsCollection.insertOne({ email: params.email })
       await request(app)
         .post('/signup')
         .send(params)
@@ -107,7 +111,7 @@ describe('Account Routes', () => {
     test('Should return 200 on login', async () => {
       const { id, email, password, ...obj } = mockAccountModel()
 
-      const inserted = await accountCollection.insertOne({
+      const inserted = await accountsCollection.insertOne({
         ...obj,
         _id: id,
         email,
@@ -136,10 +140,37 @@ describe('Account Routes', () => {
 
     test('Should return 204 on success', async () => {
       const data = mockAccountModel()
-      await accountCollection.insertOne(data)
+      await accountsCollection.insertOne(data)
       await request(app)
         .post(`/password-recovery/${data.email}`)
         .expect(204)
+    })
+  })
+
+  describe('GET /change-password/:token', () => {
+    test('Should return 400 on invalid token', async () => {
+      await request(app)
+        .get('/change-password/invalid_token')
+        .expect(400)
+    })
+
+    test('Should return 404 if token not exists', async () => {
+      await request(app)
+        .get(`/change-password/${new ObjectId().toString()}`)
+        .expect(404)
+    })
+
+    test('Should return 200 on success', async () => {
+      const type = LinkTypes.passwordRecovery
+      const cmd = await linksCollection.insertOne({
+        type,
+        expiration: faker.date.future().valueOf()
+      })
+      const token = cmd.ops[0]._id.toString()
+
+      await request(app)
+        .get(`/change-password/${token}`)
+        .expect(200)
     })
   })
 })
