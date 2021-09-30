@@ -20,7 +20,6 @@ export class ResendInvoiceController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      console.log('resend', request)
       const invoice = await this.loadInvoiceByNumber.loadByNumber(parseInt(request.invoiceNo))
       if (!invoice) {
         return notFound(new RecordNotFoundError('Nota fiscal não encontrada'))
