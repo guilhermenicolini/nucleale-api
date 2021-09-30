@@ -107,5 +107,36 @@ export const authenticationPaths = {
         }
       }
     }
+  },
+  '/change-password/{token}': {
+    get: {
+      tags: ['Authentication'],
+      summary: 'API to check change password request',
+      description: 'This API is open and can be executed by **anyone**',
+      operationId: 'changePasswordRequest',
+      parameters: [{
+        in: 'path',
+        name: 'token',
+        description: 'Change password token',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      responses: {
+        200: {
+          description: 'Ok'
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }
