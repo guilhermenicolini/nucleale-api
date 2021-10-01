@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { ChangePassword } from '@/domain/usecases'
-import { serverError, badRequest, noContent } from '@/presentation/helpers'
+import { serverError, badRequest, noContent, notFound } from '@/presentation/helpers'
+import { RecordNotFoundError } from '@/presentation/errors'
 
 export class ChangePasswordController implements Controller {
   constructor (
@@ -19,6 +20,10 @@ export class ChangePasswordController implements Controller {
         token: request.token,
         password: request.password
       })
+
+      if (result instanceof RecordNotFoundError) {
+        return notFound(result)
+      }
 
       if (result instanceof Error) {
         return badRequest(result)

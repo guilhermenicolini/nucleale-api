@@ -1,8 +1,8 @@
 import { ChangePasswordController } from '@/presentation/controllers'
 import { ValidationSpy, ChangePasswordSpy } from '@/tests/presentation/mocks'
 import { throwError, mockChangePasswordHttpRequest } from '@/tests/domain/mocks'
-import { serverError, badRequest, noContent } from '@/presentation/helpers'
-import { ServerError } from '@/presentation/errors'
+import { serverError, badRequest, noContent, notFound } from '@/presentation/helpers'
+import { RecordNotFoundError, ServerError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: ChangePasswordController,
@@ -32,6 +32,7 @@ describe('ChangePassword Controller', () => {
   test('Should return 400 if Validation returns an error ', async () => {
     const { sut, validationSpy } = makeSut()
     validationSpy.error = new Error()
+
     const httpResponse = await sut.handle(mockChangePasswordHttpRequest())
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
@@ -46,7 +47,14 @@ describe('ChangePassword Controller', () => {
     })
   })
 
-  test('Should return 400 if ChangePassword returns an error ', async () => {
+  test('Should return 404 if ChangePassword returns RecordNotFoundError', async () => {
+    const { sut, changePasswordSpy } = makeSut()
+    changePasswordSpy.result = new RecordNotFoundError('Error')
+    const httpResponse = await sut.handle(mockChangePasswordHttpRequest())
+    expect(httpResponse).toEqual(notFound(changePasswordSpy.result))
+  })
+
+  test('Should return 400 if ChangePassword returns error', async () => {
     const { sut, changePasswordSpy } = makeSut()
     changePasswordSpy.result = new Error()
     const httpResponse = await sut.handle(mockChangePasswordHttpRequest())
