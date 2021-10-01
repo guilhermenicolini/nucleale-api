@@ -1,3 +1,4 @@
+export * from './change-password-validation-factory'
 export * from './check-password-request-controller-factory'
 export * from './check-password-request-validation-factory'
 export * from './login-controller-factory'
