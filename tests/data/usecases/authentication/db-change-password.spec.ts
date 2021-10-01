@@ -61,6 +61,13 @@ describe('DbChangePassword Usecase', () => {
     expect(result).toEqual(new ClientError('Token expirado'))
   })
 
+  test('Should return error if link expiration is null', async () => {
+    const { sut, loadLinkRepositorySpy } = makeSut()
+    loadLinkRepositorySpy.result.expiration = null
+    const result = await sut.change(mockParams())
+    expect(result).toEqual(new ClientError('Token expirado'))
+  })
+
   test('Should call Hasher with correct values', async () => {
     const { sut, hasherSpy } = makeSut()
     const params = mockParams()

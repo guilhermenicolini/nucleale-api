@@ -17,7 +17,7 @@ export class DbChangePassword implements ChangePassword {
     })
 
     if (!link) return new RecordNotFoundError('Token não encontrado')
-    if (link.expiration < new Date().valueOf()) return new ClientError('Token expirado')
+    if ((link.expiration || 0) < new Date().valueOf()) return new ClientError('Token expirado')
 
     const hashedPassword = await this.hasher.hash(params.password)
 
