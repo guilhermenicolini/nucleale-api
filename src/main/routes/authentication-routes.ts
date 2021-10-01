@@ -3,7 +3,8 @@ import {
   makeSignUpController,
   makeLoginController,
   makePasswordRecoveryController,
-  makeCheckPasswordRequestController
+  makeCheckPasswordRequestController,
+  makeChangePasswordController
 } from '@/main/factories'
 
 import { Router } from 'express'
@@ -13,4 +14,5 @@ export default (router: Router): void => {
   router.post('/login', adaptRoute(makeLoginController()))
   router.post('/password-recovery/:email', adaptRoute(makePasswordRecoveryController()))
   router.get('/change-password/:token', adaptRoute(makeCheckPasswordRequestController()))
+  router.post('/change-password/:token', adaptRoute(makeChangePasswordController()))
 }
