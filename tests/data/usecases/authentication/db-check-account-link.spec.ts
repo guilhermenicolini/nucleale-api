@@ -33,7 +33,7 @@ describe('DbCheckAccountLink Usecase', () => {
     type = faker.random.arrayElement(Object.values(LinkTypes))
   })
 
-  test('Should call LoadLinkRepository with correct ciphertext', async () => {
+  test('Should call LoadLinkRepository with correct values', async () => {
     const { sut, loadLinkRepositorySpy } = makeSut()
     const token = mockToken()
     await sut.check(token)
