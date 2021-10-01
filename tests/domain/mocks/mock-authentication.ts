@@ -15,3 +15,9 @@ export const mockPasswordRecoveryRequest = () => ({
 export const mockCheckPasswordRequest = () => ({
   token: faker.datatype.uuid()
 })
+
+export const mockChangePasswordHttpRequest = () => ({
+  token: faker.datatype.uuid(),
+  password: faker.internet.password(),
+  passwordConfirmation: faker.internet.password()
+})

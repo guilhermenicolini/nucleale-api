@@ -1,3 +1,4 @@
+export * from './change-password-controller'
 export * from './check-password-request-controller'
 export * from './login-controller'
 export * from './password-recovery-controller'

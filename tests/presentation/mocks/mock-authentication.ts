@@ -1,5 +1,10 @@
 import { AccountModel } from '@/domain/models'
-import { Authentication, GeneratePasswordRecoveryLink, CheckAccountLink } from '@/domain/usecases'
+import {
+  Authentication,
+  GeneratePasswordRecoveryLink,
+  CheckAccountLink,
+  ChangePassword
+} from '@/domain/usecases'
 
 import faker from 'faker'
 
@@ -29,6 +34,16 @@ export class CheckAccountLinkSpy implements CheckAccountLink {
 
   async check (token: string): Promise<CheckAccountLink.Result> {
     this.token = token
+    return this.result
+  }
+}
+
+export class ChangePasswordSpy implements ChangePassword {
+  params: ChangePassword.Params
+  result: ChangePassword.Result = null
+
+  async change (params: ChangePassword.Params): Promise<ChangePassword.Result> {
+    this.params = params
     return this.result
   }
 }
