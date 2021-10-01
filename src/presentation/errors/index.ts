@@ -1,4 +1,5 @@
 export * from './access-denied-error'
+export * from './client-error'
 export * from './email-in-use-error'
 export * from './insufficient-permission-error'
 export * from './invalid-credentials-error'
