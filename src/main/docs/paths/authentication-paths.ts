@@ -137,6 +137,45 @@ export const authenticationPaths = {
           $ref: '#/components/errors/serverError'
         }
       }
+    },
+    post: {
+      tags: ['Authentication'],
+      summary: 'API to change account password',
+      description: 'This API is open and can be executed by **anyone**',
+      operationId: 'changeAccountPassword',
+      parameters: [{
+        in: 'path',
+        name: 'token',
+        description: 'Change password token',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      requestBody: {
+        description: 'Password object to be changed',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#components/schemas/changePassword'
+            }
+          }
+        }
+      },
+      responses: {
+        204: {
+          description: 'No Content'
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
     }
   }
 }

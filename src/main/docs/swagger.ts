@@ -27,7 +27,8 @@ import {
   invoiceSchema,
   invoicesSchema,
   createInvoiceSchema,
-  messageSchema
+  messageSchema,
+  changePasswordSchema
 } from './components'
 
 import map from './utils/mapper'
@@ -78,6 +79,7 @@ export const components = {
     login: loginSchema,
     account: accountSchema,
     accounts: accountsSchema,
+    changePassword: changePasswordSchema,
     address: map(addressSchema, ['id', 'accountId']),
     saveChildren: map(childrenSchema, ['id', 'accountId']),
     children: map(childrenSchema, ['accountId']),
