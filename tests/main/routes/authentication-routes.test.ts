@@ -10,6 +10,8 @@ import { hash } from 'bcrypt'
 import { decode } from 'jsonwebtoken'
 import { LinkTypes } from '@/domain/models'
 
+import MockDate from 'mockdate'
+
 const mockAddRequest = () => {
   const password = 'P@ssw0rd'
 
@@ -35,6 +37,14 @@ const mockLoginRequest = () => {
   }
 }
 
+const mockChangePasswordRequest = () => {
+  const password = faker.internet.password()
+  return {
+    password,
+    passwordConfirmation: password
+  }
+}
+
 let accountsCollection: Collection
 let linksCollection: Collection
 
@@ -52,6 +62,7 @@ const validateToken = (obj) => {
 
 describe('Account Routes', () => {
   beforeAll(async () => {
+    MockDate.set(new Date())
     await MongoHelper.instance.connect()
   })
 
@@ -171,6 +182,74 @@ describe('Account Routes', () => {
       await request(app)
         .get(`/change-password/${token}`)
         .expect(200)
+    })
+  })
+
+  describe('POST /change-password/:token', () => {
+    let token: string = null
+
+    beforeEach(async () => {
+      token = new ObjectId().toString()
+    })
+
+    // test('Should return 400 on invalid token', async () => {
+    //   await request(app)
+    //     .post('/change-password/invalid_token')
+    //     .expect(400)
+    // })
+
+    // test('Should return 404 if token not exists', async () => {
+    //   await request(app)
+    //     .post(`/change-password/${token}`)
+    //     .send(mockChangePasswordRequest())
+    //     .expect(404)
+    // })
+
+    // test('Should return 400 if token is expired', async () => {
+    //   await linksCollection.insertOne({
+    //     _id: new ObjectId(token),
+    //     type: LinkTypes.passwordRecovery
+    //   })
+
+    //   await request(app)
+    //     .post(`/change-password/${token}`)
+    //     .send(mockChangePasswordRequest())
+    //     .expect(400)
+    // })
+
+    test('Should update password on success', async () => {
+      const { id, accountId, ...data } = mockAccountModel()
+      await accountsCollection.insertOne({
+        _id: new ObjectId(id),
+        accountId: new ObjectId(accountId),
+        ...data
+      })
+
+      await linksCollection.insertOne({
+        _id: new ObjectId(token),
+        userId: new ObjectId(id),
+        type: LinkTypes.passwordRecovery,
+        expiration: faker.date.future().valueOf()
+      })
+
+      const oldPassword = (await accountsCollection.findOne({})).password
+
+      await request(app)
+        .post(`/change-password/${token}`)
+        .send(mockChangePasswordRequest())
+        .expect(204)
+
+      const updatedUser = await accountsCollection.findOne({})
+      expect(updatedUser._id).toEqual(new ObjectId(id))
+      expect(updatedUser.accountId).toEqual(new ObjectId(accountId))
+      expect(updatedUser.taxId).toBe(data.taxId)
+      expect(updatedUser.name).toBe(data.name)
+      expect(updatedUser.email).toBe(data.email)
+      expect(updatedUser.mobilePhone).toBe(data.mobilePhone)
+      expect(updatedUser.birth).toBe(data.birth)
+      expect(updatedUser.password).not.toBe(oldPassword)
+      expect(updatedUser.status).toBe(data.status)
+      expect(updatedUser.role).toBe(data.role)
     })
   })
 })
