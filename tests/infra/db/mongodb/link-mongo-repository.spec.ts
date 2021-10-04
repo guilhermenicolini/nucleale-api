@@ -7,7 +7,16 @@ import moment from 'moment-timezone'
 
 const mockData = () => ({
   type: LinkTypes.passwordRecovery,
-  id: new ObjectId().toString()
+  id: new ObjectId().toString(),
+  userId: new ObjectId().toString(),
+  expiration: new Date().valueOf()
+})
+
+const mockDbData = () => ({
+  type: LinkTypes.passwordRecovery,
+  _id: new ObjectId(),
+  userId: new ObjectId(),
+  expiration: new Date().valueOf()
 })
 
 const now = 1619909155082
@@ -41,6 +50,21 @@ describe('LinkMongoRepository', () => {
       expect(result.link).toBeTruthy()
       expect(result.expiration).toBe(moment(now).add(1, 'hour').valueOf())
     })
+
+    test('Should replace on success', async () => {
+      const sut = makeSut()
+      const data = mockDbData()
+      await linksCollection.insertOne(data)
+
+      const result = await sut.add({
+        id: data.userId.toString(),
+        type: data.type
+      })
+      const links = await linksCollection.find({}).toArray()
+      expect(links.length).toBe(2)
+      expect(result.link).toBeTruthy()
+      expect(result.expiration).toBe(moment(now).add(1, 'hour').valueOf())
+    })
   })
 
   describe('load()', () => {
@@ -66,6 +90,29 @@ describe('LinkMongoRepository', () => {
         type
       })
       expect(result).toBeTruthy()
+    })
+  })
+
+  describe('delete()', () => {
+    test('Should delete link on success', async () => {
+      const sut = makeSut()
+      const data = {
+        _id: new ObjectId()
+      }
+      await linksCollection.insertOne(data)
+      const result = await sut.delete(data._id.toString())
+      const links = await linksCollection.find({}).toArray()
+      expect(links.length).toBe(0)
+      expect(result).toBeFalsy()
+    })
+
+    test('Should not delete link if not found', async () => {
+      const sut = makeSut()
+      await linksCollection.insertOne({})
+      const result = await sut.delete(new ObjectId().toString())
+      const links = await linksCollection.find({}).toArray()
+      expect(links.length).toBe(1)
+      expect(result).toBeFalsy()
     })
   })
 })

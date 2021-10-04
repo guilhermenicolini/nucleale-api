@@ -8,5 +8,5 @@ export const makeDbChangePassword = (): ChangePassword => {
   const bcryptAdapter = new BCryptAdapter(salt)
   const linkMongoRepository = new LinkMongoRepository()
   const accountMongoRepository = new AccountMongoRepository()
-  return new DbChangePassword(bcryptAdapter, linkMongoRepository, accountMongoRepository)
+  return new DbChangePassword(bcryptAdapter, linkMongoRepository, accountMongoRepository, linkMongoRepository)
 }

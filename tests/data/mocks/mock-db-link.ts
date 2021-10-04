@@ -1,4 +1,4 @@
-import { AddLinkRepository, LoadLinkRepository } from '@/data/protocols'
+import { AddLinkRepository, LoadLinkRepository, DeleteLinkRepository } from '@/data/protocols'
 import { mockLinkModel } from '@/tests/domain/mocks/mock-link'
 
 import faker from 'faker'
@@ -24,5 +24,13 @@ export class LoadLinkRepositorySpy implements LoadLinkRepository {
   async load (params: LoadLinkRepository.Params): Promise<LoadLinkRepository.Result> {
     this.params = params
     return this.result
+  }
+}
+
+export class DeleteLinkRepositorySpy implements DeleteLinkRepository {
+  token: string
+
+  async delete (token: string): Promise<void> {
+    this.token = token
   }
 }

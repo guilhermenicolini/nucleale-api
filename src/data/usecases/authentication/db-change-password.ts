@@ -1,5 +1,5 @@
 import { ChangePassword } from '@/domain/usecases'
-import { Hasher, LoadLinkRepository, SaveAccountRepository } from '@/data/protocols'
+import { Hasher, LoadLinkRepository, SaveAccountRepository, DeleteLinkRepository } from '@/data/protocols'
 import { LinkTypes } from '@/domain/models'
 import { ClientError, RecordNotFoundError } from '@/presentation/errors'
 
@@ -7,7 +7,8 @@ export class DbChangePassword implements ChangePassword {
   constructor (
     private readonly hasher: Hasher<string, string>,
     private readonly loadLinkRepository: LoadLinkRepository,
-    private readonly saveAccountRepository: SaveAccountRepository
+    private readonly saveAccountRepository: SaveAccountRepository,
+    private readonly deleteLinkRepository: DeleteLinkRepository
   ) { }
 
   async change (params: ChangePassword.Params): Promise<ChangePassword.Result> {
@@ -26,5 +27,6 @@ export class DbChangePassword implements ChangePassword {
     }
 
     await this.saveAccountRepository.save(link.userId, data)
+    await this.deleteLinkRepository.delete(params.token)
   }
 }

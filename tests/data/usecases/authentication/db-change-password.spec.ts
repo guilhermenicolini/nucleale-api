@@ -1,7 +1,7 @@
 import { DbChangePassword } from '@/data/usecases'
 import { LinkTypes } from '@/domain/models'
 import { ClientError, RecordNotFoundError } from '@/presentation/errors'
-import { HasherSpy, LoadLinkRepositorySpy, SaveAccountRepositorySpy } from '@/tests/data/mocks'
+import { HasherSpy, LoadLinkRepositorySpy, SaveAccountRepositorySpy, DeleteLinkRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -17,18 +17,25 @@ type SutTypes = {
   hasherSpy: HasherSpy
   loadLinkRepositorySpy: LoadLinkRepositorySpy
   saveAccountRepositorySpy: SaveAccountRepositorySpy
+  deleteLinkRepositorySpy: DeleteLinkRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const hasherSpy = new HasherSpy()
   const loadLinkRepositorySpy = new LoadLinkRepositorySpy()
   const saveAccountRepositorySpy = new SaveAccountRepositorySpy()
-  const sut = new DbChangePassword(hasherSpy, loadLinkRepositorySpy, saveAccountRepositorySpy)
+  const deleteLinkRepositorySpy = new DeleteLinkRepositorySpy()
+  const sut = new DbChangePassword(
+    hasherSpy,
+    loadLinkRepositorySpy,
+    saveAccountRepositorySpy,
+    deleteLinkRepositorySpy)
   return {
     sut,
     hasherSpy,
     loadLinkRepositorySpy,
-    saveAccountRepositorySpy
+    saveAccountRepositorySpy,
+    deleteLinkRepositorySpy
   }
 }
 
@@ -89,6 +96,27 @@ describe('DbChangePassword Usecase', () => {
     expect(saveAccountRepositorySpy.data).toEqual({
       password: hasherSpy.result
     })
+  })
+
+  test('Should throw if SaveAccountRepository throws', async () => {
+    const { sut, saveAccountRepositorySpy } = makeSut()
+    jest.spyOn(saveAccountRepositorySpy, 'save').mockImplementationOnce(throwError)
+    const promise = sut.change(mockParams())
+    expect(promise).rejects.toThrow()
+  })
+
+  test('Should call DeleteLinkRepository with correct values', async () => {
+    const { sut, deleteLinkRepositorySpy } = makeSut()
+    const params = mockParams()
+    await sut.change(params)
+    expect(deleteLinkRepositorySpy.token).toBe(params.token)
+  })
+
+  test('Should throw if DeleteLinkRepository throws', async () => {
+    const { sut, deleteLinkRepositorySpy } = makeSut()
+    jest.spyOn(deleteLinkRepositorySpy, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.change(mockParams())
+    expect(promise).rejects.toThrow()
   })
 
   test('Should return falsy on success', async () => {
