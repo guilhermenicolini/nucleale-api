@@ -16,7 +16,7 @@ export class ChildrenMongoRepository implements
     const { accountId, ...obj } = params
 
     const res = await childrensCollection.insertOne({ accountId: new ObjectId(accountId), ...obj })
-    return res.ops[0]._id.toString()
+    return res.insertedId.toString()
   }
 
   async load (accountId: string): Promise<LoadChildrensRepository.Result> {

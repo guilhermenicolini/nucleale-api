@@ -83,7 +83,7 @@ describe('LinkMongoRepository', () => {
     test('Should return link if token exists', async () => {
       const sut = makeSut()
       const type = LinkTypes.passwordRecovery
-      const token = await (await linksCollection.insertOne({ type })).ops[0]._id.toString()
+      const token = (await linksCollection.insertOne({ type })).insertedId.toString()
 
       const result = await sut.load({
         token,

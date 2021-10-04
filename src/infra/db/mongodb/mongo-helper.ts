@@ -17,10 +17,7 @@ export class MongoHelper {
   }
 
   async connect (): Promise<void> {
-    this.client = await MongoClient.connect(env.mongoUrl, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
+    this.client = await MongoClient.connect(env.mongoUrl)
   }
 
   async disconnect (): Promise<void> {
@@ -29,7 +26,7 @@ export class MongoHelper {
   }
 
   async getCollection (collectionName: string): Promise<Collection> {
-    if (!this.client?.isConnected()) {
+    if (!this.client) {
       await this.connect()
     }
 

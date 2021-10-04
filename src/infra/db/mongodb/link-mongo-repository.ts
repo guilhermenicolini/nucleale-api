@@ -14,21 +14,22 @@ export class LinkMongoRepository implements
   DeleteLinkRepository {
   async add (data: AddLinkRepository.Params): Promise<AddLinkRepository.Result> {
     const linksCollection = await MongoHelper.instance.getCollection('links')
+    const expiration = moment().add(1, 'hour').valueOf()
     const cmd = await linksCollection.insertOne(
       {
         userId: new ObjectId(data.id),
         type: data.type,
-        expiration: moment().add(1, 'hour').valueOf()
+        expiration
       })
     return {
-      link: cmd.ops[0]._id.toString(),
-      expiration: cmd.ops[0].expiration
+      link: cmd.insertedId.toString(),
+      expiration
     }
   }
 
   async load (data: LoadLinkRepository.Params): Promise<LoadLinkRepository.Result> {
     const linksCollection = await MongoHelper.instance.getCollection('links')
-    const link = await linksCollection.findOne({
+    const link = await linksCollection.findOne<LoadLinkRepository.Result>({
       _id: new ObjectId(data.token),
       type: data.type
     })

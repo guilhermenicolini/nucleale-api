@@ -22,6 +22,7 @@ export class LoginController implements Controller {
       if (!result) {
         return unauthorized(new InvalidCredentialsError())
       }
+
       const token = await this.authentication.auth({
         accountId: result.accountId,
         userId: result.userId,

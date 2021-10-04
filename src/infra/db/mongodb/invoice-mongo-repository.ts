@@ -138,7 +138,7 @@ export class InvoiceMongoRepository implements
 
   async loadByNumber (invoiceNo: number): Promise<LoadInvoiceByNumberRepository.Result> {
     const invoicesCollection = await MongoHelper.instance.getCollection('invoices')
-    const invoice = await invoicesCollection.findOne({ invoiceNo })
+    const invoice = await invoicesCollection.findOne<LoadInvoiceByNumberRepository.Result>({ invoiceNo })
     return invoice
   }
 }

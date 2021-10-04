@@ -24,13 +24,14 @@ export class AccountMongoRepository implements
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const invitationCollection = await MongoHelper.instance.getCollection('invitations')
     const { accountId, ...obj } = data
-    const cmd = await accountCollection.insertOne({ accountId: new ObjectId(accountId), ...obj })
+    const accId = new ObjectId(accountId)
+    const cmd = await accountCollection.insertOne({ accountId: accId, ...obj })
     await invitationCollection.findOneAndDelete({ email: data.email })
     return {
-      userId: cmd.ops[0]._id.toString(),
-      accountId: cmd.ops[0].accountId.toString(),
-      role: cmd.ops[0].role,
-      isValid: cmd.result.ok === 1
+      userId: cmd.insertedId.toString(),
+      accountId: accId.toString(),
+      role: data.role,
+      isValid: true
     }
   }
 

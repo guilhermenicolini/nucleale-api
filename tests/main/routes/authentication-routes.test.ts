@@ -48,12 +48,12 @@ const mockChangePasswordRequest = () => {
 let accountsCollection: Collection
 let linksCollection: Collection
 
-const validateToken = (obj) => {
-  return function (res) {
+const validateToken = (obj: any) => {
+  return function (res: any) {
     if (!('accessToken' in res.body)) throw new Error('Missing accessToken')
     const token = decode(res.body.accessToken) as any
-    if (token.sub !== obj._id.toString()) throw new Error('Invalid sub')
-    if (token.acc !== obj.accountId.toString()) throw new Error('Invalid acc')
+    if (token.sub !== obj.sub.toString()) throw new Error('Invalid sub')
+    if (token.acc !== obj.acc.toString()) throw new Error('Invalid acc')
     if (token.role !== obj.role) throw new Error('Invalid role')
     if (token.iss !== env.iss) throw new Error('Invalid iss')
     if (token.aud !== env.aud) throw new Error('Invalid aud')
@@ -124,15 +124,20 @@ describe('Account Routes', () => {
 
       const inserted = await accountsCollection.insertOne({
         ...obj,
-        _id: id,
+        _id: new ObjectId(id),
         email,
         password: await hash(password, 12)
       })
+
       await request(app)
         .post('/login')
         .send({ email, password })
         .expect(200)
-        .expect(validateToken(inserted.ops[0]))
+        .expect(validateToken({
+          sub: inserted.insertedId.toString(),
+          acc: obj.accountId.toString(),
+          role: obj.role
+        }))
     })
   })
 
@@ -177,7 +182,7 @@ describe('Account Routes', () => {
         type,
         expiration: faker.date.future().valueOf()
       })
-      const token = cmd.ops[0]._id.toString()
+      const token = cmd.insertedId.toString()
 
       await request(app)
         .get(`/change-password/${token}`)
@@ -192,30 +197,30 @@ describe('Account Routes', () => {
       token = new ObjectId().toString()
     })
 
-    // test('Should return 400 on invalid token', async () => {
-    //   await request(app)
-    //     .post('/change-password/invalid_token')
-    //     .expect(400)
-    // })
+    test('Should return 400 on invalid token', async () => {
+      await request(app)
+        .post('/change-password/invalid_token')
+        .expect(400)
+    })
 
-    // test('Should return 404 if token not exists', async () => {
-    //   await request(app)
-    //     .post(`/change-password/${token}`)
-    //     .send(mockChangePasswordRequest())
-    //     .expect(404)
-    // })
+    test('Should return 404 if token not exists', async () => {
+      await request(app)
+        .post(`/change-password/${token}`)
+        .send(mockChangePasswordRequest())
+        .expect(404)
+    })
 
-    // test('Should return 400 if token is expired', async () => {
-    //   await linksCollection.insertOne({
-    //     _id: new ObjectId(token),
-    //     type: LinkTypes.passwordRecovery
-    //   })
+    test('Should return 400 if token is expired', async () => {
+      await linksCollection.insertOne({
+        _id: new ObjectId(token),
+        type: LinkTypes.passwordRecovery
+      })
 
-    //   await request(app)
-    //     .post(`/change-password/${token}`)
-    //     .send(mockChangePasswordRequest())
-    //     .expect(400)
-    // })
+      await request(app)
+        .post(`/change-password/${token}`)
+        .send(mockChangePasswordRequest())
+        .expect(400)
+    })
 
     test('Should update password on success', async () => {
       const { id, accountId, ...data } = mockAccountModel()

@@ -21,7 +21,7 @@ export class AddressMongoRepository implements
 
   async load (accountId: string): Promise<LoadAddressRepository.Result> {
     const addressesCollection = await MongoHelper.instance.getCollection('addresses')
-    const address = await addressesCollection.findOne({
+    const address = await addressesCollection.findOne<LoadAddressRepository.Result>({
       accountId: new ObjectId(accountId)
     }, {
       projection: {

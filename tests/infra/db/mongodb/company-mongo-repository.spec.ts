@@ -51,7 +51,9 @@ describe('AccountMongoRepository', () => {
       const data = {
         services: [mockDbServiceWithProcedure()]
       }
-      const procedureId = (await companiesCollection.insertOne(data)).ops[0].services[0].procedures[0]._id.toString()
+      const inserted = await companiesCollection.insertOne(data)
+      const company = await companiesCollection.findOne({ _id: inserted.insertedId })
+      const procedureId = company.services[0].procedures[0]._id.toString()
       const procedure = await sut.loadProcedure(procedureId)
       expect(procedure).toEqual({
         id: data.services[0].procedures[0]._id.toString(),
