@@ -15,14 +15,20 @@ export class LinkMongoRepository implements
   async add (data: AddLinkRepository.Params): Promise<AddLinkRepository.Result> {
     const linksCollection = await MongoHelper.instance.getCollection('links')
     const expiration = moment().add(1, 'hour').valueOf()
-    const cmd = await linksCollection.insertOne(
-      {
-        userId: new ObjectId(data.id),
-        type: data.type,
+    const cmd = await linksCollection.findOneAndUpdate({
+      userId: new ObjectId(data.id),
+      type: data.type
+    },
+    {
+      $set: {
         expiration
-      })
+      }
+    }, {
+      upsert: true
+    })
+
     return {
-      link: cmd.insertedId.toString(),
+      link: cmd.lastErrorObject.updatedExisting ? cmd.value._id.toString() : cmd.lastErrorObject.upserted.toString(),
       expiration
     }
   }

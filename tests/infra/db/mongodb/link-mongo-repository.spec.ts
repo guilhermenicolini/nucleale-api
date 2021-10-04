@@ -61,7 +61,7 @@ describe('LinkMongoRepository', () => {
         type: data.type
       })
       const links = await linksCollection.find({}).toArray()
-      expect(links.length).toBe(2)
+      expect(links.length).toBe(1)
       expect(result.link).toBeTruthy()
       expect(result.expiration).toBe(moment(now).add(1, 'hour').valueOf())
     })
