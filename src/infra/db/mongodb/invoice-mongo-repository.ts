@@ -71,6 +71,7 @@ export class InvoiceMongoRepository implements
             _id: 1,
             invoiceNo: 1,
             invoiceDate: 1,
+            invoiceValue: 1,
             description: 1
           }
         }

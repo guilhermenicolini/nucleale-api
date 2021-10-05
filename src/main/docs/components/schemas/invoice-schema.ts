@@ -12,9 +12,12 @@ export const invoiceSchema = {
       type: 'number',
       format: 'milliseconds'
     },
+    invoiceVvalue: {
+      type: 'number'
+    },
     description: {
       type: 'string'
     }
   },
-  required: ['id', 'invoiceNo', 'invoiceDate', 'description']
+  required: ['id', 'invoiceNo', 'invoiceDate', 'invoideValue', 'description']
 }

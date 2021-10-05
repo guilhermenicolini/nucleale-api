@@ -5,5 +5,5 @@ export interface LoadInvoices {
 }
 
 export namespace LoadInvoices {
-  export type Result = Pick<InvoiceModel, 'id' | 'invoiceNo' | 'invoiceDate' | 'description'>[]
+  export type Result = Pick<InvoiceModel, 'id' | 'invoiceNo' | 'invoiceDate' | 'description' | 'invoiceValue'>[]
 }
