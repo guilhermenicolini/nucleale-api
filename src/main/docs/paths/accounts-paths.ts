@@ -116,9 +116,6 @@ export const accountsPaths = {
         401: {
           $ref: '#/components/errors/unauthorized'
         },
-        403: {
-          $ref: '#/components/errors/forbidden'
-        },
         500: {
           $ref: '#/components/errors/serverError'
         }
@@ -148,9 +145,6 @@ export const accountsPaths = {
         401: {
           $ref: '#/components/errors/unauthorized'
         },
-        403: {
-          $ref: '#/components/errors/forbidden'
-        },
         500: {
           $ref: '#/components/errors/serverError'
         }
@@ -179,9 +173,6 @@ export const accountsPaths = {
         },
         401: {
           $ref: '#/components/errors/unauthorized'
-        },
-        403: {
-          $ref: '#/components/errors/forbidden'
         },
         500: {
           $ref: '#/components/errors/serverError'
