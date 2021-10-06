@@ -1,6 +1,6 @@
 {
   "name": "nucleale-api",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Official Nucleale API",
   "main": "functions/server.js",
   "scripts": {
