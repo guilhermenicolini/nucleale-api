@@ -23,5 +23,12 @@ export default {
       return `http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/${method}.xsd`
     }
   },
+  gmail: {
+    clientId: process.env.GMAIL_CLIENT_ID,
+    clientSecret: process.env.GMAIL_CLIENT_SECRET,
+    redirectUri: process.env.GMAIL_REDIRECT_URI,
+    refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+    user: 'todomundo@nucleale.com'
+  },
   mode: process.env.NODE_ENV
 }

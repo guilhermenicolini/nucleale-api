@@ -1,4 +1,6 @@
+export * from './mock-goggleapis'
 export * from './mock-mapper'
 export * from './mock-mongo'
+export * from './mock-nodemailer'
 export * from './mock-storage'
 export * from './mock-transformer'

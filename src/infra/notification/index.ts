@@ -1,3 +1,4 @@
+export * from './gmail-sender'
 export * from './google-token-store-adapter'
 export * from './password-recovery-message'
 export * from './send-invoice-message'

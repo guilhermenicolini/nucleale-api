@@ -6,3 +6,4 @@ dist
 globalConfig.json
 .env*
 tokens
+account.js

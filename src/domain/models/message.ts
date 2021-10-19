@@ -1,4 +1,5 @@
 export type MessageModel = {
+  subject?: string
   email: string
   phone: string
   text: string

@@ -1,0 +1,8 @@
+extends ../template.pug
+
+block content
+  p(style='margin: 0 0 16px;') Seu e-mail foi convidado para fazer parte da conta de #{name}.
+  p(style='margin: 0 0 16px;') Clique no link abaixo ou copie em seu navegador para criar sua conta.
+  p(style='margin: 0 0 16px;')
+    a(href=`${url}`) #{url}
+  p(style='margin: 0 0 16px;') Se você não quiser aceitar o convite, desconsidere este e-mail.
