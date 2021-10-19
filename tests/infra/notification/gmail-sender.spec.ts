@@ -1,6 +1,5 @@
 import { MessageModel } from '@/domain/models'
 import { GmailSender } from '@/infra/notification'
-import { throwError } from '@/tests/domain/mocks'
 import { mockGoogleApis, mockNodeMailer } from '@/tests/infra/mocks'
 import env from '@/main/config/env'
 import { google } from 'googleapis'
@@ -107,7 +106,7 @@ describe('Gmail Sender', () => {
   test('Should return null if send fails', async () => {
     const { sut, mockedGoogleApis } = makeSut()
     const data = mockData()
-    jest.spyOn(new mockedGoogleApis.auth.OAuth2(), 'getAccessToken').mockImplementationOnce(() => throwError)
+    jest.spyOn(new mockedGoogleApis.auth.OAuth2(), 'getAccessToken').mockImplementationOnce(null)
     const result = await sut.send(data)
     expect(result).toBeFalsy()
   })

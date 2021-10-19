@@ -41,8 +41,7 @@ export class GmailSender implements Sender {
       }
 
       await smtpTransport.sendMail(mailOptions)
-    } catch (err) {
-      console.log(err)
+    } catch {
       return null
     }
   }
