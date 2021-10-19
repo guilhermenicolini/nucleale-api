@@ -5,7 +5,7 @@ import faker from 'faker'
 const makeSut = (): PasswordRecoveryMessage => new PasswordRecoveryMessage()
 
 describe('PasswordRecoveryMessage', () => {
-  test('Should create message on success', () => {
+  test('Should create message on success', async () => {
     const sut = makeSut()
     const model: PasswordRecoveryMessage.Model = {
       name: faker.name.findName(),
@@ -14,7 +14,7 @@ describe('PasswordRecoveryMessage', () => {
       link: faker.internet.url(),
       expiration: faker.random.word()
     }
-    const message = sut.create(model)
+    const message = await sut.create(model)
     expect(message).toEqual({
       email: model.email,
       phone: model.phone,

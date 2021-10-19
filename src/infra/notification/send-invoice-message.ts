@@ -2,7 +2,7 @@ import { Messagefy } from '@/data/protocols'
 import { MailInvoice } from '@/domain/usecases'
 
 export class SendInvoiceMessage implements Messagefy {
-  create (data: SendInvoiceMessage.Model): Messagefy.Result {
+  async create (data: SendInvoiceMessage.Model): Promise<Messagefy.Result> {
     return {
       email: data.to.email,
       phone: data.to.phone,

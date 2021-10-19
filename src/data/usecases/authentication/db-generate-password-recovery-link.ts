@@ -16,7 +16,7 @@ export class DbGeneratePasswordRecoveryLink implements GeneratePasswordRecoveryL
       type: LinkTypes.passwordRecovery,
       id: account.id
     })
-    const message = this.messagefy.create({
+    const message = await this.messagefy.create({
       name: account.name,
       email: account.email,
       phone: account.mobilePhone,

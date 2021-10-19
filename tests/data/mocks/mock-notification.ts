@@ -11,7 +11,7 @@ export class MessagefySpy implements Messagefy {
     html: '<html>any text</html>'
   }
 
-  create (data: any): Messagefy.Result {
+  async create (data: any): Promise<Messagefy.Result> {
     this.data = data
     return this.result
   }

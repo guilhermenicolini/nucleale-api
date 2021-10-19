@@ -8,7 +8,7 @@ export class RemoteMailInvoice implements MailInvoice {
   ) { }
 
   async send (param: RemoteMailInvoice.Param): Promise<void> {
-    const message = this.messagefy.create(param)
+    const message = await this.messagefy.create(param)
     await this.sender.send(message)
   }
 }

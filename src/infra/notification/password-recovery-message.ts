@@ -1,7 +1,7 @@
 import { Messagefy } from '@/data/protocols'
 
 export class PasswordRecoveryMessage implements Messagefy {
-  create (data: PasswordRecoveryMessage.Model): Messagefy.Result {
+  async create (data: PasswordRecoveryMessage.Model): Promise<Messagefy.Result> {
     return {
       email: data.email,
       phone: data.phone,

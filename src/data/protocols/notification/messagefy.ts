@@ -1,7 +1,7 @@
 import { MessageModel } from '@/domain/models'
 
 export interface Messagefy {
-  create (data: any): Messagefy.Result
+  create (data: any): Promise<Messagefy.Result>
 }
 
 export namespace Messagefy {
