@@ -18,7 +18,10 @@ export class SendWhatsappMessageController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.sendMessage.send(request)
+      await this.sendMessage.send({
+        phone: request.mobilePhone,
+        text: request.message
+      })
       return noContent()
     } catch (error) {
       return serverError(error)

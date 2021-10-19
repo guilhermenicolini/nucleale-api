@@ -10,7 +10,7 @@ import faker from 'faker'
 
 const mockMessage = (): SendWhatsappMessageController.Request => ({
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
-  message: faker.random.words(10)
+  message: faker.random.words(5)
 })
 
 type SutTypes = {
@@ -51,7 +51,10 @@ describe('SendWhatsappMessage Controller', () => {
     const { sut, sendMessageSpy } = makeSut()
     const request = mockMessage()
     await sut.handle(request)
-    expect(sendMessageSpy.message).toEqual(request)
+    expect(sendMessageSpy.message).toEqual({
+      phone: request.mobilePhone,
+      text: request.message
+    })
   })
 
   test('Should return 500 if SendMessage throws', async () => {

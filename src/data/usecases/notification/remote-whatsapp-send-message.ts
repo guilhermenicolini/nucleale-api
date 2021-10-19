@@ -7,10 +7,6 @@ export class RemoteWhatsappSendMessage implements SendMessage {
   ) { }
 
   async send (message: SendMessage.Message): Promise<void> {
-    await this.sender.send({
-      phone: message.mobilePhone,
-      text: message.message,
-      email: null
-    })
+    await this.sender.send(message)
   }
 }

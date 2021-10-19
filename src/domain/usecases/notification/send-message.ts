@@ -1,10 +1,9 @@
+import { MessageModel } from '@/domain/models'
+
 export interface SendMessage {
   send: (message: SendMessage.Message) => Promise<void>
 }
 
 export namespace SendMessage {
-  export type Message = {
-    mobilePhone: string
-    message: string
-  }
+  export type Message = MessageModel
 }

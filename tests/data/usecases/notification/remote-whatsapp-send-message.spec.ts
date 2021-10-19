@@ -7,8 +7,8 @@ import { throwError } from '@/tests/domain/mocks'
 import faker from 'faker'
 
 const mockMessage = () => ({
-  mobilePhone: faker.phone.phoneNumber('+55##9########'),
-  message: faker.random.words(10)
+  phone: faker.phone.phoneNumber('+55##9########'),
+  text: faker.random.words(10)
 })
 
 type SutTypes = {
@@ -32,11 +32,7 @@ describe('RemoteWhatsappSendMessage Usecase', () => {
     const { sut, senderSpy } = makeSut()
     const message = mockMessage()
     await sut.send(message)
-    expect(senderSpy.model).toEqual({
-      phone: message.mobilePhone,
-      text: message.message,
-      email: null
-    })
+    expect(senderSpy.model).toEqual(message)
   })
 
   test('Should throw if Sender throws', async () => {
