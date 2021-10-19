@@ -40,11 +40,9 @@ export class GmailSender implements Sender {
         html: data.html
       }
 
-      smtpTransport.sendMail(mailOptions, (error, resp) => {
-        console.log(error, resp)
-        smtpTransport.close()
-      })
-    } catch {
+      await smtpTransport.sendMail(mailOptions)
+    } catch (err) {
+      console.log(err)
       return null
     }
   }

@@ -94,7 +94,14 @@ describe('Gmail Sender', () => {
       subject: data.subject,
       generateTextFromHTML: true,
       html: data.html
-    }, expect.any(Function))
+    })
+  })
+
+  test('Should return falsy on success', async () => {
+    const { sut } = makeSut()
+    const data = mockData()
+    const result = await sut.send(data)
+    expect(result).toBeFalsy()
   })
 
   test('Should return null if send fails', async () => {
