@@ -10,6 +10,7 @@ jest.mock('googleapis')
 jest.mock('nodemailer')
 
 const mockData = (): MessageModel => ({
+  subject: faker.random.words(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
   text: faker.random.words(5),
@@ -40,7 +41,10 @@ describe('Gmail Sender', () => {
       clientSecret: 'any_client_secret',
       redirectUri: 'any__redirect_uri',
       refreshToken: 'any_refresh_token',
-      user: 'any_user'
+      user: {
+        address: 'any_address',
+        name: 'any_name'
+      }
     }
   })
 
@@ -73,7 +77,7 @@ describe('Gmail Sender', () => {
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: env.gmail.user,
+        user: env.gmail.user.address,
         clientId: env.gmail.clientId,
         clientSecret: env.gmail.clientSecret,
         refreshToken: env.gmail.refreshToken,

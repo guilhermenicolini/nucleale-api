@@ -24,7 +24,7 @@ export class GmailSender implements Sender {
         service: 'gmail',
         auth: {
           type: 'OAuth2',
-          user: env.gmail.user,
+          user: env.gmail.user.address,
           clientId: env.gmail.clientId,
           clientSecret: env.gmail.clientSecret,
           refreshToken: env.gmail.refreshToken,

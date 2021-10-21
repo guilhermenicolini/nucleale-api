@@ -12,7 +12,7 @@ export default {
   storageBucket: process.env.STORAGE_BUCKET || 'my-bucket',
   storageTokenFolder: process.env.STORAGE_TOKEN_FOLDER || 'tokens',
   nfse: {
-    url: 'http://issdigital.campinas.sp.gov.br/WsNFe2/LoteRps.jws?wsdl',
+    url: process.env.NFSE_URL,
     methods: {
       lote: process.env.NODE_ENV === 'production' ? 'enviarSincrono' : 'testeEnviar'
     },
@@ -28,7 +28,10 @@ export default {
     clientSecret: process.env.GMAIL_CLIENT_SECRET,
     redirectUri: process.env.GMAIL_REDIRECT_URI,
     refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-    user: 'todomundo@nucleale.com'
+    user: {
+      address: process.env.GMAIL_USER_ADDRESS,
+      name: process.env.GMAIL_USER_NAME
+    }
   },
   mode: process.env.NODE_ENV
 }

@@ -54,6 +54,7 @@ describe('DbGeneratePasswordRecoveryLink Usecase', () => {
     await sut.generate(data)
     expect(messagefySpy.data).toEqual({
       ...addLinkRepositorySpy.result,
+      subject: 'Recuperação de Senha',
       name: data.name,
       email: data.email,
       phone: data.mobilePhone,

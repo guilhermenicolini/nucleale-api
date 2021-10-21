@@ -17,6 +17,7 @@ export class DbGeneratePasswordRecoveryLink implements GeneratePasswordRecoveryL
       id: account.id
     })
     const message = await this.messagefy.create({
+      subject: 'Recuperação de Senha',
       name: account.name,
       email: account.email,
       phone: account.mobilePhone,
