@@ -1,0 +1,8 @@
+extends ../template.pug
+
+block content
+  p(style='margin: 0 0 16px;') Uma solicitação de recuperação de senha foi recebida em #{request}.
+  p(style='margin: 0 0 16px;') Clique no link abaixo ou copie em seu navegador para redefinir sua senha.
+  p(style='margin: 0 0 16px;')
+    a(href=`${link}`) #{link}
+  p(style='margin: 0 0 16px;') Este link será válido até às #{expiration}.

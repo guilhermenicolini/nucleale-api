@@ -21,6 +21,7 @@ export class DbGeneratePasswordRecoveryLink implements GeneratePasswordRecoveryL
       email: account.email,
       phone: account.mobilePhone,
       link: `${this.appUrl}/change-password/${data.link}`,
+      request: this.timeManipulator.toDateAndTime(new Date().valueOf()),
       expiration: this.timeManipulator.toDateAndTime(data.expiration)
     })
     this.sender.send(message)

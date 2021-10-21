@@ -58,6 +58,7 @@ describe('DbGeneratePasswordRecoveryLink Usecase', () => {
       email: data.email,
       phone: data.mobilePhone,
       link: `any_url/change-password/${addLinkRepositorySpy.result.link}`,
+      request: 'any_date',
       expiration: 'any_date'
     })
   })

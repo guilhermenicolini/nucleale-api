@@ -38,3 +38,7 @@ jest.mock('soap', () => ({
     url
   })
 }))
+
+jest.mock('nodemailer', () => ({
+  createTransport: jest.fn()
+}))

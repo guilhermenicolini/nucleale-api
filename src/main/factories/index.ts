@@ -1,5 +1,6 @@
 export * from './controllers'
 export * from './converters'
 export * from './middlewares'
+export * from './notification'
 export * from './transformers'
 export * from './usecases'
