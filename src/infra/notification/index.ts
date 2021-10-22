@@ -1,5 +1,6 @@
 export * from './gmail-sender'
 export * from './google-token-store-adapter'
+export * from './invite-account-message'
 export * from './password-recovery-message'
 export * from './send-invoice-message'
 export * from './sender-composite'

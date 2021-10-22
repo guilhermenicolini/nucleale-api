@@ -143,9 +143,13 @@ describe('Account Routes', () => {
     })
 
     test('Should return 204 on success', async () => {
+      const token = mockAccessToken()
+      const data = mockDbAccountModel(new ObjectId(token.userId), new ObjectId(token.accoundId))
+      await accountCollection.insertOne(data)
+
       await request(app)
         .post(`/accounts/invite/${faker.internet.email()}`)
-        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .set('authorization', `Bearer ${token.accessToken}`)
         .expect({})
     })
   })
