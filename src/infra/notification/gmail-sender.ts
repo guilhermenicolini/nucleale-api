@@ -1,5 +1,5 @@
 import { Sender } from '@/data/protocols'
-import nodemailer from 'nodemailer'
+import nodemailer, { SendMailOptions } from 'nodemailer'
 import { google } from 'googleapis'
 import env from '@/main/config/env'
 
@@ -32,12 +32,20 @@ export class GmailSender implements Sender {
         }
       })
 
-      const mailOptions = {
+      const mailOptions: SendMailOptions = {
         from: env.gmail.user,
         to: data.email,
         subject: data.subject,
-        generateTextFromHTML: true,
         html: data.html
+      }
+
+      if (data.file) {
+        mailOptions.attachments = [{
+          filename: data.file.name,
+          contentType: data.file.mimeType,
+          content: data.file.base64,
+          encoding: 'base64'
+        }]
       }
 
       await smtpTransport.sendMail(mailOptions)

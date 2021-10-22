@@ -1,4 +1,5 @@
 import {
+  makeDbLoadAccountByEmail,
   makeResendInvoiceValidation,
   makeDbLoadInvoiceByNumber,
   makeIoGenerateInvoice
@@ -10,6 +11,7 @@ import { makeRemoteMailInvoice } from '../../usecases'
 export const makeResendInvoiceController = (): Controller => {
   return new ResendInvoiceController(
     makeResendInvoiceValidation(),
+    makeDbLoadAccountByEmail(),
     makeDbLoadInvoiceByNumber(),
     makeIoGenerateInvoice(),
     makeRemoteMailInvoice()

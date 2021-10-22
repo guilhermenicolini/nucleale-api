@@ -1,15 +1,16 @@
 import { CreateInvoiceController } from '@/presentation/controllers'
 import {
   ValidationSpy,
+  LoadAccountSpy,
   CreateInvoiceSpy,
   SendInvoiceSpy,
   SaveInvoiceSpy,
   GenerateInvoiceSpy,
   MailInvoiceSpy
 } from '@/tests/presentation/mocks'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, notFound, serverError } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
-import { ServerError } from '@/presentation/errors'
+import { RecordNotFoundError, ServerError } from '@/presentation/errors'
 
 import { ObjectId } from 'mongodb'
 
@@ -23,6 +24,7 @@ const mockRequest = (): CreateInvoiceController.Request => ({
 type SutTypes = {
   sut: CreateInvoiceController,
   validationSpy: ValidationSpy,
+  loadAccountSpy: LoadAccountSpy,
   createInvoiceSpy: CreateInvoiceSpy,
   sendInvoiceSpy: SendInvoiceSpy,
   saveInvoiceSpy: SaveInvoiceSpy,
@@ -32,6 +34,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
+  const loadAccountSpy = new LoadAccountSpy()
   const createInvoiceSpy = new CreateInvoiceSpy()
   const sendInvoiceSpy = new SendInvoiceSpy()
   const saveInvoiceSpy = new SaveInvoiceSpy()
@@ -39,6 +42,7 @@ const makeSut = (): SutTypes => {
   const mailInvoiceSpy = new MailInvoiceSpy()
   const sut = new CreateInvoiceController(
     validationSpy,
+    loadAccountSpy,
     createInvoiceSpy,
     sendInvoiceSpy,
     saveInvoiceSpy,
@@ -47,6 +51,7 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     validationSpy,
+    loadAccountSpy,
     createInvoiceSpy,
     sendInvoiceSpy,
     saveInvoiceSpy,
@@ -73,6 +78,27 @@ describe('CreateInvoice Controller', () => {
     validationSpy.error = new Error()
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
+  })
+
+  test('Should call LoadAccount with correct values', async () => {
+    const { sut, loadAccountSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(loadAccountSpy.userId).toBe(request.user)
+  })
+
+  test('Should return 404 if LoadAccount returns null', async () => {
+    const { sut, loadAccountSpy } = makeSut()
+    loadAccountSpy.result = null
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Conta não encontrada')))
+  })
+
+  test('Should return 500 if LoadAccount throws', async () => {
+    const { sut, loadAccountSpy } = makeSut()
+    jest.spyOn(loadAccountSpy, 'load').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 
   test('Should call CreateInvoice with correct values', async () => {
@@ -151,11 +177,19 @@ describe('CreateInvoice Controller', () => {
   })
 
   test('Should call MailInvoice with correct values', async () => {
-    const { sut, createInvoiceSpy, generateInvoiceSpy, mailInvoiceSpy } = makeSut()
+    const { sut, loadAccountSpy, createInvoiceSpy, generateInvoiceSpy, mailInvoiceSpy } = makeSut()
     const invoice = createInvoiceSpy.result as any
+    const taker = {
+      email: loadAccountSpy.result.email,
+      phone: loadAccountSpy.result.mobilePhone,
+      name: loadAccountSpy.result.name.split(' ')[0],
+      taxId: null,
+      registryId: null,
+      address: null
+    }
     await sut.handle(mockRequest())
     expect(mailInvoiceSpy.param).toEqual({
-      to: invoice.taker,
+      to: taker,
       invoiceNo: invoice.invoiceNo,
       pdf: generateInvoiceSpy.result.buffer
     })

@@ -170,6 +170,12 @@ describe('Invoices Routes', () => {
     test('Should return 204 on success', async () => {
       const invoice = mockInvoiceDb()
       await invoicesCollection.insertOne(invoice)
+      await accountsCollection.insertOne({
+        accountId: new ObjectId(),
+        name: invoice.taker.name,
+        email: invoice.taker.email,
+        status: 'active'
+      })
       await request(app)
         .post(`/invoices/${invoice.invoiceNo}/resend`)
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)

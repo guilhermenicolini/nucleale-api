@@ -4,6 +4,7 @@ import { MailInvoice } from '@/domain/usecases'
 export class SendInvoiceMessage implements Messagefy {
   async create (data: SendInvoiceMessage.Model): Promise<Messagefy.Result> {
     return {
+      subject: `Nota Fiscal #${data.invoiceNo}`,
       email: data.to.email,
       phone: data.to.phone,
       text: `Olá, ${data.to.name}. Sua nota fiscal foi gerada e já estamos te encaminhado.`,

@@ -1,8 +1,9 @@
 import { CreateInvoiceController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
 import {
-  makeDbCreateInvoice,
   makeCreateInvoiceValidation,
+  makeDbLoadAccount,
+  makeDbCreateInvoice,
   makeDbSaveInvoice,
   makeIoGenerateInvoice,
   makeRemoteSendInvoice,
@@ -12,6 +13,7 @@ import {
 export const makeCreateInvoiceController = (): Controller => {
   return new CreateInvoiceController(
     makeCreateInvoiceValidation(),
+    makeDbLoadAccount(),
     makeDbCreateInvoice(),
     makeRemoteSendInvoice(),
     makeDbSaveInvoice(),

@@ -95,8 +95,31 @@ describe('Gmail Sender', () => {
       from: env.gmail.user,
       to: data.email,
       subject: data.subject,
-      generateTextFromHTML: true,
       html: data.html
+    })
+  })
+
+  test('Should call sendMail with attachment', async () => {
+    const { sut } = makeSut()
+    const data = mockData()
+    data.file = {
+      name: faker.system.fileName(),
+      base64: 'any_base64',
+      mimeType: faker.system.mimeType()
+    }
+
+    await sut.send(data)
+    expect(nodemailer.createTransport().sendMail).toHaveBeenCalledWith({
+      from: env.gmail.user,
+      to: data.email,
+      subject: data.subject,
+      html: data.html,
+      attachments: [{
+        filename: data.file.name,
+        contentType: data.file.mimeType,
+        content: data.file.base64,
+        encoding: 'base64'
+      }]
     })
   })
 

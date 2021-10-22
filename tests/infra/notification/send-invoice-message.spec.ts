@@ -5,7 +5,7 @@ import faker from 'faker'
 const makeSut = (): SendInvoiceMessage => new SendInvoiceMessage()
 
 describe('SendInvoiceMessage', () => {
-  test('Should create message on success', async () => {
+  test.only('Should create message on success', async () => {
     const sut = makeSut()
     const model: SendInvoiceMessage.Model = {
       to: mockPerson(),
@@ -14,6 +14,7 @@ describe('SendInvoiceMessage', () => {
     }
     const message = await sut.create(model)
     expect(message).toEqual({
+      subject: `Nota Fiscal #${model.invoiceNo}`,
       email: model.to.email,
       phone: model.to.phone,
       text: `Olá, ${model.to.name}. Sua nota fiscal foi gerada e já estamos te encaminhado.`,
