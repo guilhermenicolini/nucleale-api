@@ -1,5 +1,5 @@
 export type FileModel = {
   name: string
   mimeType: string
-  buffer: Buffer
+  base64: string
 }

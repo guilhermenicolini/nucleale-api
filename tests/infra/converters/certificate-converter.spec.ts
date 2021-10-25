@@ -2,7 +2,6 @@ import { CertificateConverter } from '@/infra/converters'
 import { TimeManipulatorSpy } from '@/tests/data/mocks'
 
 import faker from 'faker'
-import fs from 'fs'
 
 const mockData = (): CertificateConverter.Model => ({
   id: faker.datatype.uuid(),
@@ -36,9 +35,5 @@ describe('Certificate Converter', () => {
     const { sut } = makeSut()
     const result = await sut.convert(mockData())
     expect(result).toBeTruthy()
-
-    fs.writeFile(result.name, result.buffer, (err) => {
-      if (err) console.log(err)
-    })
   })
 })

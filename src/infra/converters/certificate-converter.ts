@@ -39,7 +39,7 @@ export class CertificateConverter implements ObjectConverter<CertificateConverte
           return resolve({
             name: 'certificate.pdf',
             mimeType: 'application/pdf',
-            buffer: Buffer.concat(buffers)
+            base64: Buffer.concat(buffers).toString('base64')
           })
         })
 
