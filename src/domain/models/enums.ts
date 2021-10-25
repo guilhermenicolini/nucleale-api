@@ -20,3 +20,8 @@ export enum LinkTypes {
 export enum InvoiceStatus {
   normal = 'N'
 }
+
+export enum CertificateType {
+  online = 'online',
+  classroom = 'classroom'
+}

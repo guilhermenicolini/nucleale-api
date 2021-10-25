@@ -1,8 +1,10 @@
+import { CertificateType } from './enums'
+
 export type CertificateModel = {
   id: string
   accountId: string
   date: number
-  type: 'online' | 'presencial',
+  type: CertificateType,
   name: string
   hours: number
   course: string

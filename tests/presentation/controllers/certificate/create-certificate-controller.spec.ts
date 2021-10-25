@@ -1,11 +1,11 @@
 import { CreateCertificateController } from '@/presentation/controllers'
 import {
   ValidationSpy,
-  LoadAccountSpy
+  CreateCertificateSpy
 } from '@/tests/presentation/mocks'
-import { badRequest, notFound, serverError } from '@/presentation/helpers'
+import { badRequest, noContent } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
-import { RecordNotFoundError, ServerError } from '@/presentation/errors'
+import { CertificateType } from '@/domain/models'
 
 import { ObjectId } from 'mongodb'
 import faker from 'faker'
@@ -13,26 +13,26 @@ import faker from 'faker'
 const mockRequest = (): CreateCertificateController.Request => ({
   user: new ObjectId().toString(),
   procedure: new ObjectId().toString(),
-  type: faker.random.arrayElement(['online', 'presencial']),
+  type: faker.random.arrayElement(Object.values(CertificateType)),
   date: faker.date.recent().valueOf()
 })
 
 type SutTypes = {
   sut: CreateCertificateController,
   validationSpy: ValidationSpy
-  loadAccountSpy: LoadAccountSpy
+  createCertificateSpy: CreateCertificateSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const loadAccountSpy = new LoadAccountSpy()
+  const createCertificateSpy = new CreateCertificateSpy()
   const sut = new CreateCertificateController(
     validationSpy,
-    loadAccountSpy, null, null, null, null)
+    createCertificateSpy)
   return {
     sut,
     validationSpy,
-    loadAccountSpy
+    createCertificateSpy
   }
 }
 
@@ -56,24 +56,28 @@ describe('CreateCertificate Controller', () => {
     expect(httpResponse).toEqual(badRequest(validationSpy.error))
   })
 
-  test('Should call LoadAccount with correct values', async () => {
-    const { sut, loadAccountSpy } = makeSut()
+  test('Should call CreateCertificate with correct values', async () => {
+    const { sut, createCertificateSpy } = makeSut()
     const request = mockRequest()
     await sut.handle(request)
-    expect(loadAccountSpy.userId).toBe(request.user)
+    expect(createCertificateSpy.params).toEqual({
+      userId: request.user,
+      procedureId: request.procedure,
+      type: request.type,
+      date: request.date
+    })
   })
 
-  test('Should return 404 if LoadAccount returns null', async () => {
-    const { sut, loadAccountSpy } = makeSut()
-    loadAccountSpy.result = null
+  test('Should return error if CreateCertificate throws', async () => {
+    const { sut, createCertificateSpy } = makeSut()
+    jest.spyOn(createCertificateSpy, 'create').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(notFound(new RecordNotFoundError('Conta não encontrada')))
+    expect(httpResponse.statusCode).not.toBe(204)
   })
 
-  test('Should return 500 if LoadAccount throws', async () => {
-    const { sut, loadAccountSpy } = makeSut()
-    jest.spyOn(loadAccountSpy, 'load').mockImplementationOnce(throwError)
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(serverError(new ServerError(null)))
+    expect(httpResponse).toEqual(noContent())
   })
 })

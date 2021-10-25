@@ -1,3 +1,4 @@
+export * from './mock-certificate'
 export * from './mock-company'
 export * from './mock-convertion'
 export * from './mock-cryptography'

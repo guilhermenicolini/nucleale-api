@@ -46,13 +46,15 @@ export const mockProcedureWithService = (): ProcedureModel => ({
   id: faker.datatype.uuid(),
   description: faker.random.words(5),
   name: faker.random.words(2),
+  hours: faker.datatype.number(),
   service: mockService()
 })
 
 export const mockDbProcedureWithoutService = () => ({
   _id: new ObjectId(),
   description: faker.random.words(5),
-  name: faker.random.words(2)
+  name: faker.random.words(2),
+  hours: faker.datatype.number()
 })
 
 export const mockDbServiceWithProcedure = () => ({

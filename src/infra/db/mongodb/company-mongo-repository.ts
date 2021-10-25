@@ -50,6 +50,7 @@ LoadProcedureRepository {
       id: services[0].procedures._id.toString(),
       name: services[0].procedures.name,
       description: services[0].procedures.description,
+      hours: services[0].procedures.hours,
       service: {
         id: services[0]._id.toString(),
         name: services[0].name,

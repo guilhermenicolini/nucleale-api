@@ -59,6 +59,7 @@ describe('AccountMongoRepository', () => {
         id: data.services[0].procedures[0]._id.toString(),
         name: data.services[0].procedures[0].name,
         description: data.services[0].procedures[0].description,
+        hours: data.services[0].procedures[0].hours,
         service: {
           id: data.services[0]._id.toString(),
           name: data.services[0].name,

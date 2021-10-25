@@ -1,3 +1,4 @@
+import { CertificateType } from '@/domain/models'
 import { CertificateConverter } from '@/infra/converters'
 import { TimeManipulatorSpy } from '@/tests/data/mocks'
 
@@ -10,7 +11,7 @@ const mockData = (): CertificateConverter.Model => ({
   date: faker.date.past().valueOf(),
   hours: faker.datatype.number(),
   name: faker.name.findName(),
-  type: faker.random.arrayElement(['online', 'presencial']),
+  type: faker.random.arrayElement(Object.values(CertificateType)),
   hash: faker.random.alphaNumeric(8).toLowerCase()
 })
 
