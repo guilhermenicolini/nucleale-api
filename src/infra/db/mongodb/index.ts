@@ -1,5 +1,6 @@
 export * from './account-mongo-repository'
 export * from './address-mongo-repository'
+export * from './certificate-mongo-repository'
 export * from './children-mongo-repository'
 export * from './company-mongo-repository'
 export * from './invoice-mongo-repository'
