@@ -89,4 +89,10 @@ describe('DbCreateCertificate Usecase', () => {
       hours: loadProcedureRepositorySpy.result.hours
     })
   })
+
+  test('Should return certificate on success', async () => {
+    const { sut, addCertificateRepositorySpy } = makeSut()
+    const certificate = await sut.create(mockDbCertificateModel())
+    expect(certificate).toEqual(addCertificateRepositorySpy.result)
+  })
 })
