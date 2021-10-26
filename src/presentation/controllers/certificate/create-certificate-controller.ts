@@ -1,12 +1,15 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { noContent, handleError, badRequest } from '@/presentation/helpers'
-import { CreateCertificate } from '@/domain/usecases'
+import { LoadAccount, CreateCertificate, GenerateCertificate, SendCertificate } from '@/domain/usecases'
 import { CertificateType } from '@/domain/models'
 
 export class CreateCertificateController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly createCertificate: CreateCertificate
+    private readonly loadAccount: LoadAccount,
+    private readonly createCertificate: CreateCertificate,
+    private readonly generateCertificate: GenerateCertificate,
+    private readonly sendCertificate: SendCertificate
   ) { }
 
   async handle (httpRequest: CreateCertificateController.Request): Promise<HttpResponse> {
@@ -22,7 +25,15 @@ export class CreateCertificateController implements Controller {
         return badRequest(error)
       }
 
-      await this.createCertificate.create(request)
+      const account = await this.loadAccount.load(request.userId)
+      const cert = await this.createCertificate.create(request)
+      const pdf = await this.generateCertificate.generate(cert)
+      await this.sendCertificate.send({
+        email: account.email,
+        name: account.name,
+        phone: account.mobilePhone,
+        file: pdf
+      })
 
       return noContent()
     } catch (error) {
