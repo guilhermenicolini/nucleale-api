@@ -12,6 +12,7 @@ export class TimeManipulatorSpy implements TimeManipulator {
   value: string
   resultStr = 'any_date'
   resultInt = 100
+  resultDate = new Date()
 
   toDateAndTime (millis: number): string {
     this.millis = millis
@@ -38,10 +39,9 @@ export class TimeManipulatorSpy implements TimeManipulator {
     return this.resultStr
   }
 
-  toFormat (millis: number, format: string) {
+  toDateObj (millis: number): Date {
     this.millis = millis
-    this.format = format
-    return this.resultStr
+    return this.resultDate
   }
 
   fromDate (value: string): number {

@@ -10,6 +10,21 @@ const addSVG = (doc: any, svg: any, x: number, y: number, options: SVGtoPDFOptio
   return SVGtoPDF(doc, svg, x, y, options)
 }
 
+const months = {
+  0: 'janeiro',
+  1: 'fevereiro',
+  2: 'março',
+  3: 'abril',
+  4: 'maio',
+  5: 'junho',
+  6: 'julho',
+  7: 'agosto',
+  8: 'setembro',
+  9: 'outubro',
+  10: 'novembro',
+  11: 'dezembro'
+}
+
 const config = {
   style: {
     font: 'Katibeh',
@@ -37,7 +52,7 @@ export class CertificateConverter implements ObjectConverter<CertificateConverte
         doc.on('data', buffers.push.bind(buffers))
         doc.on('end', () => {
           return resolve({
-            name: 'certificate.pdf',
+            name: `certificado-${message.hash}.pdf`,
             mimeType: 'application/pdf',
             base64: Buffer.concat(buffers).toString('base64')
           })
@@ -58,6 +73,8 @@ export class CertificateConverter implements ObjectConverter<CertificateConverte
           align: 'center'
         })
 
+        const date = this.timeManipulator.toDateObj(message.date)
+
         doc.moveDown(1)
         doc.fontSize(30).fillColor(config.style.textColor)
         doc
@@ -65,7 +82,7 @@ export class CertificateConverter implements ObjectConverter<CertificateConverte
           .text(
           `Certificamos que ${message.name} concluiu com sucesso ${
             message.hours
-          }h do curso ${message.type} ${message.course} em ${this.timeManipulator.toDay(message.date)} de ${'Mês'} de ${'ANO'}`,
+          }h do curso ${message.type} ${message.course} em ${date.getDay()} de ${months[date.getMonth()]} de ${date.getFullYear()}`,
           105,
           doc.y,
           {

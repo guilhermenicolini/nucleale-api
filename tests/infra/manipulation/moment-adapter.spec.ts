@@ -2,10 +2,12 @@ import { MomentAdapter } from '@/infra/manipulation'
 import moment from 'moment-timezone'
 
 const formatStub = jest.fn().mockReturnThis()
+const toDateStub = jest.fn().mockReturnThis()
 
 jest.mock('moment-timezone', () => jest.fn().mockImplementation(() => {
   return {
-    format: formatStub
+    format: formatStub,
+    toDate: toDateStub
   }
 }))
 
@@ -62,12 +64,12 @@ describe('Moment Adapter', () => {
       })
     })
 
-    describe('toFormat()', () => {
+    describe('toDateObj()', () => {
       test('Should call moment-timezone format with correct values', async () => {
         const sut = makeSutDMY()
-        sut.toFormat(millis, 'any_format')
+        sut.toDateObj(millis)
         expect(moment).toHaveBeenCalledWith(millis)
-        expect(formatStub).toHaveBeenCalledWith('any_format')
+        expect(toDateStub).toHaveBeenCalled()
       })
     })
 
@@ -134,12 +136,12 @@ describe('Moment Adapter', () => {
       })
     })
 
-    describe('toFormat()', () => {
+    describe('toDateObj()', () => {
       test('Should call moment-timezone format with correct values', async () => {
         const sut = makeSutMDY()
-        sut.toFormat(millis, 'any_format')
+        sut.toDateObj(millis)
         expect(moment).toHaveBeenCalledWith(millis)
-        expect(formatStub).toHaveBeenCalledWith('any_format')
+        expect(toDateStub).toHaveBeenCalled()
       })
     })
 

@@ -2,10 +2,12 @@ import { NfseTimeAdapter } from '@/infra/manipulation'
 import moment from 'moment-timezone'
 
 const formatStub = jest.fn().mockReturnThis()
+const toDateStub = jest.fn()
 
 jest.mock('moment-timezone', () => jest.fn().mockImplementation(() => {
   return {
-    format: formatStub
+    format: formatStub,
+    toDate: toDateStub
   }
 }))
 
@@ -58,12 +60,12 @@ describe('NfseTime Adapter', () => {
     })
   })
 
-  describe('toFormat()', () => {
+  describe('toDateObj()', () => {
     test('Should call moment-timezone format with correct values', async () => {
       const sut = makeSut()
-      sut.toFormat(millis, 'any_format')
+      sut.toDateObj(millis)
       expect(moment).toHaveBeenCalledWith(millis)
-      expect(formatStub).toHaveBeenCalledWith('any_format')
+      expect(toDateStub).toHaveBeenCalled()
     })
   })
 
