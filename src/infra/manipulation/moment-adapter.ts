@@ -38,6 +38,10 @@ export class MomentAdapter implements TimeManipulator {
     return moment(millis).format(`${this.separator}MM${this.separator}YYYY`)
   }
 
+  toFormat (millis: number, format: string) {
+    return moment(millis).format(format)
+  }
+
   fromDate (value: string): number {
     return moment(value, `${this.firstPart}${this.separator}${this.secondPart}${this.separator}${this.thirdPart}`).valueOf()
   }

@@ -58,6 +58,15 @@ describe('NfseTime Adapter', () => {
     })
   })
 
+  describe('toFormat()', () => {
+    test('Should call moment-timezone format with correct values', async () => {
+      const sut = makeSut()
+      sut.toFormat(millis, 'any_format')
+      expect(moment).toHaveBeenCalledWith(millis)
+      expect(formatStub).toHaveBeenCalledWith('any_format')
+    })
+  })
+
   describe('toIsoDate()', () => {
     test('Should call moment-timezone format with correct values', async () => {
       const sut = makeSut()

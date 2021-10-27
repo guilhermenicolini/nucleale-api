@@ -4,6 +4,7 @@ export interface TimeManipulator {
   toDate: (millis: number) => string
   toIsoDate: (millis: number) => string
   toMonthAndYear: (millis: number) => string
+  toFormat: (millis: number, format: string) => string
   fromDate: (value: string) => number
   fromDateAndTime: (value: string) => number
 }

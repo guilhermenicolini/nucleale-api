@@ -23,6 +23,10 @@ export class NfseTimeAdapter implements TimeManipulator {
     return moment(millis).format('MM/YYYY')
   }
 
+  toFormat (millis: number, format: string): string {
+    return moment(millis).format(format)
+  }
+
   fromDate (value: string): number {
     return moment(value, 'YYYY-MM-DD').valueOf()
   }

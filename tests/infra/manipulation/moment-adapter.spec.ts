@@ -62,6 +62,15 @@ describe('Moment Adapter', () => {
       })
     })
 
+    describe('toFormat()', () => {
+      test('Should call moment-timezone format with correct values', async () => {
+        const sut = makeSutDMY()
+        sut.toFormat(millis, 'any_format')
+        expect(moment).toHaveBeenCalledWith(millis)
+        expect(formatStub).toHaveBeenCalledWith('any_format')
+      })
+    })
+
     describe('fromDate()', () => {
       test('Should call moment-timezone with correct values', async () => {
         const sut = makeSutDMY()
@@ -122,6 +131,15 @@ describe('Moment Adapter', () => {
         sut.toMonthAndYear(millis)
         expect(moment).toHaveBeenCalledWith(millis)
         expect(formatStub).toHaveBeenCalledWith('-MM-YYYY')
+      })
+    })
+
+    describe('toFormat()', () => {
+      test('Should call moment-timezone format with correct values', async () => {
+        const sut = makeSutMDY()
+        sut.toFormat(millis, 'any_format')
+        expect(moment).toHaveBeenCalledWith(millis)
+        expect(formatStub).toHaveBeenCalledWith('any_format')
       })
     })
 

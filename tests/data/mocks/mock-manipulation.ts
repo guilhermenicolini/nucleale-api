@@ -8,6 +8,7 @@ import {
 
 export class TimeManipulatorSpy implements TimeManipulator {
   millis: number
+  format: string
   value: string
   resultStr = 'any_date'
   resultInt = 100
@@ -34,6 +35,12 @@ export class TimeManipulatorSpy implements TimeManipulator {
 
   toMonthAndYear (millis: number): string {
     this.millis = millis
+    return this.resultStr
+  }
+
+  toFormat (millis: number, format: string) {
+    this.millis = millis
+    this.format = format
     return this.resultStr
   }
 
