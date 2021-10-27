@@ -5,6 +5,7 @@ import setupAddressRoutes from '@/main/routes/address-routes'
 import setupChildrenRoutes from '@/main/routes/children-routes'
 import setupInvoiceRoutes from '@/main/routes/invoice-routes'
 import setupWhatsappRoutes from '@/main/routes/whatsapp-routes'
+import setupCertificateRoutes from '@/main/routes/certificate-routes'
 
 export default (app: Express): void => {
   const router = Router()
@@ -14,5 +15,6 @@ export default (app: Express): void => {
   setupChildrenRoutes(router)
   setupInvoiceRoutes(router)
   setupWhatsappRoutes(router)
+  setupCertificateRoutes(router)
   app.use('', router)
 }
