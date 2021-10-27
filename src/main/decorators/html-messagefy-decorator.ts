@@ -15,6 +15,7 @@ export class HtmlMessagefyDecorator implements Messagefy {
     })
 
     const message = await this.messagefy.create(data)
+    data.subject = message.subject || data.subject
     message.html = await templates.render(this.template, data)
 
     return message

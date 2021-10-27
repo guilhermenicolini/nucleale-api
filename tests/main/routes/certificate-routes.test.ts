@@ -51,7 +51,7 @@ describe('Certificate Routes', () => {
         .expect(400)
     })
 
-    test('Should return 203 on success', async () => {
+    test('Should return 204 on success', async () => {
       const data = mockCreateCertificateRequest()
       const company = await createCompanyDatabase()
       data.procedure = company.procedure
