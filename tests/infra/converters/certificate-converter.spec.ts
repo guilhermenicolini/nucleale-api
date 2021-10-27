@@ -1,6 +1,7 @@
 import { CertificateType } from '@/domain/models'
 import { CertificateConverter } from '@/infra/converters'
 import { TimeManipulatorSpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -36,5 +37,12 @@ describe('Certificate Converter', () => {
     const { sut } = makeSut()
     const result = await sut.convert(mockData())
     expect(result).toBeTruthy()
+  })
+
+  test('Should throw if convert method fails', async () => {
+    const { sut, timeManipulatorSpy } = makeSut()
+    jest.spyOn(timeManipulatorSpy, 'toDateObj').mockImplementationOnce(throwError)
+    const promise = sut.convert(mockData())
+    expect(promise).rejects.toThrow()
   })
 })
