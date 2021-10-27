@@ -1,6 +1,7 @@
 export * from './accounts-paths'
 export * from './addresses-paths'
 export * from './authentication-paths'
+export * from './certificates-paths'
 export * from './childrens-paths'
 export * from './invoices-paths'
 export * from './whatsapp-paths'

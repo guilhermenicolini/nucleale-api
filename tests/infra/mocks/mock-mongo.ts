@@ -31,3 +31,14 @@ export const createInvoiceDatabase = async () => {
     amount: faker.datatype.number({ min: 100, max: 999 })
   }
 }
+
+export const createCompanyDatabase = async () => {
+  const companiesCollection = await MongoHelper.instance.getCollection('companies')
+  const company = change(mockCompanyModel())
+  company.services = [mockDbServiceWithProcedure()]
+  await companiesCollection.insertOne(company)
+
+  return {
+    procedure: company.services[0].procedures[0]._id.toString()
+  }
+}
