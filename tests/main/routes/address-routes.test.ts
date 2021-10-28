@@ -22,10 +22,10 @@ describe('Address Routes', () => {
     await addressesCollection.deleteMany({})
   })
 
-  describe('PUT /address', () => {
+  describe('PUT /me/address', () => {
     test('Should return 204 on success', async () => {
       await request(app)
-        .put('/address')
+        .put('/me/address')
         .send(mockAddressModel())
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(204)
@@ -33,28 +33,28 @@ describe('Address Routes', () => {
 
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .put('/address')
+        .put('/me/address')
         .send({})
         .expect(401)
     })
 
     test('Should return 400 on invalid body', async () => {
       await request(app)
-        .put('/address')
+        .put('/me/address')
         .send({})
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
     })
   })
 
-  describe('GET /address', () => {
+  describe('GET /me/address', () => {
     test('Should return 200 with address on success', async () => {
       const token = mockAccessToken()
       const data = mockAddAddressModel(token.accoundId)
       const { accountId, ...obj } = data
       await addressesCollection.insertOne({ ...obj, accountId: new ObjectId(accountId) })
       await request(app)
-        .get('/address')
+        .get('/me/address')
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect(200, {
           address: data.address,
@@ -71,14 +71,14 @@ describe('Address Routes', () => {
 
     test('Should return 200 with no body on success if not exists', async () => {
       await request(app)
-        .get('/address')
+        .get('/me/address')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(200, null)
     })
 
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .get('/address')
+        .get('/me/address')
         .expect(401)
     })
   })

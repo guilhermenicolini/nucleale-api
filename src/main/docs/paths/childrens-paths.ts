@@ -1,11 +1,11 @@
 export const childrensPaths = {
-  '/childrens': {
+  '/me/childrens': {
     post: {
-      tags: ['Childrens'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to create children',
+      summary: 'API to create current user children',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'addChildren',
       requestBody: {
@@ -41,11 +41,11 @@ export const childrensPaths = {
       }
     },
     get: {
-      tags: ['Childrens'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to retrieve childrens',
+      summary: 'API to retrieve current user childrens',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'loadChildrens',
       responses: {
@@ -68,13 +68,13 @@ export const childrensPaths = {
       }
     }
   },
-  '/childrens/{id}': {
+  '/me/childrens/{id}': {
     put: {
-      tags: ['Childrens'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to update children',
+      summary: 'API to update current user children',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'updateChildren',
       parameters: [{
@@ -115,11 +115,11 @@ export const childrensPaths = {
       }
     },
     delete: {
-      tags: ['Childrens'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to delete children',
+      summary: 'API to delete current user children',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'deleteChildren',
       parameters: [{

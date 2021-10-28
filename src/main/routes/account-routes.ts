@@ -13,7 +13,7 @@ import { Router } from 'express'
 export default (router: Router): void => {
   router.get('/accounts/status/:status', adminAuth, adaptRoute(makeLoadAccountsByStatusController()))
   router.post('/accounts/:id/approve', adminAuth, adaptRoute(makeApproveAccountController()))
-  router.post('/accounts/invite/:email', auth, adaptRoute(makeInviteAccountController()))
-  router.get('/accounts/me', auth, adaptRoute(makeLoadAccountController()))
-  router.get('/accounts', auth, adaptRoute(makeLoadAccountsController()))
+  router.post('/me/invite/:email', auth, adaptRoute(makeInviteAccountController()))
+  router.get('/me/profile', auth, adaptRoute(makeLoadAccountController()))
+  router.get('/me/accounts', auth, adaptRoute(makeLoadAccountsController()))
 }

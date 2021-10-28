@@ -82,13 +82,15 @@ export const invoicesPaths = {
           $ref: '#/components/errors/serverError'
         }
       }
-    },
+    }
+  },
+  '/me/invoices': {
     get: {
-      tags: ['Invoices'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to retrieve invoices',
+      summary: 'API to retrieve current user invoices',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'loadInvoices',
       responses: {
@@ -111,13 +113,13 @@ export const invoicesPaths = {
       }
     }
   },
-  '/invoices/{invoiceNo}/download': {
+  '/me/invoices/{invoiceNo}/download': {
     get: {
-      tags: ['Invoices'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to download invoice',
+      summary: 'API to download current user invoice',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'downloadInvoice',
       parameters: [{

@@ -22,17 +22,17 @@ describe('Children Routes', () => {
     await childrensCollection.deleteMany({})
   })
 
-  describe('POST /childrens', () => {
+  describe('POST /me/childrens', () => {
     test('Should return 401 if no token is provided', async () => {
       await request(app)
-        .post('/childrens')
+        .post('/me/childrens')
         .send({})
         .expect(401)
     })
 
     test('Should return 400 on invalid body', async () => {
       await request(app)
-        .post('/childrens')
+        .post('/me/childrens')
         .send({})
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
@@ -40,7 +40,7 @@ describe('Children Routes', () => {
 
     test('Should return 201 on success', async () => {
       await request(app)
-        .post('/childrens')
+        .post('/me/childrens')
         .send(mockAddChildrenModel())
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(201)
@@ -50,16 +50,16 @@ describe('Children Routes', () => {
     })
   })
 
-  describe('GET /childrens', () => {
+  describe('GET /me/childrens', () => {
     test('Should return 401 if no token is provided', async () => {
       await request(app)
-        .get('/childrens')
+        .get('/me/childrens')
         .expect(401)
     })
 
     test('Should return 200 on success with no records', async () => {
       await request(app)
-        .get('/childrens')
+        .get('/me/childrens')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(200, [])
     })
@@ -69,7 +69,7 @@ describe('Children Routes', () => {
       await childrensCollection.insertOne(mockChildrenModel(token.accoundId))
 
       await request(app)
-        .get('/childrens')
+        .get('/me/childrens')
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect(200)
         .then(res => {
@@ -78,16 +78,16 @@ describe('Children Routes', () => {
     })
   })
 
-  describe('PUT /childrens/:id', () => {
+  describe('PUT /me/childrens/:id', () => {
     test('Should return 401 if no token is provided', async () => {
       await request(app)
-        .put(`/childrens/${mockId()}`)
+        .put(`/me/childrens/${mockId()}`)
         .expect(401)
     })
 
     test('Should return 400 on invalid body', async () => {
       await request(app)
-        .put(`/childrens/${mockId().toString()}`)
+        .put(`/me/childrens/${mockId().toString()}`)
         .send({})
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
@@ -101,24 +101,24 @@ describe('Children Routes', () => {
       }
       await childrensCollection.insertOne(data)
       await request(app)
-        .put(`/childrens/${data._id.toString()}`)
+        .put(`/me/childrens/${data._id.toString()}`)
         .send(mockUpdateChildrenBody())
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect(204)
     })
   })
 
-  describe('DELETE /childrens/:id', () => {
+  describe('DELETE /me/childrens/:id', () => {
     test('Should return 401 if no token is provided', async () => {
       await request(app)
-        .delete(`/childrens/${mockId()}`)
+        .delete(`/me/childrens/${mockId()}`)
         .expect(401)
     })
   })
 
   test('Should return 400 on invalid id', async () => {
     await request(app)
-      .delete('/childrens/any_id')
+      .delete('/me/childrens/any_id')
       .send({})
       .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
       .expect(400)
@@ -126,7 +126,7 @@ describe('Children Routes', () => {
 
   test('Should return 404 if children not exists', async () => {
     await request(app)
-      .delete(`/childrens/${mockId()}`)
+      .delete(`/me/childrens/${mockId()}`)
       .send({})
       .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
       .expect(404)
@@ -140,7 +140,7 @@ describe('Children Routes', () => {
     }
     await childrensCollection.insertOne(data)
     await request(app)
-      .delete(`/childrens/${data._id.toString()}`)
+      .delete(`/me/childrens/${data._id.toString()}`)
       .set('authorization', `Bearer ${token.accessToken}`)
       .expect(204)
   })

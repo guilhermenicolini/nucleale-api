@@ -42,6 +42,10 @@ export const tags = {
       description: 'Authentication related APIs'
     },
     {
+      name: 'Me',
+      description: 'Authenticated user related APIs'
+    },
+    {
       name: 'Accounts',
       description: 'Accounts related APIs'
     },

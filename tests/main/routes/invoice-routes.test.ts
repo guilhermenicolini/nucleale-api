@@ -69,38 +69,38 @@ describe('Invoices Routes', () => {
     })
   })
 
-  describe('GET /invoices', () => {
+  describe('GET /me/invoices', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .get('/invoices')
+        .get('/me/invoices')
         .expect(401)
     })
 
     test('Should return 200 on success', async () => {
       await request(app)
-        .get('/invoices')
+        .get('/me/invoices')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(200)
     })
   })
 
-  describe('GET /invoices/:invoiceNo/download', () => {
+  describe('GET /me/invoices/:invoiceNo/download', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .get(`/invoices/${faker.datatype.number()}/download`)
+        .get(`/me/invoices/${faker.datatype.number()}/download`)
         .expect(401)
     })
 
     test('Should return 400 if invalid id is provided', async () => {
       await request(app)
-        .get('/invoices/wrong_id/download')
+        .get('/me/invoices/wrong_id/download')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
     })
 
     test('Should return 404 if invoice does not exists', async () => {
       await request(app)
-        .get(`/invoices/${faker.datatype.number()}/download`)
+        .get(`/me/invoices/${faker.datatype.number()}/download`)
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(404)
     })
@@ -112,7 +112,7 @@ describe('Invoices Routes', () => {
       await accountsCollection.insertOne({ accountId: new ObjectId(token.accoundId), taxId, status: 'active' })
       await invoicesCollection.insertOne(invoice)
       await request(app)
-        .get(`/invoices/${invoice.invoiceNo}/download`)
+        .get(`/me/invoices/${invoice.invoiceNo}/download`)
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect(200)
         .expect('Content-Type', 'application/pdf')

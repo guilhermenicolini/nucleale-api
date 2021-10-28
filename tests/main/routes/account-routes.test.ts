@@ -128,17 +128,17 @@ describe('Account Routes', () => {
     })
   })
 
-  describe('POST /accounts/invite/:email', () => {
+  describe('POST /me/invite/:email', () => {
     test('Should return 400 if email is invalid', async () => {
       await request(app)
-        .post(`/accounts/invite/${faker.random.word()}`)
+        .post(`/me/invite/${faker.random.word()}`)
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
     })
 
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .post(`/accounts/invite/${faker.random.word()}`)
+        .post(`/me/invite/${faker.random.word()}`)
         .expect(401)
     })
 
@@ -148,22 +148,22 @@ describe('Account Routes', () => {
       await accountCollection.insertOne(data)
 
       await request(app)
-        .post(`/accounts/invite/${faker.internet.email()}`)
+        .post(`/me/invite/${faker.internet.email()}`)
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect({})
     })
   })
 
-  describe('GET /accounts/me', () => {
+  describe('GET /me/profile', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .get('/accounts/me')
+        .get('/me/profile')
         .expect(401)
     })
 
     test('Should return 404 if user not exists', async () => {
       await request(app)
-        .get('/accounts/me')
+        .get('/me/profile')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(404)
     })
@@ -173,22 +173,22 @@ describe('Account Routes', () => {
       await accountCollection.insertOne(mockDbAccountModel(new ObjectId(token.userId), null))
 
       await request(app)
-        .get('/accounts/me')
+        .get('/me/profile')
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect(200)
     })
   })
 
-  describe('GET /accounts', () => {
+  describe('GET /me/accounts', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .get('/accounts')
+        .get('/me/accounts')
         .expect(401)
     })
 
     test('Should return accounts on success', async () => {
       await request(app)
-        .get('/accounts')
+        .get('/me/accounts')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(200)
     })

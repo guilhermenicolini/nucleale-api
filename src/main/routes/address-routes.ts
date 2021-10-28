@@ -8,6 +8,6 @@ import { auth } from '@/main/middlewares'
 import { Router } from 'express'
 
 export default (router: Router): void => {
-  router.get('/address', auth, adaptRoute(makeLoadAddressController()))
-  router.put('/address', auth, adaptRoute(makeSaveAddressController()))
+  router.get('/me/address', auth, adaptRoute(makeLoadAddressController()))
+  router.put('/me/address', auth, adaptRoute(makeSaveAddressController()))
 }

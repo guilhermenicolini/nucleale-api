@@ -87,13 +87,13 @@ export const accountsPaths = {
       }
     }
   },
-  '/accounts/invite/{email}': {
+  '/me/invite/{email}': {
     post: {
-      tags: ['Accounts'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to invite an account',
+      summary: 'API to invite family to current user account',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'inviteAccount',
       parameters: [{
@@ -122,9 +122,9 @@ export const accountsPaths = {
       }
     }
   },
-  '/accounts/me': {
+  '/me/profile': {
     get: {
-      tags: ['Accounts'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
@@ -151,9 +151,9 @@ export const accountsPaths = {
       }
     }
   },
-  '/accounts': {
+  '/me/accounts': {
     get: {
-      tags: ['Accounts'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],

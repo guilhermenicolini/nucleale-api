@@ -1,11 +1,11 @@
 export const addressesPaths = {
-  '/address': {
+  '/me/address': {
     put: {
-      tags: ['Address'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to update address',
+      summary: 'API to update current user address',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'saveAddress',
       requestBody: {
@@ -34,11 +34,11 @@ export const addressesPaths = {
       }
     },
     get: {
-      tags: ['Address'],
+      tags: ['Me'],
       security: [{
         bearerAuth: []
       }],
-      summary: 'API to retrieve address',
+      summary: 'API to retrieve current user address',
       description: 'This API is closed and can only be executed by all **authenticated** users',
       operationId: 'loadAddress',
       responses: {
