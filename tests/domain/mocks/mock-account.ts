@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb'
 
 export const mockAddAccountParams = (): AddAccount.Params => ({
   accountId: new ObjectId().toString(),
-  taxId: faker.address.zipCode('###########'),
+  taxId: '32051856095',
   name: faker.name.findName(),
   email: faker.internet.email(),
   password: 'P@ssw0rd',
@@ -20,7 +20,7 @@ export const mockAddAccountParams = (): AddAccount.Params => ({
 })
 
 export const mockSignUpRequest = (): SignUpController.Request => ({
-  taxId: faker.address.zipCode('###########'),
+  taxId: '32051856095',
   name: faker.name.findName(),
   email: faker.internet.email(),
   password: 'P@ssw0rd',
@@ -34,7 +34,7 @@ export const mockSignUpRequest = (): SignUpController.Request => ({
 
 export const mockSaveAccountParams = (): SaveAccount.Params => ({
   accountId: new ObjectId().toString(),
-  taxId: faker.address.zipCode('###########'),
+  taxId: '32051856095',
   name: faker.name.findName(),
   email: faker.internet.email(),
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
@@ -56,7 +56,7 @@ export const mockLoadAccountsByStatusParams = (): LoadAccountsByStatus.Params =>
 export const mockAccountModel = (): AccountModel => ({
   id: new ObjectId().toString(),
   accountId: new ObjectId().toString(),
-  taxId: faker.address.zipCode('###########'),
+  taxId: '32051856095',
   name: faker.name.findName(),
   email: faker.internet.email(),
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
@@ -64,7 +64,7 @@ export const mockAccountModel = (): AccountModel => ({
     min: 315543600000,
     max: 631159200000
   }),
-  password: faker.internet.password(),
+  password: 'P@ssw0rd',
   status: AccountStatus.awaitingVerification,
   role: AccountRoles.user
 })
@@ -72,7 +72,7 @@ export const mockAccountModel = (): AccountModel => ({
 export const mockDbAccountModel = (id, accountId) => ({
   _id: id || new ObjectId(),
   accountId: accountId || new ObjectId(),
-  taxId: faker.address.zipCode('###########'),
+  taxId: '32051856095',
   name: faker.name.findName(),
   email: faker.internet.email(),
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
@@ -80,7 +80,7 @@ export const mockDbAccountModel = (id, accountId) => ({
     min: 315543600000,
     max: 631159200000
   }),
-  password: faker.internet.password(),
+  password: 'P@ssw0rd',
   status: AccountStatus.awaitingVerification,
   role: AccountRoles.user
 })

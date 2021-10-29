@@ -9,7 +9,7 @@ import MockDate from 'mockdate'
 
 const mockParams = () => ({
   token: faker.datatype.uuid(),
-  password: faker.internet.password()
+  password: 'P@ssw0rd'
 })
 
 type SutTypes = {

@@ -2,7 +2,6 @@ import { InvoiceMongoRepository, MongoHelper } from '@/infra/db'
 import { mockInvoice } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
-import faker from 'faker'
 
 const makeSut = (): InvoiceMongoRepository => {
   return new InvoiceMongoRepository()
@@ -50,7 +49,7 @@ describe('InvoiceMongoRepository', () => {
     test('Should return all invoices only of active accounts', async () => {
       const sut = makeSut()
       const accountId = new ObjectId()
-      const taxId = faker.address.zipCode('###########')
+      const taxId = '32051856095'
       const invoices = [mockInvoice(taxId), mockInvoice(taxId), mockInvoice()]
       const accounts = [
         { accountId, taxId, status: 'active' },
@@ -66,7 +65,7 @@ describe('InvoiceMongoRepository', () => {
   test('Should return empty array if there are no invoices for active accounts', async () => {
     const sut = makeSut()
     const accountId = new ObjectId()
-    const taxId = faker.address.zipCode('###########')
+    const taxId = '32051856095'
     const accounts = [
       { accountId, taxId, status: 'active' }
     ]
@@ -85,7 +84,7 @@ describe('InvoiceMongoRepository', () => {
     test('Should return invoice only if account is active', async () => {
       const sut = makeSut()
       const accountId = new ObjectId()
-      const taxId = faker.address.zipCode('###########')
+      const taxId = '32051856095'
       const invoice = mockInvoice(taxId)
       await accountsCollection.insertOne({ accountId, taxId, status: 'active' })
       await invoicesCollection.insertOne(invoice)
@@ -96,7 +95,7 @@ describe('InvoiceMongoRepository', () => {
     test('Should not return invoice if account is not active', async () => {
       const sut = makeSut()
       const accountId = new ObjectId()
-      const taxId = faker.address.zipCode('###########')
+      const taxId = '32051856095'
       const invoice = mockInvoice(taxId)
       await accountsCollection.insertOne({ accountId, taxId, status: 'inactive' })
       await invoicesCollection.insertOne(invoice)
@@ -107,7 +106,7 @@ describe('InvoiceMongoRepository', () => {
     test('Should not return invoice if invoice is not Normal', async () => {
       const sut = makeSut()
       const accountId = new ObjectId()
-      const taxId = faker.address.zipCode('###########')
+      const taxId = '32051856095'
       const invoice = mockInvoice(taxId)
       invoice.status = 'Cancelado'
       await accountsCollection.insertOne({ accountId, taxId, status: 'active' })

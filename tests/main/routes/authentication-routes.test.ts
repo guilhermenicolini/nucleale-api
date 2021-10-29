@@ -38,7 +38,7 @@ const mockLoginRequest = () => {
 }
 
 const mockChangePasswordRequest = () => {
-  const password = faker.internet.password()
+  const password = 'P@ssw0rd'
   return {
     password,
     passwordConfirmation: password
@@ -191,12 +191,6 @@ describe('Account Routes', () => {
   })
 
   describe('POST /change-password/:token', () => {
-    let token: string = null
-
-    beforeEach(async () => {
-      token = new ObjectId().toString()
-    })
-
     test('Should return 400 on invalid token', async () => {
       await request(app)
         .post('/change-password/invalid_token')
@@ -205,25 +199,28 @@ describe('Account Routes', () => {
 
     test('Should return 404 if token not exists', async () => {
       await request(app)
-        .post(`/change-password/${token}`)
+        .post(`/change-password/${new ObjectId().toString()}`)
         .send(mockChangePasswordRequest())
         .expect(404)
     })
 
     test('Should return 400 if token is expired', async () => {
+      const _id = new ObjectId()
       await linksCollection.insertOne({
-        _id: new ObjectId(token),
+        _id,
         type: LinkTypes.passwordRecovery
       })
 
       await request(app)
-        .post(`/change-password/${token}`)
+        .post(`/change-password/${_id.toString()}`)
         .send(mockChangePasswordRequest())
         .expect(400)
     })
 
     test('Should update password on success', async () => {
+      const linkId = new ObjectId()
       const { id, accountId, ...data } = mockAccountModel()
+
       await accountsCollection.insertOne({
         _id: new ObjectId(id),
         accountId: new ObjectId(accountId),
@@ -231,16 +228,16 @@ describe('Account Routes', () => {
       })
 
       await linksCollection.insertOne({
-        _id: new ObjectId(token),
+        _id: linkId,
         userId: new ObjectId(id),
         type: LinkTypes.passwordRecovery,
         expiration: faker.date.future().valueOf()
       })
 
-      const oldPassword = (await accountsCollection.findOne({})).password
+      const record = await accountsCollection.findOne({})
 
       await request(app)
-        .post(`/change-password/${token}`)
+        .post(`/change-password/${linkId.toString()}`)
         .send(mockChangePasswordRequest())
         .expect(204)
 
@@ -252,7 +249,7 @@ describe('Account Routes', () => {
       expect(updatedUser.email).toBe(data.email)
       expect(updatedUser.mobilePhone).toBe(data.mobilePhone)
       expect(updatedUser.birth).toBe(data.birth)
-      expect(updatedUser.password).not.toBe(oldPassword)
+      expect(updatedUser.password).not.toBe(record.password)
       expect(updatedUser.status).toBe(data.status)
       expect(updatedUser.role).toBe(data.role)
     })

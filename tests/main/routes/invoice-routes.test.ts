@@ -107,7 +107,7 @@ describe('Invoices Routes', () => {
 
     test('Should return 200 on success', async () => {
       const token = mockAccessToken()
-      const taxId = faker.address.zipCode('###########')
+      const taxId = '32051856095'
       const invoice = mockInvoice(taxId)
       await accountsCollection.insertOne({ accountId: new ObjectId(token.accoundId), taxId, status: 'active' })
       await invoicesCollection.insertOne(invoice)

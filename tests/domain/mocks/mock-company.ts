@@ -9,7 +9,7 @@ const mockSettings = (): SettingsModel => ({
 
 export const mockCompanyModel = (): CompanyModel => ({
   id: faker.datatype.uuid(),
-  taxId: faker.address.zipCode('##############'),
+  taxId: '71532915000196',
   registryId: faker.address.zipCode('########'),
   name: faker.company.companyName(),
   mobilePhone: faker.phone.phoneNumber('+55##9########'),
