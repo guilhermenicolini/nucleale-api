@@ -104,4 +104,19 @@ describe('Certificate Routes', () => {
         .expect('Content-Type', 'application/pdf')
     })
   })
+
+  describe('GET /me/certificates', () => {
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/me/certificates')
+        .expect(401)
+    })
+
+    test('Should return 200 on success', async () => {
+      await request(app)
+        .get('/me/certificates')
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(200)
+    })
+  })
 })

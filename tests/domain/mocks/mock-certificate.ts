@@ -1,5 +1,5 @@
 import { CertificateModel, CertificateType, FileModel } from '@/domain/models'
-import { CreateCertificate } from '@/domain/usecases'
+import { CreateCertificate, LoadCertificates } from '@/domain/usecases'
 import { CreateCertificateController, DownloadCertificateController } from '@/presentation/controllers'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
@@ -49,4 +49,13 @@ export const mockFileModel = (): FileModel => ({
 export const mockDownloadCertificateRequest = (): DownloadCertificateController.Request => ({
   accountId: new ObjectId().toString(),
   hash: faker.random.alphaNumeric(8).toLowerCase()
+})
+
+export const mockLoadCertificate = (): LoadCertificates.ResultModel => ({
+  course: faker.random.words(3),
+  date: faker.date.soon().valueOf(),
+  hash: faker.random.alphaNumeric(8).toLowerCase(),
+  hours: faker.datatype.number(),
+  name: faker.name.findName(),
+  type: faker.random.arrayElement(Object.values(CertificateType))
 })

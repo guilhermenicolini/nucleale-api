@@ -84,5 +84,34 @@ export const certificatesPaths = {
         }
       }
     }
+  },
+  '/me/certificates': {
+    get: {
+      tags: ['Me'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to retrieve current user certificates',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'loadCertificates',
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/certificates'
+              }
+            }
+          }
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }

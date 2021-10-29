@@ -1,7 +1,7 @@
 import { CertificatetMongoRepository, MongoHelper } from '@/infra/db'
 import { mockCertificateModel, mockDbCertificateModel } from '@/tests/domain/mocks'
 
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 const makeSut = (): CertificatetMongoRepository => {
   return new CertificatetMongoRepository()
@@ -53,6 +53,28 @@ describe('CertificatetMongoRepository', () => {
       const { _id, accountId, ...rest } = data
       expect(records.length).toBe(1)
       expect(certificate).toEqual({ id: _id.toString(), accountId: accountId.toString(), ...rest })
+    })
+  })
+
+  describe('load()', () => {
+    test('Should return childrens on success', async () => {
+      const accountId = new ObjectId()
+      const sut = makeSut()
+      const data = [mockDbCertificateModel(), mockDbCertificateModel()]
+
+      data[0].accountId = accountId
+      data[1].accountId = accountId
+
+      await certificatesCollection.insertMany(data)
+      const certificates = await sut.load(accountId.toString())
+      expect(certificates.length).toBe(2)
+    })
+
+    test('Should return empty array if not exists', async () => {
+      const accountId = new ObjectId().toString()
+      const sut = makeSut()
+      const childrens = await sut.load(accountId)
+      expect(childrens.length).toBe(0)
     })
   })
 })

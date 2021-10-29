@@ -1,8 +1,9 @@
 import {
   AddCertificateRepository,
-  LoadCertificateByHashRepository
+  LoadCertificateByHashRepository,
+  LoadCertificatesRepository
 } from '@/data/protocols'
-import { mockCertificateModel } from '@/tests/domain/mocks'
+import { mockCertificateModel, mockLoadCertificate } from '@/tests/domain/mocks'
 
 export class AddCertificateRepositorySpy implements AddCertificateRepository {
   params: AddCertificateRepository.Params
@@ -20,6 +21,19 @@ export class LoadCertificateByHashRepositorySpy implements LoadCertificateByHash
 
   async loadByHash (hash: string): Promise<LoadCertificateByHashRepository.Result> {
     this.hash = hash
+    return this.result
+  }
+}
+
+export class LoadCertificatesRepositorySpy implements LoadCertificatesRepository {
+  accountId: string
+  result: LoadCertificatesRepository.Result = [
+    mockLoadCertificate(),
+    mockLoadCertificate()
+  ]
+
+  async load (accountId: string): Promise<LoadCertificatesRepository.Result> {
+    this.accountId = accountId
     return this.result
   }
 }

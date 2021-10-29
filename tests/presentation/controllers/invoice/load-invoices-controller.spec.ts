@@ -32,7 +32,7 @@ describe('LoadInvoices Controller', () => {
     expect(loadInvoicesSpy.accountId).toEqual(request.accountId)
   })
 
-  test('Should return 500 if LoadChildrens throws ', async () => {
+  test('Should return 500 if LoadInvoices throws ', async () => {
     const { sut, loadInvoicesSpy } = makeSut()
     jest.spyOn(loadInvoicesSpy, 'load').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())

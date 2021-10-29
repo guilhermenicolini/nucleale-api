@@ -30,7 +30,9 @@ import {
   createInvoiceSchema,
   messageSchema,
   changePasswordSchema,
-  createCertificateSchema
+  createCertificateSchema,
+  certificateSchema,
+  certificatesSchema
 } from './components'
 
 import map from './utils/mapper'
@@ -100,7 +102,9 @@ export const components = {
     invoices: invoicesSchema,
     createInvoice: createInvoiceSchema,
     whatsappMessage: messageSchema,
-    createCertificate: createCertificateSchema
+    createCertificate: createCertificateSchema,
+    certificate: certificateSchema,
+    certificates: certificatesSchema
   },
   errors: {
     badRequest: badRequestError,

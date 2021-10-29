@@ -2,9 +2,10 @@ import {
   CreateCertificate,
   GenerateCertificate,
   SendCertificate,
-  LoadCertificateByHash
+  LoadCertificateByHash,
+  LoadCertificates
 } from '@/domain/usecases'
-import { mockCertificateModel, mockFileModel } from '@/tests/domain/mocks/mock-certificate'
+import { mockCertificateModel, mockFileModel, mockLoadCertificate } from '@/tests/domain/mocks/mock-certificate'
 
 export class CreateCertificateSpy implements CreateCertificate {
   params: CreateCertificate.Params
@@ -40,6 +41,19 @@ export class LoadCertificateByHashSpy implements LoadCertificateByHash {
 
   async load (hash: string): Promise<LoadCertificateByHash.Result> {
     this.hash = hash
+    return this.result
+  }
+}
+
+export class LoadCertificatesSpy implements LoadCertificates {
+  accountId: string
+  result: LoadCertificates.Result = [
+    mockLoadCertificate(),
+    mockLoadCertificate()
+  ]
+
+  async load (accountId: string): Promise<LoadCertificates.Result> {
+    this.accountId = accountId
     return this.result
   }
 }
