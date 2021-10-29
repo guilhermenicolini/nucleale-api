@@ -5,7 +5,7 @@ import faker from 'faker'
 const makeSut = (): SendInvoiceMessage => new SendInvoiceMessage()
 
 describe('SendInvoiceMessage', () => {
-  test.only('Should create message on success', async () => {
+  test('Should create message on success', async () => {
     const sut = makeSut()
     const model: SendInvoiceMessage.Model = {
       to: mockPerson(),

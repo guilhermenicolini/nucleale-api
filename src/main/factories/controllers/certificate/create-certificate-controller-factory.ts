@@ -8,7 +8,7 @@ import {
   makeRemoteSendCertificate
 } from '@/main/factories'
 
-export const makeCreateCertificateeController = (): Controller => {
+export const makeCreateCertificateController = (): Controller => {
   return new CreateCertificateController(
     makeCreateCertificateValidation(),
     makeDbLoadAccount(),

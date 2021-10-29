@@ -6,7 +6,7 @@ import {
   LoadProcedureRepositorySpy,
   AddCertificateRepositorySpy
 } from '@/tests/data/mocks'
-import { mockDbCertificateModel, throwError } from '@/tests/domain/mocks'
+import { mockDbCreateCertificateModel, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbCreateCertificate
@@ -36,7 +36,7 @@ const makeSut = (): SutTypes => {
 describe('DbCreateCertificate Usecase', () => {
   test('Should call LoadAccountRepository with correct values', async () => {
     const { sut, loadAccountRepositorySpy } = makeSut()
-    const params = mockDbCertificateModel()
+    const params = mockDbCreateCertificateModel()
     await sut.create(params)
     expect(loadAccountRepositorySpy.userId).toBe(params.userId)
   })
@@ -44,20 +44,20 @@ describe('DbCreateCertificate Usecase', () => {
   test('Should throw if LoadAccountRepository throws', async () => {
     const { sut, loadAccountRepositorySpy } = makeSut()
     jest.spyOn(loadAccountRepositorySpy, 'loadById').mockImplementationOnce(throwError)
-    const promise = sut.create(mockDbCertificateModel())
+    const promise = sut.create(mockDbCreateCertificateModel())
     expect(promise).rejects.toThrow()
   })
 
   test('Should throw error if LoadAccountRepository returns null', async () => {
     const { sut, loadAccountRepositorySpy } = makeSut()
     loadAccountRepositorySpy.result = null
-    const promise = sut.create(mockDbCertificateModel())
+    const promise = sut.create(mockDbCreateCertificateModel())
     expect(promise).rejects.toThrow(new RecordNotFoundError('Conta não encontrada'))
   })
 
   test('Should call LoadProcedureRepository with correct values', async () => {
     const { sut, loadProcedureRepositorySpy } = makeSut()
-    const params = mockDbCertificateModel()
+    const params = mockDbCreateCertificateModel()
     await sut.create(params)
     expect(loadProcedureRepositorySpy.procedureId).toBe(params.procedureId)
   })
@@ -65,20 +65,20 @@ describe('DbCreateCertificate Usecase', () => {
   test('Should throw if LoadProcedureRepository throws', async () => {
     const { sut, loadProcedureRepositorySpy } = makeSut()
     jest.spyOn(loadProcedureRepositorySpy, 'loadProcedure').mockImplementationOnce(throwError)
-    const promise = sut.create(mockDbCertificateModel())
+    const promise = sut.create(mockDbCreateCertificateModel())
     expect(promise).rejects.toThrow()
   })
 
   test('Should throw error if LoadProcedureRepository returns null', async () => {
     const { sut, loadProcedureRepositorySpy } = makeSut()
     loadProcedureRepositorySpy.result = null
-    const promise = sut.create(mockDbCertificateModel())
+    const promise = sut.create(mockDbCreateCertificateModel())
     expect(promise).rejects.toThrow(new RecordNotFoundError('Procedimento não encontrado'))
   })
 
   test('Should call AddCertificateRepository with correct values', async () => {
     const { sut, loadAccountRepositorySpy, loadProcedureRepositorySpy, addCertificateRepositorySpy } = makeSut()
-    const params = mockDbCertificateModel()
+    const params = mockDbCreateCertificateModel()
     await sut.create(params)
     expect(addCertificateRepositorySpy.params).toEqual({
       accountId: loadAccountRepositorySpy.result.accountId,
@@ -92,7 +92,7 @@ describe('DbCreateCertificate Usecase', () => {
 
   test('Should return certificate on success', async () => {
     const { sut, addCertificateRepositorySpy } = makeSut()
-    const certificate = await sut.create(mockDbCertificateModel())
+    const certificate = await sut.create(mockDbCreateCertificateModel())
     expect(certificate).toEqual(addCertificateRepositorySpy.result)
   })
 })

@@ -4,7 +4,7 @@ import { mockFileModel, mockPerson } from '@/tests/domain/mocks'
 const makeSut = (): SendCertificateMessage => new SendCertificateMessage()
 
 describe('SendCertificateMessage', () => {
-  test.only('Should create message on success', async () => {
+  test('Should create message on success', async () => {
     const person = mockPerson()
     const sut = makeSut()
     const model: SendCertificateMessage.Model = {

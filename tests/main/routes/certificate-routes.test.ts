@@ -5,7 +5,7 @@ import { mockAdminAccessToken, mockAccessToken } from '@/tests/main/mocks'
 import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
-import { mockCreateCertificateRequest } from '@/tests/domain/mocks'
+import { mockCreateCertificateRequest, mockDbCertificateModel } from '@/tests/domain/mocks'
 import { createCompanyDatabase } from '@/tests/infra/mocks'
 
 let certificatesCollection: Collection
@@ -69,6 +69,39 @@ describe('Certificate Routes', () => {
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .send(data)
         .expect(204)
+    })
+  })
+
+  describe('GET /me/certificates/:hash/download', () => {
+    let hash: string
+    beforeEach(() => {
+      hash = faker.random.alphaNumeric(8).toLowerCase()
+    })
+
+    test('Should return 401 if token is not provided', async () => {
+      await request(app)
+        .get('/me/certificates/}/download')
+        .expect(401)
+    })
+
+    test('Should return 404 if invoice does not exists', async () => {
+      await request(app)
+        .get(`/me/certificates/${hash}/download`)
+        .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
+        .expect(404)
+    })
+
+    test('Should return 200 on success', async () => {
+      const token = mockAccessToken()
+      const certificate = mockDbCertificateModel()
+      certificate.accountId = new ObjectId(token.accoundId)
+      await accountsCollection.insertOne({ accountId: new ObjectId(token.accoundId) })
+      await certificatesCollection.insertOne(certificate)
+      await request(app)
+        .get(`/me/certificates/${certificate.hash}/download`)
+        .set('authorization', `Bearer ${token.accessToken}`)
+        .expect(200)
+        .expect('Content-Type', 'application/pdf')
     })
   })
 })

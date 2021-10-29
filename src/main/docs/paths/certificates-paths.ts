@@ -39,5 +39,50 @@ export const certificatesPaths = {
         }
       }
     }
+  },
+  '/me/certificates/{hash}/download': {
+    get: {
+      tags: ['Me'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to download current user certificate',
+      description: 'This API is closed and can only be executed by all **authenticated** users',
+      operationId: 'downloadCertificate',
+      parameters: [{
+        in: 'path',
+        name: 'hash',
+        description: 'Certificate hash to be downloaded',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/pdf': {
+              schema: {
+                type: 'string',
+                format: 'binary'
+              }
+            }
+          }
+        },
+        400: {
+          $ref: '#/components/errors/badRequest'
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }
