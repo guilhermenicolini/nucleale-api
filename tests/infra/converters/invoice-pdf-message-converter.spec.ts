@@ -38,6 +38,7 @@ describe('InvoicePdfMessage Converter', () => {
   test('Should return message alternative values on success', () => {
     const { sut } = makeSut()
     const data = mockInvoiceDb()
+    data.taker.taxId = '98745854123698'
     data.taker.phone = '+551934567890'
     data.taker.address.complement = null
     data.items[0].taxable = true

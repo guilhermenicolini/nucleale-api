@@ -16,10 +16,11 @@ export class InvoicePdfMessageConverter implements ObjectConverter<InvoiceModel,
   private getPerson (person: InvoicePersonModel): any {
     const phone = person.phone.replace('+55', '')
     const phoneMask = `(00) ${phone.length === 11 ? '0' : ''}0000-0000`
+    const taxMask = person.taxId.length === 11 ? '000.000.000-00' : '00.000.000/0000-00'
 
     return {
       name: person.name,
-      taxId: this.maskManipulator.mask(person.taxId, '000.000.000-00'),
+      taxId: this.maskManipulator.mask(person.taxId, taxMask),
       registryId: person.registryId ? this.maskManipulator.mask(person.registryId, '00000000-0') : null,
       address: `${person.address.address}, Nº ${person.address.number}${person.address.complement
         ? ' ' + person.address.complement
