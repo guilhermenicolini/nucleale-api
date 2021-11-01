@@ -119,4 +119,26 @@ describe('Certificate Routes', () => {
         .expect(200)
     })
   })
+
+  describe('GET /certificates/:hash', () => {
+    let hash: string
+    beforeEach(() => {
+      hash = faker.random.alphaNumeric(8).toLowerCase()
+    })
+
+    test('Should return 404 if certificate does not exists', async () => {
+      await request(app)
+        .get(`/certificates/${hash}`)
+        .expect(404)
+    })
+
+    test('Should return 200 on success', async () => {
+      const certificate = mockDbCertificateModel()
+      await accountsCollection.insertOne(certificate)
+      await certificatesCollection.insertOne(certificate)
+      await request(app)
+        .get(`/certificates/${certificate.hash}`)
+        .expect(200)
+    })
+  })
 })

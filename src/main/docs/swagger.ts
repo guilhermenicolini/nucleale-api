@@ -104,7 +104,8 @@ export const components = {
     whatsappMessage: messageSchema,
     createCertificate: createCertificateSchema,
     certificate: certificateSchema,
-    certificates: certificatesSchema
+    certificates: certificatesSchema,
+    validCertificate: map(certificateSchema, ['type', 'name', 'hours'])
   },
   errors: {
     badRequest: badRequestError,

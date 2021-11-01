@@ -113,5 +113,40 @@ export const certificatesPaths = {
         }
       }
     }
+  },
+  '/certificates/{hash}': {
+    get: {
+      tags: ['Certificates'],
+      summary: 'API to validate certificate',
+      description: 'This API is open and can be executed by **anyone**',
+      operationId: 'validateCertificate',
+      parameters: [{
+        in: 'path',
+        name: 'hash',
+        description: 'Certificate hash to be validated',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/validCertificate'
+              }
+            }
+          }
+        },
+        404: {
+          $ref: '#/components/errors/notFound'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }
