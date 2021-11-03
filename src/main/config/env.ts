@@ -33,5 +33,11 @@ export default {
       name: process.env.GMAIL_USER_NAME
     }
   },
+  correios: {
+    url: process.env.CORREIOS_URL,
+    methods: {
+      consultaCEP: 'consultaCEP'
+    }
+  },
   mode: process.env.NODE_ENV
 }

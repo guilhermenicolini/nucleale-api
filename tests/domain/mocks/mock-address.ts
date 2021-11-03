@@ -1,4 +1,5 @@
 import { AddressModel } from '@/domain/models'
+import { LoadAddressByZip } from '@/domain/usecases'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
@@ -27,4 +28,11 @@ export const mockAddAddressModel = (accountId?: string): Omit<AddressModel, 'id'
   state: faker.address.stateAbbr(),
   country: faker.address.countryCode(),
   zip: faker.address.zipCode('########')
+})
+
+export const mockRemoteAddressModel = (): LoadAddressByZip.Result => ({
+  address: faker.address.streetName(),
+  district: faker.random.word(),
+  city: faker.address.city(),
+  state: faker.address.stateAbbr()
 })

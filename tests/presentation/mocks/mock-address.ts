@@ -1,6 +1,7 @@
 import {
   SaveAddress,
-  LoadAddress
+  LoadAddress,
+  LoadAddressByZip
 } from '@/domain/usecases'
 import { mockAddressModel } from '@/tests/domain/mocks'
 
@@ -18,6 +19,16 @@ export class LoadAddressSpy implements LoadAddress {
 
   async load (accountId: string): Promise<LoadAddress.Result> {
     this.accountId = accountId
+    return this.result
+  }
+}
+
+export class LoadAddressByZipSpy implements LoadAddressByZip {
+  zip: string
+  result: LoadAddressByZip.Result = mockAddressModel()
+
+  async load (zip: string): Promise<LoadAddressByZip.Result> {
+    this.zip = zip
     return this.result
   }
 }
