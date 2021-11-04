@@ -5,7 +5,8 @@ import {
   childrensPaths,
   invoicesPaths,
   whatsappPaths,
-  certificatesPaths
+  certificatesPaths,
+  locationsPaths
 } from './paths'
 import {
   signupSchema,
@@ -56,6 +57,10 @@ export const tags = {
       description: 'Address related APIs'
     },
     {
+      name: 'Locations',
+      description: 'Locations related APIs'
+    },
+    {
       name: 'Childrens',
       description: 'Childrens related APIs'
     },
@@ -81,7 +86,8 @@ export const paths = {
   ...childrensPaths,
   ...invoicesPaths,
   ...certificatesPaths,
-  ...whatsappPaths
+  ...whatsappPaths,
+  ...locationsPaths
 }
 
 export const components = {
@@ -105,7 +111,8 @@ export const components = {
     createCertificate: createCertificateSchema,
     certificate: certificateSchema,
     certificates: certificatesSchema,
-    validCertificate: map(certificateSchema, ['type', 'name', 'hours'])
+    validCertificate: map(certificateSchema, ['type', 'name', 'hours']),
+    zipAddress: map(addressSchema, ['address', 'district', 'city', 'state'])
   },
   errors: {
     badRequest: badRequestError,

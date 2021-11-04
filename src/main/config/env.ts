@@ -14,7 +14,10 @@ export default {
   nfse: {
     url: process.env.NFSE_URL,
     methods: {
-      lote: process.env.NODE_ENV === 'production' ? 'enviarSincrono' : 'testeEnviar'
+      lote: {
+        request: process.env.NODE_ENV === 'production' ? 'enviarSincrono' : 'testeEnviar',
+        response: process.env.NODE_ENV === 'production' ? 'enviarSincronoReturn' : 'testeEnviarReturn'
+      }
     },
     ns1: 'http://localhost:8080/WsNFe2/lote',
     tipos: 'http://localhost:8080/WsNFe2/tp',
@@ -36,7 +39,10 @@ export default {
   correios: {
     url: process.env.CORREIOS_URL,
     methods: {
-      consultaCEP: 'consultaCEP'
+      consultaCEP: {
+        request: 'consultaCEP',
+        response: 'return'
+      }
     }
   },
   mode: process.env.NODE_ENV

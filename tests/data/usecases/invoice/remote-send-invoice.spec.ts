@@ -94,7 +94,8 @@ describe('RemoteSendInvoice Usecase', () => {
     await sut.send(mockInvoice())
     expect(soapClientSpy.request).toEqual({
       url: env.nfse.url,
-      method: env.nfse.methods.lote,
+      method: env.nfse.methods.lote.request,
+      responseMethod: env.nfse.methods.lote.response,
       message: {
         mensagemXml: signerSpy.result
       }
@@ -104,7 +105,8 @@ describe('RemoteSendInvoice Usecase', () => {
   test('Should call SoapClient with production method', async () => {
     process.env.NODE_ENV = 'production'
     const newEnv = require('@/main/config/env').default
-    expect(newEnv.nfse.methods.lote).toBe('enviarSincrono')
+    expect(newEnv.nfse.methods.lote.request).toBe('enviarSincrono')
+    expect(newEnv.nfse.methods.lote.response).toBe('enviarSincronoReturn')
   })
 
   test('Should return error if SoapClient returns false', async () => {

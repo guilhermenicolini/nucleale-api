@@ -33,7 +33,8 @@ describe('RemoteLoadAddressByZip Usecase', () => {
     await sut.load(zip)
     expect(soapClientSpy.request).toEqual({
       url: env.correios.url,
-      method: env.correios.methods.consultaCEP,
+      method: env.correios.methods.consultaCEP.request,
+      responseMethod: env.correios.methods.consultaCEP.response,
       message: {
         cep: zip
       }

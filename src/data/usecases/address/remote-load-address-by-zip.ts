@@ -1,5 +1,5 @@
 import { LoadAddressByZip } from '@/domain/usecases'
-import { SoapClient } from '@/data/protocols'
+import { SoapClient, SoapRequest } from '@/data/protocols'
 import env from '@/main/config/env'
 
 export class RemoteLoadAddressByZip implements LoadAddressByZip {
@@ -9,9 +9,10 @@ export class RemoteLoadAddressByZip implements LoadAddressByZip {
 
   async load (zip: string): Promise<RemoteLoadAddressByZip.Result> {
     try {
-      const soapRequest = {
+      const soapRequest: SoapRequest = {
         url: env.correios.url,
-        method: env.correios.methods.consultaCEP,
+        method: env.correios.methods.consultaCEP.request,
+        responseMethod: env.correios.methods.consultaCEP.response,
         message: {
           cep: zip
         }

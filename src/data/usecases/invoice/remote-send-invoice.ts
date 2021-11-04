@@ -1,5 +1,5 @@
 import { SendInvoice } from '@/domain/usecases'
-import { ObjectConverter, Encoder, Signer, SoapClient, Decoder } from '@/data/protocols'
+import { ObjectConverter, Encoder, Signer, SoapClient, Decoder, SoapRequest } from '@/data/protocols'
 import env from '@/main/config/env'
 import { RpsLoteResultModel } from '@/domain/models'
 import { SoapError } from '@/presentation/errors'
@@ -19,13 +19,15 @@ export class RemoteSendInvoice implements SendInvoice {
       const xml = await this.encoder.encode(rps)
       const xmlSigned = await this.signer.sign(xml)
 
-      const soapRequest = {
+      const soapRequest: SoapRequest = {
         url: env.nfse.url,
-        method: env.nfse.methods.lote,
+        method: env.nfse.methods.lote.request,
+        responseMethod: env.nfse.methods.lote.response,
         message: {
           mensagemXml: xmlSigned
         }
       }
+
       const soapResponse = await this.soapClient.send(soapRequest)
       if (!soapResponse.success) {
         return soapResponse.error

@@ -1,6 +1,7 @@
 export type SoapRequest = {
   url: string
   method: string
+  responseMethod: string
   message: any
 }
 

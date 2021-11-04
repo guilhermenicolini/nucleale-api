@@ -1,32 +1,33 @@
-import { SoapClient, SoapRequest, SoapResponse } from '@/data/protocols'
-import { SoapError } from '@/presentation/errors'
+import { SoapClient, SoapParser, SoapRequest, SoapResponse } from '@/data/protocols'
 import { createClient } from 'soap'
 
 export class SoapClientAdapter implements SoapClient<any> {
+  constructor (private readonly parser: SoapParser) {}
+
   async send (request: SoapRequest): Promise<SoapResponse<any>> {
     return new Promise((resolve, reject) => {
       createClient(request.url, (err, client) => {
         if (err) {
           return reject(err)
         }
-        client[request.method](request.message, (err, result) => {
+        client[request.method](request.message, async (err, result) => {
           if (err) {
             return resolve({
               success: false,
               error: err
             })
           } else {
-            const value = result[`${request.method}Return`]?.$value || 'missing $value'
-            if (!value.includes('?xml')) {
+            try {
+              return resolve({
+                success: true,
+                response: await this.parser.parse(result[request.responseMethod])
+              })
+            } catch (error) {
               return resolve({
                 success: false,
-                error: new SoapError(value)
+                error
               })
             }
-            return resolve({
-              success: true,
-              response: value
-            })
           }
         })
       })

@@ -45,7 +45,6 @@ export class InviteAccountController implements Controller {
 
       return noContent()
     } catch (error) {
-      console.log(error)
       return serverError(error)
     }
   }

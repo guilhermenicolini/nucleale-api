@@ -5,6 +5,7 @@ import faker from 'faker'
 export const mockSoapRequest = (): SoapRequest => ({
   method: faker.random.word(),
   message: faker.random.word(),
+  responseMethod: faker.random.word(),
   url: faker.internet.url()
 })
 
