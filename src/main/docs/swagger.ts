@@ -112,7 +112,7 @@ export const components = {
     certificate: certificateSchema,
     certificates: certificatesSchema,
     validCertificate: map(certificateSchema, ['type', 'name', 'hours']),
-    zipAddress: map(addressSchema, ['address', 'district', 'city', 'state'])
+    zipAddress: map(addressSchema, ['id', 'accountId', 'number', 'complement', 'cityId', 'zip', 'country'])
   },
   errors: {
     badRequest: badRequestError,
