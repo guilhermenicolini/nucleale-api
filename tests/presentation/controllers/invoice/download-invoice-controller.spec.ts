@@ -29,7 +29,10 @@ describe('DownloadInvoice Controller', () => {
     const { sut, validationSpy } = makeSut()
     const request = mockDownloadRequest()
     await sut.handle(request)
-    expect(validationSpy.input).toEqual(request)
+    expect(validationSpy.input).toEqual({
+      invoiceNo: request.iId,
+      accountId: request.accountId
+    })
   })
 
   test('Should return 400 if Validation returns an error', async () => {
@@ -43,7 +46,7 @@ describe('DownloadInvoice Controller', () => {
     const { sut, loadInvoiceSpy } = makeSut()
     const request = mockDownloadRequest()
     await sut.handle(request)
-    expect(loadInvoiceSpy.invoiceNo).toBe(parseInt(request.invoiceNo))
+    expect(loadInvoiceSpy.invoiceNo).toBe(request.iId)
     expect(loadInvoiceSpy.accountId).toBe(request.accountId)
   })
 

@@ -2,11 +2,20 @@ import { Controller } from '@/presentation/protocols'
 
 import { Request, Response } from 'express'
 
+const handleParams = (params: any): any => {
+  const { iId, ...rest } = params
+
+  return {
+    iId: parseInt(iId),
+    ...rest
+  }
+}
+
 export const adaptRoute = (controller: Controller) => {
   return async (req: Request, res: Response) => {
     const request = {
       ...(req.body),
-      ...(req.params),
+      ...handleParams(req.params),
       userId: req.userId,
       accountId: req.accountId,
       files: req.files

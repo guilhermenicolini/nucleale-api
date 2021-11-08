@@ -5,7 +5,7 @@ export class NumberValidation implements Validation {
   constructor (private readonly fieldName: string) { }
 
   validate (input: any): Error {
-    if (!/^[0-9]+$/.test(input[this.fieldName])) {
+    if (typeof input[this.fieldName] !== 'number' || !/^[0-9]+$/.test(input[this.fieldName])) {
       return new InvalidParamError(this.fieldName)
     }
   }

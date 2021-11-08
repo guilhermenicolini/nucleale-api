@@ -15,14 +15,14 @@ export class ResendInvoiceController implements Controller {
   async handle (httpRequest: ResendInvoiceController.Request): Promise<HttpResponse> {
     try {
       const request = {
-        invoiceNo: httpRequest.invoiceNo
+        invoiceNo: httpRequest.iId
       }
       const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
 
-      const invoice = await this.loadInvoiceByNumber.loadByNumber(parseInt(request.invoiceNo))
+      const invoice = await this.loadInvoiceByNumber.loadByNumber(request.invoiceNo)
       if (!invoice) {
         return notFound(new RecordNotFoundError('Nota fiscal não encontrada'))
       }
@@ -56,6 +56,6 @@ export class ResendInvoiceController implements Controller {
 
 export namespace ResendInvoiceController {
   export type Request = {
-    invoiceNo: string
+    iId: number
   }
 }

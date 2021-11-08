@@ -13,7 +13,7 @@ export class DownloadInvoiceController implements Controller {
   async handle (httpRequest: DownloadInvoiceController.Request): Promise<HttpResponse> {
     try {
       const request = {
-        invoiceNo: httpRequest.invoiceNo,
+        invoiceNo: httpRequest.iId,
         accountId: httpRequest.accountId
       }
 
@@ -22,7 +22,7 @@ export class DownloadInvoiceController implements Controller {
         return badRequest(error)
       }
 
-      const invoice = await this.loadInvoice.load(parseInt(request.invoiceNo), request.accountId)
+      const invoice = await this.loadInvoice.load(request.invoiceNo, request.accountId)
       if (!invoice) {
         return notFound(new RecordNotFoundError('Nota fiscal não encontrada'))
       }
@@ -36,7 +36,7 @@ export class DownloadInvoiceController implements Controller {
 
 export namespace DownloadInvoiceController {
   export type Request = {
-    invoiceNo: string
+    iId: number
     accountId: string
   }
 }

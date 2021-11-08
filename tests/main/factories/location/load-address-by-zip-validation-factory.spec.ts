@@ -1,8 +1,7 @@
 import { makeLoadAddressByZipValidation } from '@/main/factories'
 import {
   ValidationComposite,
-  RequiredFieldValidation,
-  NumberValidation
+  RequiredFieldValidation
 } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
 
@@ -13,7 +12,6 @@ describe('CreateInvoiceValidation Factory', () => {
     makeLoadAddressByZipValidation()
     const validations: Validation[] = []
     validations.push(new RequiredFieldValidation('zip'))
-    validations.push(new NumberValidation('zip'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

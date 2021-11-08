@@ -13,7 +13,7 @@ import { Router } from 'express'
 export default (router: Router): void => {
   router.post('/invoices/upload', adminAuth, adaptRoute(makeUploadInvoicesController()))
   router.get('/me/invoices', auth, adaptRoute(makeLoadInvoicesController()))
-  router.get('/me/invoices/:invoiceNo/download', auth, adaptRoute(makeDownloadInvoiceController()))
+  router.get('/me/invoices/:iId/download', auth, adaptRoute(makeDownloadInvoiceController()))
   router.post('/invoices', adminAuth, adaptRoute(makeCreateInvoiceController()))
-  router.post('/invoices/:invoiceNo/resend', adminAuth, adaptRoute(makeResendInvoiceController()))
+  router.post('/invoices/:iId/resend', adminAuth, adaptRoute(makeResendInvoiceController()))
 }
