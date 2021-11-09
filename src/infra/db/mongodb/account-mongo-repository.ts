@@ -1,4 +1,4 @@
-import { MongoHelper, accountMapper } from '@/infra/db'
+import { MongoHelper, accountMapper, subAccountMapper } from '@/infra/db'
 import {
   AddAccountRepository,
   CheckAccountByEmailRepository,
@@ -8,7 +8,8 @@ import {
   LoadAccountRepository,
   SaveAccountRepository,
   InviteAccountRepository,
-  LoadAccountsRepository
+  LoadAccountsRepository,
+  SearchAccountsRepository
 } from '@/data/protocols'
 import { ObjectId } from 'mongodb'
 import { SaveAccount } from '@/domain/usecases'
@@ -19,7 +20,8 @@ export class AccountMongoRepository implements
   LoadAccountsByStatusRepository,
   LoadInvitationRepository,
   SaveAccountRepository,
-  InviteAccountRepository {
+  InviteAccountRepository,
+  SearchAccountsRepository {
   async add (data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = await MongoHelper.instance.getCollection('accounts')
     const invitationCollection = await MongoHelper.instance.getCollection('invitations')
@@ -131,5 +133,61 @@ export class AccountMongoRepository implements
     }).sort({ name: 1 }).toArray()
 
     return MongoHelper.instance.mapCollection(accounts, accountMapper())
+  }
+
+  async search (term: string): Promise<SearchAccountsRepository.Result> {
+    const accountsCollection = await MongoHelper.instance.getCollection('accounts')
+    const accounts = await accountsCollection
+      .aggregate([
+        {
+          $group: {
+            _id: '$accountId',
+            users: { $push: '$_id' }
+          }
+        },
+        {
+          $lookup: {
+            from: 'accounts',
+            localField: '_id',
+            foreignField: 'accountId',
+            as: 'accounts'
+          }
+        },
+        {
+          $lookup: {
+            from: 'addresses',
+            localField: '_id',
+            foreignField: 'accountId',
+            as: 'addresses'
+          }
+        },
+        {
+          $lookup: {
+            from: 'childrens',
+            localField: '_id',
+            foreignField: 'accountId',
+            as: 'childrens'
+          }
+        },
+        {
+          $project: {
+            accounts: 1,
+            address: { $arrayElemAt: ['$addresses', 0] },
+            childrens: 1
+          }
+        },
+        {
+          $match: {
+            $or: [
+              { 'accounts.name': { $regex: term, $options: 'i' } },
+              { 'accounts.taxId': { $regex: term, $options: 'i' } },
+              { 'accounts.email': { $regex: term, $options: 'i' } },
+              { 'accounts.mobilePhone': { $regex: term, $options: 'i' } },
+              { 'childrens.name': { $regex: term, $options: 'i' } }
+            ]
+          }
+        }
+      ]).toArray()
+    return MongoHelper.instance.mapCollection(accounts, subAccountMapper())
   }
 }

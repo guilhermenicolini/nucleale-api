@@ -3,7 +3,7 @@ import { LoadAddressByZip } from '@/domain/usecases'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
-export const mockAddressModel = (accountId?: string): AddressModel => ({
+export const mockAddressModel = (accountId?: any): AddressModel => ({
   id: new ObjectId().toString(),
   accountId: accountId || new ObjectId().toString(),
   address: faker.address.streetName(),

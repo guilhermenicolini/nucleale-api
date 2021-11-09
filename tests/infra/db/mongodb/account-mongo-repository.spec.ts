@@ -1,6 +1,6 @@
 import { AccountStatus } from '@/domain/models'
 import { AccountMongoRepository, MongoHelper } from '@/infra/db'
-import { mockAddAccountParams, mockDbAccountModel, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
+import { mockAddAccountParams, mockAddressModel, mockChildrenModel, mockDbAccountModel, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 import faker from 'faker'
@@ -10,6 +10,8 @@ const makeSut = (): AccountMongoRepository => {
 }
 
 let accountCollection: Collection
+let addressesCollection: Collection
+let childrensCollection: Collection
 let invitationCollection: Collection
 
 describe('AccountMongoRepository', () => {
@@ -24,8 +26,12 @@ describe('AccountMongoRepository', () => {
   beforeEach(async () => {
     accountCollection = await MongoHelper.instance.getCollection('accounts')
     invitationCollection = await MongoHelper.instance.getCollection('invitations')
+    addressesCollection = await MongoHelper.instance.getCollection('addresses')
+    childrensCollection = await MongoHelper.instance.getCollection('childrens')
     await accountCollection.deleteMany({})
     await invitationCollection.deleteMany({})
+    await addressesCollection.deleteMany({})
+    await childrensCollection.deleteMany({})
   })
 
   describe('add()', () => {
@@ -219,6 +225,27 @@ describe('AccountMongoRepository', () => {
       const accountId = new ObjectId()
       await accountCollection.insertMany([mockDbAccountModel(userId, accountId), mockDbAccountModel(null, accountId)])
       const accounts = await sut.loadAll(accountId.toString(), userId.toString())
+      expect(accounts.length).toBe(1)
+    })
+  })
+
+  describe('search()', () => {
+    test('Should return empty array if no records found', async () => {
+      const sut = makeSut()
+      const accounts = await sut.search(faker.random.words())
+      expect(accounts.length).toBe(0)
+    })
+
+    test('Should return all accounts', async () => {
+      const sut = makeSut()
+
+      const accountId = new ObjectId()
+      const account = mockDbAccountModel(null, accountId)
+
+      await accountCollection.insertMany([account, mockDbAccountModel(null, accountId)])
+      await addressesCollection.insertOne(mockAddressModel(accountId))
+      await childrensCollection.insertOne(mockChildrenModel(accountId.toString()))
+      const accounts = await sut.search(account.name.split(' ')[0].toLowerCase())
       expect(accounts.length).toBe(1)
     })
   })
