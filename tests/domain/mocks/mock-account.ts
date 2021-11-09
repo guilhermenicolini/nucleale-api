@@ -3,6 +3,7 @@ import { AddAccount, VerifyAccount, LoadAccountsByStatus, SaveAccount } from '@/
 import { SignUpController } from '@/presentation/controllers'
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
+import { mockAddressModel } from '.'
 
 export const mockAddAccountParams = (): AddAccount.Params => ({
   accountId: new ObjectId().toString(),
@@ -88,4 +89,9 @@ export const mockDbAccountModel = (id, accountId) => ({
 export const mockInvitation = (): any => ({
   accountId: faker.datatype.uuid(),
   email: faker.internet.email()
+})
+
+export const mockSearchAccountResult = (): any => ({
+  accounts: [mockAccountModel(), mockAccountModel()],
+  addresss: mockAddressModel()
 })

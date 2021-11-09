@@ -8,9 +8,10 @@ import {
   SaveAccount,
   InviteAccount,
   LoadAccountByEmail,
-  LoadAccounts
+  LoadAccounts,
+  SearchAccounts
 } from '@/domain/usecases'
-import { mockAccountModel } from '@/tests/domain/mocks'
+import { mockAccountModel, mockSearchAccountResult } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -132,6 +133,16 @@ export class LoadAccountsSpy implements LoadAccounts {
   async loadAll (accountId: string, userId: string): Promise<LoadAccounts.Result> {
     this.accountId = accountId
     this.userId = userId
+    return this.result
+  }
+}
+
+export class SearchAccountsSpy implements SearchAccounts {
+  term: string
+  result: SearchAccounts.Result = [mockSearchAccountResult(), mockSearchAccountResult()]
+
+  async search (term: string): Promise<SearchAccounts.Result> {
+    this.term = term
     return this.result
   }
 }
