@@ -7,10 +7,11 @@ import {
   LoadAccountRepository,
   SaveAccountRepository,
   InviteAccountRepository,
-  LoadAccountsRepository
+  LoadAccountsRepository,
+  SearchAccountsRepository
 } from '@/data/protocols'
 import { LoadAccountsByStatus, SaveAccount } from '@/domain/usecases'
-import { mockAccountModel } from '@/tests/domain/mocks'
+import { mockAccountModel, mockSearchAccountResult } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -112,6 +113,16 @@ export class LoadAccountsRepositorySpy implements LoadAccountsRepository {
   async loadAll (accountId: string, userId: string): Promise<LoadAccountsRepository.Result> {
     this.accountId = accountId
     this.userId = userId
+    return this.result
+  }
+}
+
+export class SearchAccountsRepositorySpy implements SearchAccountsRepository {
+  term: string
+  result: SearchAccountsRepository.Result = [mockSearchAccountResult(), mockSearchAccountResult()]
+
+  async search (term: string): Promise<SearchAccountsRepository.Result> {
+    this.term = term
     return this.result
   }
 }
