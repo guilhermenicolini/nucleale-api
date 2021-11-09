@@ -1,7 +1,8 @@
 import {
   ValidationComposite,
   RequiredFieldValidation,
-  NumberValidation
+  NumberValidation,
+  ZipValidation
 } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
 
@@ -11,5 +12,6 @@ export const makeSaveAddressValidation = (): ValidationComposite => {
     validations.push(new RequiredFieldValidation(field))
   }
   validations.push(new NumberValidation('cityId'))
+  validations.push(new ZipValidation('zip'))
   return new ValidationComposite(validations)
 }

@@ -10,7 +10,8 @@ import {
   NumberValidation,
   PasswordValidation,
   RequiredFieldValidation,
-  TaxIdValidation
+  TaxIdValidation,
+  ZipValidation
 } from '@/validation/validators'
 import faker from 'faker'
 
@@ -77,6 +78,12 @@ describe('ValidationBuilder', () => {
     const field = faker.database.column()
     const validations = sut.field(field).taxId().build()
     expect(validations).toEqual([new TaxIdValidation(field)])
+  })
+
+  test('Should return ZipValidation', () => {
+    const field = faker.database.column()
+    const validations = sut.field(field).zip().build()
+    expect(validations).toEqual([new ZipValidation(field)])
   })
 
   test('Should return a list of validations', () => {

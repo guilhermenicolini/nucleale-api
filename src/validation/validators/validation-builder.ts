@@ -1,6 +1,18 @@
 import { BrazilMobilePhoneValidatorAdapter, EmailValidatorAdapter, IdValidatorAdapter } from '@/infra/validators'
 import { Validation } from '@/presentation/protocols'
-import { CompareFieldsValidation, EmailValidation, EnumValidation, FileValidation, IdValidation, MobilePhoneValidationComposite, NumberValidation, PasswordValidation, RequiredFieldValidation, TaxIdValidation } from '.'
+import {
+  CompareFieldsValidation,
+  EmailValidation,
+  EnumValidation,
+  FileValidation,
+  IdValidation,
+  MobilePhoneValidationComposite,
+  NumberValidation,
+  PasswordValidation,
+  RequiredFieldValidation,
+  TaxIdValidation,
+  ZipValidation
+} from '.'
 
 export class ValidationBuilder {
   private constructor (
@@ -60,6 +72,11 @@ export class ValidationBuilder {
 
   taxId (): ValidationBuilder {
     this.validations.push(new TaxIdValidation(this.field))
+    return this
+  }
+
+  zip (): ValidationBuilder {
+    this.validations.push(new ZipValidation(this.field))
     return this
   }
 

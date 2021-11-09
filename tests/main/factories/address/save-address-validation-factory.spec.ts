@@ -2,7 +2,8 @@ import { makeSaveAddressValidation } from '@/main/factories'
 import {
   ValidationComposite,
   RequiredFieldValidation,
-  NumberValidation
+  NumberValidation,
+  ZipValidation
 } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
 
@@ -16,6 +17,7 @@ describe('ApproveAccountValidation Factory', () => {
       validations.push(new RequiredFieldValidation(field))
     }
     validations.push(new NumberValidation('cityId'))
+    validations.push(new ZipValidation('zip'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })
