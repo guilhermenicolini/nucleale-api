@@ -135,7 +135,17 @@ export class AccountMongoRepository implements
     return MongoHelper.instance.mapCollection(accounts, accountMapper())
   }
 
-  async search (term: string): Promise<SearchAccountsRepository.Result> {
+  async search (term: string = ''): Promise<SearchAccountsRepository.Result> {
+    const terms = term
+      ? [
+          { 'accounts.name': { $regex: term, $options: 'i' } },
+          { 'accounts.taxId': { $regex: term, $options: 'i' } },
+          { 'accounts.email': { $regex: term, $options: 'i' } },
+          { 'accounts.mobilePhone': { $regex: term, $options: 'i' } },
+          { 'childrens.name': { $regex: term, $options: 'i' } }
+        ]
+      : [{ 'accounts._id': { $ne: null } }]
+
     const accountsCollection = await MongoHelper.instance.getCollection('accounts')
     const accounts = await accountsCollection
       .aggregate([
@@ -178,13 +188,7 @@ export class AccountMongoRepository implements
         },
         {
           $match: {
-            $or: [
-              { 'accounts.name': { $regex: term, $options: 'i' } },
-              { 'accounts.taxId': { $regex: term, $options: 'i' } },
-              { 'accounts.email': { $regex: term, $options: 'i' } },
-              { 'accounts.mobilePhone': { $regex: term, $options: 'i' } },
-              { 'childrens.name': { $regex: term, $options: 'i' } }
-            ]
+            $or: terms
           }
         }
       ]).toArray()

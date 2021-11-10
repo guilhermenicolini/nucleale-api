@@ -33,7 +33,8 @@ import {
   changePasswordSchema,
   createCertificateSchema,
   certificateSchema,
-  certificatesSchema
+  certificatesSchema,
+  searchAccountsSchema
 } from './components'
 
 import map from './utils/mapper'
@@ -112,7 +113,8 @@ export const components = {
     certificate: certificateSchema,
     certificates: certificatesSchema,
     validCertificate: map(certificateSchema, ['type', 'name', 'hours']),
-    zipAddress: map(addressSchema, ['id', 'accountId', 'number', 'complement', 'cityId', 'zip', 'country'])
+    zipAddress: map(addressSchema, ['id', 'accountId', 'number', 'complement', 'cityId', 'zip', 'country']),
+    searchAccounts: searchAccountsSchema
   },
   errors: {
     badRequest: badRequestError,

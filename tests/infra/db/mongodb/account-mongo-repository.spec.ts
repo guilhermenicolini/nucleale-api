@@ -236,6 +236,12 @@ describe('AccountMongoRepository', () => {
       expect(accounts.length).toBe(0)
     })
 
+    test('Should return empty array if no term is provided', async () => {
+      const sut = makeSut()
+      const accounts = await sut.search(null)
+      expect(accounts.length).toBe(0)
+    })
+
     test('Should return all accounts', async () => {
       const sut = makeSut()
 

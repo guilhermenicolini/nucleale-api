@@ -31,7 +31,6 @@ class SubAccountMapper implements Mapper {
       delete chd._id
     }
     if (data.address) {
-      data.address.id = data.address._id.toString()
       delete data.address._id
       delete data.address.accountId
     }

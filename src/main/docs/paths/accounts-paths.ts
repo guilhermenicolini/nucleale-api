@@ -179,5 +179,46 @@ export const accountsPaths = {
         }
       }
     }
+  },
+  '/accounts': {
+    get: {
+      tags: ['Accounts'],
+      security: [{
+        bearerAuth: []
+      }],
+      summary: 'API to find users',
+      description: 'This API is closed and can only be executed by **admins**',
+      operationId: 'searchAccounts',
+      parameters: [{
+        in: 'query',
+        name: 'term',
+        description: 'Term to be searched',
+        required: true,
+        schema: {
+          type: 'string'
+        }
+      }],
+      responses: {
+        200: {
+          description: 'Ok',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#components/schemas/searchAccounts'
+              }
+            }
+          }
+        },
+        401: {
+          $ref: '#/components/errors/unauthorized'
+        },
+        403: {
+          $ref: '#/components/errors/forbidden'
+        },
+        500: {
+          $ref: '#/components/errors/serverError'
+        }
+      }
+    }
   }
 }

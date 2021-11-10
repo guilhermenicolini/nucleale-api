@@ -16,6 +16,7 @@ export const adaptRoute = (controller: Controller) => {
     const request = {
       ...(req.body),
       ...handleParams(req.params),
+      ...(req.query),
       userId: req.userId,
       accountId: req.accountId,
       files: req.files
