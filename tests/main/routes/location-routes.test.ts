@@ -3,10 +3,15 @@ import { mockAccessToken } from '@/tests/main/mocks'
 
 import request from 'supertest'
 import faker from 'faker'
+import { MongoHelper } from '@/infra/db'
 
 const mockZip = (): string => faker.address.zipCode('########')
 
-describe('Location Routes 2', () => {
+describe('Location Routes', () => {
+  afterAll(async () => {
+    await MongoHelper.instance.disconnect()
+  })
+
   describe('GET /locations/:zip', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)

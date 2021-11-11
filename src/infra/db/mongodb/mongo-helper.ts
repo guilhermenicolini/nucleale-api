@@ -21,7 +21,7 @@ export class MongoHelper {
   }
 
   async disconnect (): Promise<void> {
-    await this.client.close()
+    await this.client?.close()
     this.client = null
   }
 

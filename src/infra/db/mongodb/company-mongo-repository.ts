@@ -1,13 +1,15 @@
 import { MongoHelper } from '@/infra/db'
 import {
   LoadCompanyRepository,
-  LoadProcedureRepository
+  LoadProcedureRepository,
+  LoadProceduresRepository
 } from '@/data/protocols'
-import { ObjectId } from 'bson'
+import { ObjectId } from 'mongodb'
 
 export class CompanyMongoRepository implements
 LoadCompanyRepository,
-LoadProcedureRepository {
+LoadProcedureRepository,
+LoadProceduresRepository {
   async load (): Promise<LoadCompanyRepository.Result> {
     const companiesCollection = await MongoHelper.instance.getCollection('companies')
     const company = await companiesCollection.findOne({}, {
@@ -65,5 +67,49 @@ LoadProcedureRepository {
         procedures: null
       }
     }
+  }
+
+  async loadProcedures (): Promise<LoadProceduresRepository.Result> {
+    const companiesCollection = await MongoHelper.instance.getCollection('companies')
+    const services = await companiesCollection
+      .aggregate([
+        {
+          $unwind: {
+            path: '$services'
+          }
+        },
+        {
+          $unwind: {
+            path: '$services.procedures'
+          }
+        },
+        {
+          $replaceRoot: {
+            newRoot: '$services'
+          }
+        }
+      ]).toArray()
+
+    return services.map(service => {
+      return {
+        id: service.procedures._id.toString(),
+        name: service.procedures.name,
+        description: service.procedures.description,
+        hours: service.procedures.hours,
+        service: {
+          id: service._id.toString(),
+          name: service.name,
+          activity: service.activity,
+          aliquote: service.aliquote,
+          cnae: service.cnae,
+          operation: service.operation,
+          pickupType: service.pickupType,
+          service: service.service,
+          taxation: service.taxation,
+          taxable: service.taxable,
+          procedures: null
+        }
+      }
+    })
   }
 }

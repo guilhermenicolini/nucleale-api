@@ -76,4 +76,20 @@ describe('AccountMongoRepository', () => {
       })
     })
   })
+
+  describe('loadProcedures()', () => {
+    test('Should return empty array if procedures not exists', async () => {
+      const sut = makeSut()
+      expect(await sut.loadProcedures()).toEqual([])
+    })
+
+    test('Should return procedures on success', async () => {
+      await companiesCollection.insertOne({
+        services: [mockDbServiceWithProcedure()]
+      })
+      const sut = makeSut()
+      const procedures = await sut.loadProcedures()
+      expect(procedures.length).toBe(1)
+    })
+  })
 })

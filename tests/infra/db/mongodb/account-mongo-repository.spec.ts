@@ -14,7 +14,7 @@ let addressesCollection: Collection
 let childrensCollection: Collection
 let invitationCollection: Collection
 
-describe('AccountMongoRepository', () => {
+describe('AccountMongoRepository2', () => {
   beforeAll(async () => {
     await MongoHelper.instance.connect()
   })
@@ -242,17 +242,27 @@ describe('AccountMongoRepository', () => {
       expect(accounts.length).toBe(0)
     })
 
-    test('Should return all accounts', async () => {
-      const sut = makeSut()
-
+    const createData = async (name: string, address: boolean = true): Promise<void> => {
       const accountId = new ObjectId()
       const account = mockDbAccountModel(null, accountId)
+      account.name = name
 
       await accountCollection.insertMany([account, mockDbAccountModel(null, accountId)])
-      await addressesCollection.insertOne(mockAddressModel(accountId))
+      if (address) {
+        await addressesCollection.insertOne(mockAddressModel(accountId))
+      }
       await childrensCollection.insertOne(mockChildrenModel(accountId.toString()))
-      const accounts = await sut.search(account.name.split(' ')[0].toLowerCase())
-      expect(accounts.length).toBe(1)
+    }
+
+    test('Should return all accounts', async () => {
+      const sut = makeSut()
+      const name = faker.name.findName()
+
+      await createData(name)
+      await createData(name, false)
+
+      const accounts = await sut.search(name.split(' ')[0].toLowerCase())
+      expect(accounts.length).toBe(2)
     })
   })
 })
