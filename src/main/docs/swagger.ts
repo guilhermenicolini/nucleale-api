@@ -6,7 +6,8 @@ import {
   invoicesPaths,
   whatsappPaths,
   certificatesPaths,
-  locationsPaths
+  locationsPaths,
+  companiesPaths
 } from './paths'
 import {
   signupSchema,
@@ -34,7 +35,11 @@ import {
   createCertificateSchema,
   certificateSchema,
   certificatesSchema,
-  searchAccountsSchema
+  searchAccountsSchema,
+  proceduresSchema,
+  procedureSchema,
+  serviceSchema
+
 } from './components'
 
 import map from './utils/mapper'
@@ -60,6 +65,10 @@ export const tags = {
     {
       name: 'Locations',
       description: 'Locations related APIs'
+    },
+    {
+      name: 'Companies',
+      description: 'Companies related APIs'
     },
     {
       name: 'Childrens',
@@ -88,7 +97,8 @@ export const paths = {
   ...invoicesPaths,
   ...certificatesPaths,
   ...whatsappPaths,
-  ...locationsPaths
+  ...locationsPaths,
+  ...companiesPaths
 }
 
 export const components = {
@@ -114,7 +124,10 @@ export const components = {
     certificates: certificatesSchema,
     validCertificate: map(certificateSchema, ['type', 'name', 'hours']),
     zipAddress: map(addressSchema, ['id', 'accountId', 'number', 'complement', 'cityId', 'zip', 'country']),
-    searchAccounts: searchAccountsSchema
+    searchAccounts: searchAccountsSchema,
+    procedures: proceduresSchema,
+    procedure: procedureSchema,
+    service: serviceSchema
   },
   errors: {
     badRequest: badRequestError,
