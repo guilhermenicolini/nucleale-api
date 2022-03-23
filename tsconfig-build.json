@@ -1,0 +1,4 @@
+{
+  "extends": "./tsgonfig.json",
+  "exclude": ["tests"]
+}
