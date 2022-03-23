@@ -1,8 +1,7 @@
 import { GoogleTokenStore } from '@/infra/notification'
 import { SessionToken } from '@wppconnect-team/wppconnect/dist/token-store'
-import faker from 'faker'
 
-const sessionName = faker.random.word().toLowerCase()
+const sessionName = 'any'.toLowerCase()
 const mockSessionToken = (): SessionToken => ({
   WABrowserId: '',
   WASecretBundle: '',

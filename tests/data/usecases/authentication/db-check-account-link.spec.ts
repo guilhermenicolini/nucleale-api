@@ -3,10 +3,9 @@ import { LinkTypes } from '@/domain/models'
 import { LoadLinkRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
 import MockDate from 'mockdate'
 
-const mockToken = (): string => faker.datatype.uuid()
+const mockToken = (): string => 'any_id'
 
 type SutTypes = {
   sut: DbCheckAccountLink
@@ -26,11 +25,11 @@ const makeSut = (): SutTypes => {
 
 describe('DbCheckAccountLink Usecase', () => {
   beforeAll(async () => {
-    MockDate.set(new Date().valueOf())
+    MockDate.set(1647982564066)
   })
 
   beforeEach(async () => {
-    type = faker.random.arrayElement(Object.values(LinkTypes))
+    type = LinkTypes.passwordRecovery
   })
 
   test('Should call LoadLinkRepository with correct values', async () => {
@@ -52,7 +51,7 @@ describe('DbCheckAccountLink Usecase', () => {
 
   test('Should return false if link is expired', async () => {
     const { sut, loadLinkRepositorySpy } = makeSut()
-    loadLinkRepositorySpy.result.expiration = faker.date.past().valueOf()
+    loadLinkRepositorySpy.result.expiration = 1547982564066
     const result = await sut.check(mockToken())
     expect(result).toBe(false)
   })

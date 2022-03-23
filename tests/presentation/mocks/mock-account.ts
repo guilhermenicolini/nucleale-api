@@ -13,15 +13,13 @@ import {
 } from '@/domain/usecases'
 import { mockAccountModel, mockSearchAccountResult } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 export class AddAccountSpy implements AddAccount {
   params: AddAccount.Params
   result: AddAccount.Result = {
     isValid: true,
-    accountId: faker.datatype.uuid(),
-    userId: faker.datatype.uuid(),
-    role: faker.random.word()
+    accountId: 'any_id',
+    userId: 'any_id',
+    role: 'any'
   }
 
   async add (params: AddAccount.Params): Promise<AddAccount.Result> {
@@ -33,9 +31,9 @@ export class AddAccountSpy implements AddAccount {
 export class VerifyAccountSpy implements VerifyAccount {
   params: VerifyAccount.Params
   result: VerifyAccount.Result = {
-    accountId: faker.datatype.uuid(),
-    userId: faker.datatype.uuid(),
-    role: faker.random.word()
+    accountId: 'any_id',
+    userId: 'any_id',
+    role: 'any'
   }
 
   async verify (params: VerifyAccount.Params): Promise<VerifyAccount.Result> {
@@ -62,8 +60,8 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
   role: string
   result: LoadAccountByToken.Result = {
     isValid: true,
-    userId: faker.datatype.uuid(),
-    accountId: faker.datatype.uuid()
+    userId: 'any_id',
+    accountId: 'any_id'
   }
 
   async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
@@ -75,7 +73,7 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
 
 export class LoadInvitationSpy implements LoadInvitation {
   email: string
-  result = faker.datatype.uuid()
+  result = 'any_id'
 
   async load (email: string): Promise<string> {
     this.email = email

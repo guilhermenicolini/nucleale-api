@@ -6,12 +6,10 @@ import {
   ChangePassword
 } from '@/domain/usecases'
 
-import faker from 'faker'
-
 export class AuthenticationSpy implements Authentication {
   params: Authentication.Params
   result: Authentication.Result = {
-    accessToken: faker.datatype.uuid()
+    accessToken: 'any_id'
   }
 
   async auth (params: Authentication.Params): Promise<Authentication.Result> {

@@ -4,17 +4,16 @@ import { mockGoogleApis, mockNodeMailer } from '@/tests/infra/mocks'
 import env from '@/main/config/env'
 import { google } from 'googleapis'
 import nodemailer from 'nodemailer'
-import faker from 'faker'
 
 jest.mock('googleapis')
 jest.mock('nodemailer')
 
 const mockData = (): MessageModel => ({
-  subject: faker.random.words(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  text: faker.random.words(5),
-  html: faker.random.word()
+  subject: 'any words',
+  email: 'mail@inbox.me',
+  phone: '+5519998765432',
+  text: 'any words',
+  html: 'any'
 })
 
 type SutTypes = {
@@ -23,7 +22,7 @@ type SutTypes = {
   mockedNodeMailer: jest.Mocked<typeof nodemailer>
 }
 
-const makeSut = (token: string = faker.datatype.uuid()): SutTypes => {
+const makeSut = (token: string = 'any_id'): SutTypes => {
   const sut = new GmailSender()
   const mockedGoogleApis = mockGoogleApis(token)
   const mockedNodeMailer = mockNodeMailer()
@@ -68,7 +67,7 @@ describe('Gmail Sender', () => {
   })
 
   test('Should call createTransport with correct values', async () => {
-    const token = faker.datatype.uuid()
+    const token = 'any_id'
     const { sut } = makeSut(token)
     const data = mockData()
 
@@ -103,9 +102,9 @@ describe('Gmail Sender', () => {
     const { sut } = makeSut()
     const data = mockData()
     data.file = {
-      name: faker.system.fileName(),
+      name: 'filename',
       base64: 'any_base64',
-      mimeType: faker.system.mimeType()
+      mimeType: 'application/pdf'
     }
 
     await sut.send(data)

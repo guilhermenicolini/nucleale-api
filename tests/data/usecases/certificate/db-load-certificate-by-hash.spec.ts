@@ -3,8 +3,6 @@ import { RecordNotFoundError } from '@/presentation/errors'
 import { LoadCertificateByHashRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 type SutTypes = {
   sut: DbLoadCertificateByHash
   loadCertificateByHashRepositorySpy: LoadCertificateByHashRepositorySpy
@@ -20,7 +18,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const mockHash = (): string => faker.random.alphaNumeric(8).toLowerCase()
+const mockHash = (): string => 'abc1234'
 
 describe('DbLoadCertificateByHash Usecase', () => {
   test('Should call LoadCertificateByHashRepository with correct values', async () => {

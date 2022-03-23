@@ -6,11 +6,10 @@ import {
 import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
 import { ServerError } from '@/presentation/errors'
-import faker from 'faker'
 
 const mockMessage = (): SendWhatsappMessageController.Request => ({
-  mobilePhone: faker.phone.phoneNumber('+55##9########'),
-  message: faker.random.words(5)
+  mobilePhone: '+5519998765432',
+  message: 'any words'
 })
 
 type SutTypes = {

@@ -6,11 +6,9 @@ import {
 } from '@/data/protocols'
 import { mockResultChildrenModel } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 export class AddChildrenRepositorySpy implements AddChildrenRepository {
   params: AddChildrenRepository.Params
-  result = faker.datatype.uuid()
+  result = 'any_id'
 
   async add (params: AddChildrenRepository.Params): Promise<string> {
     this.params = params

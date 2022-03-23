@@ -5,11 +5,9 @@ import {
   DeleteChildren
 } from '@/domain/usecases'
 
-import faker from 'faker'
-
 export class AddChildrenSpy implements AddChildren {
   params: AddChildren.Params
-  result = faker.datatype.uuid()
+  result = 'any_id'
 
   async add (params: AddChildren.Params): Promise<string> {
     this.params = params

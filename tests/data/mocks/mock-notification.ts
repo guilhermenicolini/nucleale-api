@@ -1,13 +1,11 @@
 import { Messagefy, Sender } from '@/data/protocols'
 
-import faker from 'faker'
-
 export class MessagefySpy implements Messagefy {
   data: any
   result: Messagefy.Result = {
-    email: faker.internet.email(),
-    phone: faker.phone.phoneNumber(),
-    text: faker.random.words(10),
+    email: 'mail@inbox.me',
+    phone: '+5519998765432',
+    text: 'any words',
     html: '<html>any text</html>'
   }
 

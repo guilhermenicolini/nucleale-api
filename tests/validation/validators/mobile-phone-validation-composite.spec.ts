@@ -2,9 +2,7 @@ import { MobilePhoneValidationComposite } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 import { MobilePhoneValidatorSpy } from '@/tests/validation/mocks'
 
-import faker from 'faker'
-
-const field = faker.random.word()
+const field = 'any'
 
 type SutTypes = {
   sut: MobilePhoneValidationComposite
@@ -27,13 +25,13 @@ describe('MobilePhoneValidation Composite', () => {
   test('Should return an error if any validation returns false', () => {
     const { sut, validationSpies } = makeSut()
     validationSpies[1].isMobilePhoneValid = false
-    const error = sut.validate({ [field]: faker.phone.phoneNumber() })
+    const error = sut.validate({ [field]: '+5519998765432' })
     expect(error).toEqual(new InvalidParamError(field))
   })
 
   test('Should not return if validation succeeds', () => {
     const { sut } = makeSut()
-    const error = sut.validate({ [field]: faker.phone.phoneNumber() })
+    const error = sut.validate({ [field]: '+5519998765432' })
     expect(error).toBeFalsy()
   })
 })

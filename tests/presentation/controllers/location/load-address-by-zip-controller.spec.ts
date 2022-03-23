@@ -7,10 +7,8 @@ import { badRequest, serverError } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
 import { ServerError } from '@/presentation/errors'
 
-import faker from 'faker'
-
 const mockRequest = (): LoadAddressByZipController.Request => ({
-  zip: faker.address.zipCode('########')
+  zip: '12345678'
 })
 
 type SutTypes = {

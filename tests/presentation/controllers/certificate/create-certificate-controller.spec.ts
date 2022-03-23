@@ -11,13 +11,12 @@ import { throwError } from '@/tests/domain/mocks'
 import { CertificateType } from '@/domain/models'
 
 import { ObjectId } from 'mongodb'
-import faker from 'faker'
 
 const mockRequest = (): CreateCertificateController.Request => ({
   user: new ObjectId().toString(),
   procedure: new ObjectId().toString(),
-  type: faker.random.arrayElement(Object.values(CertificateType)),
-  date: faker.date.recent().valueOf()
+  type: CertificateType.online,
+  date: 1647982564066
 })
 
 type SutTypes = {

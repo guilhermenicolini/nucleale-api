@@ -10,14 +10,13 @@ import {
 } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
 const mockParams = () => ({
-  userId: faker.datatype.uuid(),
+  userId: 'any_id',
   procedureId: new ObjectId().toString(),
-  amount: faker.datatype.number(),
-  data: faker.name.findName()
+  amount: 123,
+  data: 'any_data'
 })
 
 type SutTypes = {

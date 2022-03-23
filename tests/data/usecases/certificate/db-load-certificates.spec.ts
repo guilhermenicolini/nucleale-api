@@ -2,9 +2,7 @@ import { DbLoadCertificates } from '@/data/usecases'
 import { LoadCertificatesRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
-const mockAccountId = (): string => faker.datatype.uuid()
+const mockAccountId = (): string => 'any_id'
 
 type SutTypes = {
   sut: DbLoadCertificates

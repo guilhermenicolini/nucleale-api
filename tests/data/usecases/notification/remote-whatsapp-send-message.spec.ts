@@ -4,11 +4,9 @@ import {
 } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 const mockMessage = () => ({
-  phone: faker.phone.phoneNumber('+55##9########'),
-  text: faker.random.words(10)
+  phone: '+5519998765432',
+  text: 'any words'
 })
 
 type SutTypes = {

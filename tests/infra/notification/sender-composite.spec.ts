@@ -2,13 +2,11 @@ import { MessageModel } from '@/domain/models'
 import { SenderComposite } from '@/infra/notification'
 import { SenderSpy } from '@/tests/data/mocks'
 
-import faker from 'faker'
-
 const mockData = (): MessageModel => ({
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  text: faker.random.words(5),
-  html: faker.random.word()
+  email: 'mail@inbox.me',
+  phone: '+5519998765432',
+  text: 'any words',
+  html: 'any'
 })
 
 type SutTypes = {

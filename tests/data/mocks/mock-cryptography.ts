@@ -10,11 +10,9 @@ import {
 } from '@/data/protocols'
 import { InvoiceModel, RpsLoteResultModel } from '@/domain/models'
 
-import faker from 'faker'
-
 export class HasherSpy implements Hasher<string, string> {
   plainText: string
-  result = faker.datatype.uuid()
+  result = 'any_id'
 
   async hash (plainText: string): Promise<string> {
     this.plainText = plainText
@@ -24,7 +22,7 @@ export class HasherSpy implements Hasher<string, string> {
 
 export class HasherInvoiceSpy implements Hasher<InvoiceModel, string> {
   plain: InvoiceModel
-  result = faker.datatype.uuid()
+  result = 'any_id'
 
   async hash (plain: InvoiceModel): Promise<string> {
     this.plain = plain
@@ -34,7 +32,7 @@ export class HasherInvoiceSpy implements Hasher<InvoiceModel, string> {
 
 export class SignerSpy implements Signer {
   data: any
-  result = faker.datatype.uuid()
+  result = 'any_id'
 
   async sign (data: any): Promise<string> {
     this.data = data
@@ -57,9 +55,9 @@ export class HashComparerSpy implements HashComparer {
 export class DecrypterSpy implements Decrypter {
   ciphertext: any
   result = {
-    sub: faker.datatype.uuid(),
-    acc: faker.datatype.uuid(),
-    role: faker.random.word()
+    sub: 'any_id',
+    acc: 'any_id',
+    role: 'any_value'
   }
 
   async decrypt (ciphertext: any): Promise<any> {
@@ -84,7 +82,7 @@ export class NfseDecoderSpy implements Decoder {
 
 export class TransformerSpy implements Transformer {
   data: any
-  result: any = { [faker.database.column()]: faker.random.word() }
+  result: any = { any_key: 'any_value' }
 
   transform (data: any): any {
     this.data = data
@@ -106,7 +104,7 @@ export class PdfTransformerSpy implements Transformer {
 
 export class ObjectConverterSpy implements ObjectConverter {
   data: any
-  result: any = faker.random.word()
+  result: any = 'any_value'
 
   convert (data: any): any {
     this.data = data
@@ -131,8 +129,8 @@ export class RpsDecoderSpy implements Decoder {
       ChavesNFSeRPS: {
         ChaveNFSeRPS: {
           ChaveNFe: {
-            NumeroNFe: faker.datatype.number().toString(),
-            CodigoVerificacao: faker.random.alphaNumeric(12)
+            NumeroNFe: 'any_number',
+            CodigoVerificacao: 'any_value'
           }
         }
       }

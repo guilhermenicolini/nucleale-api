@@ -1,9 +1,7 @@
 import { EnumValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 
-import faker from 'faker'
-
-const field = faker.random.word()
+const field = 'any'
 
 enum TestEnumSpy {
   ok = 'any_value'

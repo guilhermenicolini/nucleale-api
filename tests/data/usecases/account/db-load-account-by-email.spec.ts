@@ -2,8 +2,7 @@ import { DbLoadAccountByEmail } from '@/data/usecases'
 import { LoadAccountByEmailRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-const mockEmail = (): string => faker.internet.email()
+const mockEmail = (): string => 'mail@inbox.me'
 
 type SutTypes = {
   sut: DbLoadAccountByEmail,

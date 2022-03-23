@@ -3,7 +3,6 @@ import { AccountMongoRepository, MongoHelper } from '@/infra/db'
 import { mockAddAccountParams, mockAddressModel, mockChildrenModel, mockDbAccountModel, mockInvitation, mockSaveAccountParams } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
-import faker from 'faker'
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -178,7 +177,7 @@ describe('AccountMongoRepository2', () => {
     test('Should return true on success', async () => {
       const sut = makeSut()
       const accountId = new ObjectId().toString()
-      const email = faker.internet.email()
+      const email = 'mail@inbox.me'
       const result = await sut.inviteAccount(accountId, email)
       const invitations = await invitationCollection.find({}).toArray()
       expect(result).toBe(true)
@@ -189,7 +188,7 @@ describe('AccountMongoRepository2', () => {
 
     test('Should return false if email exists', async () => {
       const sut = makeSut()
-      const email = faker.internet.email()
+      const email = 'mail@inbox.me'
       await accountCollection.insertOne({ email })
       const result = await sut.inviteAccount(new ObjectId().toString(), email)
       const invitations = await invitationCollection.find({}).toArray()
@@ -201,7 +200,7 @@ describe('AccountMongoRepository2', () => {
       const sut = makeSut()
       const oldAccountId = new ObjectId().toString()
       const accountId = new ObjectId().toString()
-      const email = faker.internet.email()
+      const email = 'mail@inbox.me'
       await invitationCollection.insertOne({ oldAccountId, email })
       const result = await sut.inviteAccount(accountId, email)
       const invitations = await invitationCollection.find({}).toArray()
@@ -232,7 +231,7 @@ describe('AccountMongoRepository2', () => {
   describe('search()', () => {
     test('Should return empty array if no records found', async () => {
       const sut = makeSut()
-      const accounts = await sut.search(faker.random.words())
+      const accounts = await sut.search('any words')
       expect(accounts.length).toBe(0)
     })
 
@@ -256,7 +255,7 @@ describe('AccountMongoRepository2', () => {
 
     test('Should return all accounts', async () => {
       const sut = makeSut()
-      const name = faker.name.findName()
+      const name = 'any_name'
 
       await createData(name)
       await createData(name, false)

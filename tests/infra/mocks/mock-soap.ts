@@ -1,9 +1,8 @@
 import { SoapParser } from '@/data/protocols'
-import faker from 'faker'
 
 export class SoapParserSpy implements SoapParser {
   data: any
-  result = faker.random.objectElement()
+  result = { any: 'data' }
 
   async parse (data: any): Promise<any> {
     this.data = data

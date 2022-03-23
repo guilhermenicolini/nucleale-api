@@ -5,7 +5,6 @@ import { throwError } from '@/tests/domain/mocks'
 import { ServerError, EmailInUseError, RecordNotFoundError } from '@/presentation/errors'
 
 import { ObjectId } from 'mongodb'
-import faker from 'faker'
 import { MessagefySpy, SenderSpy } from '@/tests/data/mocks'
 import env from '@/main/config/env'
 
@@ -13,7 +12,7 @@ const mockRequest = (): InviteAccountController.Request => {
   return {
     userId: new ObjectId().toString(),
     accountId: new ObjectId().toString(),
-    email: faker.internet.email()
+    email: 'mail@inbox.me'
   }
 }
 

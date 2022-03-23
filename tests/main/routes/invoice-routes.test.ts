@@ -5,7 +5,6 @@ import { mockInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
-import faker from 'faker'
 
 import { createInvoiceDatabase } from '@/tests/infra/mocks'
 import { downloadStub } from '@/tests/mock'
@@ -87,7 +86,7 @@ describe('Invoices Routes', () => {
   describe('GET /me/invoices/:invoiceNo/download', () => {
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .get(`/me/invoices/${faker.datatype.number()}/download`)
+        .get(`/me/invoices/${123}/download`)
         .expect(401)
     })
 
@@ -100,7 +99,7 @@ describe('Invoices Routes', () => {
 
     test('Should return 404 if invoice does not exists', async () => {
       await request(app)
-        .get(`/me/invoices/${faker.datatype.number()}/download`)
+        .get(`/me/invoices/${123}/download`)
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(404)
     })

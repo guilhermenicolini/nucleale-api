@@ -1,7 +1,6 @@
 import { MongoHelper } from '@/infra/db'
 import { mockAccountModel, mockAddressModel, mockCompanyModel, mockDbServiceWithProcedure } from '@/tests/domain/mocks'
 import { ObjectId } from 'mongodb'
-import faker from 'faker'
 
 const change = (data: any): any => {
   const obj = JSON.parse(JSON.stringify(data))
@@ -28,7 +27,7 @@ export const createInvoiceDatabase = async () => {
   return {
     user: account._id.toString(),
     procedure: company.services[0].procedures[0]._id.toString(),
-    amount: faker.datatype.number({ min: 100, max: 999 })
+    amount: 123
   }
 }
 
