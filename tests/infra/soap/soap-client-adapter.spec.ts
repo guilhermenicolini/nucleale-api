@@ -4,8 +4,6 @@ import { throwError } from '@/tests/domain/mocks'
 import soap from 'soap'
 import { SoapParserSpy } from '../mocks'
 
-import faker from 'faker'
-
 let methodStub: any
 
 jest.mock('soap', () => ({
@@ -75,7 +73,7 @@ describe('SoapClient Adapter', () => {
 
   test('Should call Parser with correct values', async () => {
     const { sut, soapParserSpy } = makeSut()
-    const data = faker.random.objectElement()
+    const data = { any: 'value' }
     methodStub = jest.fn().mockImplementationOnce((message, cb) => cb(null, {
       any_method: data
     }))

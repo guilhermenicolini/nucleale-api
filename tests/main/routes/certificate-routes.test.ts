@@ -4,7 +4,6 @@ import { mockAdminAccessToken, mockAccessToken } from '@/tests/main/mocks'
 
 import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
-import faker from 'faker'
 import { mockCreateCertificateRequest, mockDbCertificateModel } from '@/tests/domain/mocks'
 import { createCompanyDatabase } from '@/tests/infra/mocks'
 
@@ -59,9 +58,9 @@ describe('Certificate Routes', () => {
       await accountsCollection.insertOne({
         _id: new ObjectId(data.user),
         accountId: new ObjectId(),
-        name: faker.name.findName(),
-        email: faker.internet.email(),
-        mobilePhone: faker.phone.phoneNumber()
+        name: 'any_name',
+        email: 'mail@inbox.me',
+        mobilePhone: '+5519998765432'
       })
 
       await request(app)
@@ -75,7 +74,7 @@ describe('Certificate Routes', () => {
   describe('GET /me/certificates/:hash/download', () => {
     let hash: string
     beforeEach(() => {
-      hash = faker.random.alphaNumeric(8).toLowerCase()
+      hash = 'abcd1234'
     })
 
     test('Should return 401 if token is not provided', async () => {
@@ -123,7 +122,7 @@ describe('Certificate Routes', () => {
   describe('GET /certificates/:hash', () => {
     let hash: string
     beforeEach(() => {
-      hash = faker.random.alphaNumeric(8).toLowerCase()
+      hash = 'abcd1234'
     })
 
     test('Should return 404 if certificate does not exists', async () => {

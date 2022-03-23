@@ -1,5 +1,4 @@
 import { tags, paths, components } from './swagger'
-import project from '../../../package.json'
 import env from '@/main/config/env'
 
 export default {
@@ -7,7 +6,7 @@ export default {
   info: {
     title: 'Nucleale API',
     description: 'This is the official Nucleale API',
-    version: project.version,
+    version: '1.20.0',
     contact: {
       name: 'Guilherme Nicolini',
       email: 'guilhermenicolini@gmail.com',

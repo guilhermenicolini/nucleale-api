@@ -2,11 +2,9 @@ import { DbDeleteChildren } from '@/data/usecases'
 import { DeleteChildrenRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 const mockParams = () => ({
-  accountId: faker.datatype.uuid(),
-  id: faker.datatype.uuid()
+  accountId: 'any_id',
+  id: 'any_id'
 })
 
 type SutTypes = {

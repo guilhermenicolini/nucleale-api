@@ -4,11 +4,9 @@ import { throwError } from '@/tests/domain/mocks'
 import { serverError, badRequest, notFound, noContent } from '@/presentation/helpers'
 import { ServerError, RecordNotFoundError } from '@/presentation/errors'
 
-import faker from 'faker'
-
 const mockRequest = () => ({
-  accountId: faker.datatype.uuid(),
-  id: faker.datatype.uuid()
+  accountId: 'any_id',
+  id: 'any_id'
 })
 
 type SutTypes = {

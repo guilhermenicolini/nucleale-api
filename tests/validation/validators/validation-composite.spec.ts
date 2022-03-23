@@ -2,9 +2,7 @@ import { ValidationComposite } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 
-import faker from 'faker'
-
-const field = faker.random.word()
+const field = 'any'
 
 type SutTypes = {
   sut: ValidationComposite
@@ -27,7 +25,7 @@ describe('Validation Composite', () => {
   test('Should return an error if any validation fails', () => {
     const { sut, validationSpies } = makeSut()
     validationSpies[1].error = new InvalidParamError(field)
-    const error = sut.validate({ [field]: faker.random.word() })
+    const error = sut.validate({ [field]: 'any' })
     expect(error).toEqual(validationSpies[1].error)
   })
 
@@ -35,13 +33,13 @@ describe('Validation Composite', () => {
     const { sut, validationSpies } = makeSut()
     validationSpies[0].error = new Error()
     validationSpies[1].error = new InvalidParamError(field)
-    const error = sut.validate({ [field]: faker.random.word() })
+    const error = sut.validate({ [field]: 'any' })
     expect(error).toEqual(validationSpies[0].error)
   })
 
   test('Should not return if validation succeeds', () => {
     const { sut } = makeSut()
-    const error = sut.validate({ [field]: faker.random.word() })
+    const error = sut.validate({ [field]: 'any' })
     expect(error).toBeFalsy()
   })
 })

@@ -3,9 +3,7 @@ import { InvalidParamError } from '@/presentation/errors'
 import { EmailValidatorSpy } from '@/tests/validation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
-const field = faker.random.word()
+const field = 'any'
 
 type SutTypes = {
   sut: EmailValidation
@@ -25,14 +23,14 @@ describe('Email Validation', () => {
   test('Should return an error if EmailValidator returns false', () => {
     const { sut, emailValidatorSpy } = makeSut()
     emailValidatorSpy.isEmailValid = false
-    const email = faker.internet.email()
+    const email = 'mail@inbox.me'
     const error = sut.validate({ [field]: email })
     expect(error).toEqual(new InvalidParamError(field))
   })
 
   test('Should call EmailValidator with correct values', () => {
     const { sut, emailValidatorSpy } = makeSut()
-    const email = faker.internet.email()
+    const email = 'mail@inbox.me'
     sut.validate({ [field]: email })
     expect(emailValidatorSpy.email).toBe(email)
   })

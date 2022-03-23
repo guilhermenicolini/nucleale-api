@@ -2,16 +2,14 @@ import { ModelsToInvoiceConverter } from '@/infra/converters'
 import { mockAccountModel, mockAddressModel, mockCompanyModel, mockProcedureWithService } from '@/tests/domain/mocks'
 import { StringManipulatorSpy, TimeManipulatorSpy } from '@/tests/data/mocks'
 
-import faker from 'faker'
-
 const mockInput = (): ModelsToInvoiceConverter.Input => ({
   account: mockAccountModel(),
   address: mockAddressModel(),
   company: mockCompanyModel(),
   procedure: mockProcedureWithService(),
-  rpsNumber: faker.datatype.number(),
-  amount: faker.datatype.float(),
-  data: faker.random.word()
+  rpsNumber: 123,
+  amount: 123.45,
+  data: 'any'
 })
 
 type SutTypes = {

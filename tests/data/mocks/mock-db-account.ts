@@ -13,15 +13,13 @@ import {
 import { LoadAccountsByStatus, SaveAccount } from '@/domain/usecases'
 import { mockAccountModel, mockSearchAccountResult } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 export class AddAccountRepositorySpy implements AddAccountRepository {
   params: AddAccountRepository.Params
   result: AddAccountRepository.Result = ({
     isValid: true,
-    accountId: faker.datatype.uuid(),
-    userId: faker.datatype.uuid(),
-    role: faker.random.word()
+    accountId: 'any_id',
+    userId: 'any_id',
+    role: 'any_role'
   })
 
   async add (params: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
@@ -65,7 +63,7 @@ export class LoadAccountsByStatusRepositorySpy implements LoadAccountsByStatus {
 
 export class LoadInvitationRepositorySpy implements LoadInvitationRepository {
   email: string
-  result = faker.datatype.uuid()
+  result = 'any_id'
 
   async loadInvitation (email: string): Promise<string> {
     this.email = email

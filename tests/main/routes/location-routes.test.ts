@@ -2,10 +2,9 @@ import app from '@/main/config/app'
 import { mockAccessToken } from '@/tests/main/mocks'
 
 import request from 'supertest'
-import faker from 'faker'
 import { MongoHelper } from '@/infra/db'
 
-const mockZip = (): string => faker.address.zipCode('########')
+const mockZip = (): string => '12345678'
 
 describe('Location Routes', () => {
   afterAll(async () => {

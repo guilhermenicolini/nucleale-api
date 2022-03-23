@@ -5,9 +5,7 @@ import {
 } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
-const mockRequest = ():string => faker.address.zipCode()
+const mockRequest = ():string => '12345678'
 
 type SutTypes = {
   sut: RemoteLoadAddressByZip
@@ -63,10 +61,10 @@ describe('RemoteLoadAddressByZip Usecase', () => {
     soapClientSpy.result = {
       success: true,
       response: {
-        end: faker.address.streetAddress(),
-        bairro: faker.address.secondaryAddress(),
-        cidade: faker.address.cityName(),
-        uf: faker.address.stateAbbr()
+        end: 'any_address',
+        bairro: 'any_district',
+        cidade: 'any_city',
+        uf: 'SP'
       }
     }
 

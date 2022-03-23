@@ -4,12 +4,10 @@ import { badRequest, serverError, unauthorized, ok } from '@/presentation/helper
 import { throwError } from '@/tests/domain/mocks'
 import { ServerError, InvalidCredentialsError } from '@/presentation/errors'
 
-import faker from 'faker'
-
 const mockRequest = (): LoginController.Request => {
   const password = 'P@ssw0rd'
   return {
-    email: faker.internet.email(),
+    email: 'mail@inbox.me',
     password
   }
 }

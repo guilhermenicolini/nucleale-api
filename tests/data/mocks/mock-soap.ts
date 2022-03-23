@@ -1,12 +1,10 @@
 import { SoapClient, SoapRequest, SoapResponse } from '@/data/protocols'
 
-import faker from 'faker'
-
 export const mockSoapRequest = (): SoapRequest => ({
-  method: faker.random.word(),
-  message: faker.random.word(),
-  responseMethod: faker.random.word(),
-  url: faker.internet.url()
+  method: 'any',
+  message: 'any',
+  responseMethod: 'any',
+  url: 'https://site.com.br'
 })
 
 export class SoapClientSpy implements SoapClient<any> {

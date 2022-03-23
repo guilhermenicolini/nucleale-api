@@ -1,23 +1,21 @@
 import { Authentication } from '@/domain/usecases'
 
-import faker from 'faker'
-
 export const mockAuthenticationParams = (): Authentication.Params => ({
-  accountId: faker.datatype.uuid(),
-  userId: faker.datatype.uuid(),
-  role: faker.random.word()
+  accountId: 'any_id',
+  userId: 'any_id',
+  role: 'any'
 })
 
 export const mockPasswordRecoveryRequest = () => ({
-  email: faker.internet.email()
+  email: 'mail@inbox.me'
 })
 
 export const mockCheckPasswordRequest = () => ({
-  token: faker.datatype.uuid()
+  token: 'any_id'
 })
 
 export const mockChangePasswordHttpRequest = () => ({
-  token: faker.datatype.uuid(),
+  token: 'any_id',
   password: 'P@ssw0rd',
   passwordConfirmation: 'P@ssw0rd'
 })

@@ -1,14 +1,11 @@
 import { AddLinkRepository, LoadLinkRepository, DeleteLinkRepository } from '@/data/protocols'
 import { mockLinkModel } from '@/tests/domain/mocks/mock-link'
 
-import faker from 'faker'
-import moment from 'moment-timezone'
-
 export class AddLinkRepositorySpy implements AddLinkRepository {
   data: AddLinkRepository.Params
   result: AddLinkRepository.Result = {
-    link: faker.datatype.uuid(),
-    expiration: moment().add(1, 'hour').valueOf()
+    link: 'any_id',
+    expiration: 1747982564066
   }
 
   async add (data: AddLinkRepository.Params): Promise<AddLinkRepository.Result> {

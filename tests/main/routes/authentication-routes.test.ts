@@ -5,7 +5,6 @@ import env from '@/main/config/env'
 
 import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
-import faker from 'faker'
 import { hash } from 'bcrypt'
 import { decode } from 'jsonwebtoken'
 import { LinkTypes } from '@/domain/models'
@@ -17,22 +16,19 @@ const mockAddRequest = () => {
 
   return {
     taxId: '30638954070',
-    name: faker.name.findName(),
-    email: faker.internet.email(),
+    name: 'any_name',
+    email: 'mail@inbox.me',
     password,
     passwordConfirmation: password,
-    mobilePhone: faker.phone.phoneNumber('+55199########'),
-    birth: faker.datatype.number({
-      min: 315543600000,
-      max: 631159200000
-    })
+    mobilePhone: '+5519998765432',
+    birth: 315543600000
   }
 }
 
 const mockLoginRequest = () => {
   const password = 'P@ssw0rd'
   return {
-    email: faker.internet.email(),
+    email: 'mail@inbox.me',
     password
   }
 }
@@ -62,7 +58,7 @@ const validateToken = (obj: any) => {
 
 describe('Account Routes', () => {
   beforeAll(async () => {
-    MockDate.set(new Date())
+    MockDate.set(1647982564066)
     await MongoHelper.instance.connect()
   })
 
@@ -150,7 +146,7 @@ describe('Account Routes', () => {
 
     test('Should return 404 if account not exists', async () => {
       await request(app)
-        .post(`/password-recovery/${faker.internet.email()}`)
+        .post(`/password-recovery/${'mail@inbox.me'}`)
         .expect(404)
     })
 
@@ -180,7 +176,7 @@ describe('Account Routes', () => {
       const type = LinkTypes.passwordRecovery
       const cmd = await linksCollection.insertOne({
         type,
-        expiration: faker.date.future().valueOf()
+        expiration: 1747982564066
       })
       const token = cmd.insertedId.toString()
 
@@ -231,7 +227,7 @@ describe('Account Routes', () => {
         _id: linkId,
         userId: new ObjectId(id),
         type: LinkTypes.passwordRecovery,
-        expiration: faker.date.future().valueOf()
+        expiration: 1747982564066
       })
 
       const record = await accountsCollection.findOne({})

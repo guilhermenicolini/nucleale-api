@@ -1,12 +1,10 @@
 import { LinkModel, LinkTypes } from '@/domain/models'
 
-import faker from 'faker'
-
 export const mockLinkModel = (): LinkModel => {
   return {
-    id: faker.datatype.uuid(),
-    userId: faker.datatype.uuid(),
-    type: faker.random.arrayElement(Object.values(LinkTypes)),
-    expiration: faker.date.future().valueOf()
+    id: 'any_id',
+    userId: 'any_id',
+    type: LinkTypes.passwordRecovery,
+    expiration: 1647982564066
   }
 }

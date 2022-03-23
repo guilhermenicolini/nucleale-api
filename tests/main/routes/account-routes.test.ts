@@ -5,7 +5,6 @@ import { mockAccessToken, mockAdminAccessToken, mockId } from '@/tests/main/mock
 
 import { Collection, ObjectId } from 'mongodb'
 import request from 'supertest'
-import faker from 'faker'
 
 import { AccountStatus } from '@/domain/models'
 
@@ -131,14 +130,14 @@ describe('Account Routes', () => {
   describe('POST /me/invite/:email', () => {
     test('Should return 400 if email is invalid', async () => {
       await request(app)
-        .post(`/me/invite/${faker.random.word()}`)
+        .post('/me/invite/wrong-email')
         .set('authorization', `Bearer ${mockAccessToken().accessToken}`)
         .expect(400)
     })
 
     test('Should return 401 if token is not provided', async () => {
       await request(app)
-        .post(`/me/invite/${faker.random.word()}`)
+        .post('/me/invite/mail@inbox.me')
         .expect(401)
     })
 
@@ -148,7 +147,7 @@ describe('Account Routes', () => {
       await accountCollection.insertOne(data)
 
       await request(app)
-        .post(`/me/invite/${faker.internet.email()}`)
+        .post('/me/invite/another-mail@inbox.me')
         .set('authorization', `Bearer ${token.accessToken}`)
         .expect({})
     })

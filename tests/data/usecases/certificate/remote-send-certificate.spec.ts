@@ -2,12 +2,10 @@ import { RemoteSendCertificate } from '@/data/usecases'
 import { MessagefySpy, SenderSpy } from '@/tests/data/mocks'
 import { mockFileModel, throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 const mockParam = (): RemoteSendCertificate.Model => ({
-  email: faker.internet.email(),
-  name: faker.name.findName(),
-  phone: faker.phone.phoneNumber(),
+  email: 'mail@inbox.me',
+  name: 'any_name',
+  phone: '+5519998765432',
   file: mockFileModel()
 })
 

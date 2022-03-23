@@ -2,13 +2,11 @@ import { MessageModel } from '@/domain/models'
 import { WhatsappSender, WhatsappHelper } from '@/infra/notification'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 const mockData = (): MessageModel => ({
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  text: faker.random.words(5),
-  html: faker.random.word()
+  email: 'mail@inbox.me',
+  phone: '+5519998765432',
+  text: 'any words',
+  html: 'any'
 })
 
 const makeSut = (): WhatsappSender => new WhatsappSender()
@@ -27,7 +25,7 @@ describe('Whatsapp Sender', () => {
     const data = mockData()
     data.file = {
       base64: Buffer.from('any_text').toString('base64'),
-      name: faker.system.commonFileName('pdf'),
+      name: 'file.pdf',
       mimeType: 'application/pdf'
     }
     WhatsappHelper.instance.sendMessage = jest.fn()
@@ -50,7 +48,7 @@ describe('Whatsapp Sender', () => {
     const data = mockData()
     data.file = {
       base64: Buffer.from('any_text').toString('base64'),
-      name: faker.system.commonFileName('pdf'),
+      name: 'file.pdf',
       mimeType: 'application/pdf'
     }
     WhatsappHelper.instance.sendMessage = jest.fn()

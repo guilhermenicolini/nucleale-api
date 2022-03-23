@@ -1,8 +1,6 @@
 import { CepParser } from '@/infra/soap'
 
-import faker from 'faker'
-
-const mockRequest = (): any => faker.random.objectElement()
+const mockRequest = (): any => ({ data: 'value' })
 
 const makeSut = (): CepParser => new CepParser()
 

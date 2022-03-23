@@ -4,11 +4,10 @@ import { ClientError, RecordNotFoundError } from '@/presentation/errors'
 import { HasherSpy, LoadLinkRepositorySpy, SaveAccountRepositorySpy, DeleteLinkRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
 import MockDate from 'mockdate'
 
 const mockParams = () => ({
-  token: faker.datatype.uuid(),
+  token: 'any_id',
   password: 'P@ssw0rd'
 })
 
@@ -41,7 +40,7 @@ const makeSut = (): SutTypes => {
 
 describe('DbChangePassword Usecase', () => {
   beforeAll(async () => {
-    MockDate.set(new Date().valueOf())
+    MockDate.set(1647982564066)
   })
 
   test('Should call LoadLinkRepository with correct values', async () => {
@@ -63,7 +62,7 @@ describe('DbChangePassword Usecase', () => {
 
   test('Should return error if link is expired', async () => {
     const { sut, loadLinkRepositorySpy } = makeSut()
-    loadLinkRepositorySpy.result.expiration = faker.date.past().valueOf()
+    loadLinkRepositorySpy.result.expiration = 1547982564066
     const result = await sut.change(mockParams())
     expect(result).toEqual(new ClientError('Token expirado'))
   })

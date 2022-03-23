@@ -3,17 +3,15 @@ import { CertificateConverter } from '@/infra/converters'
 import { TimeManipulatorSpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 const mockData = (): CertificateConverter.Model => ({
-  id: faker.datatype.uuid(),
-  accountId: faker.datatype.uuid(),
-  course: faker.random.words(4),
-  date: faker.date.past().valueOf(),
-  hours: faker.datatype.number(),
-  name: faker.name.findName(),
-  type: faker.random.arrayElement(Object.values(CertificateType)),
-  hash: faker.random.alphaNumeric(8).toLowerCase()
+  id: 'any_id',
+  accountId: 'any_id',
+  course: 'any words',
+  date: 315543600000,
+  hours: 123,
+  name: 'any_name',
+  type: CertificateType.online,
+  hash: 'abcd1234'
 })
 
 type SutTypes = {

@@ -1,9 +1,7 @@
 import { PasswordValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 
-import faker from 'faker'
-
-const field = faker.random.word()
+const field = 'any'
 
 const makeSut = (): PasswordValidation => {
   return new PasswordValidation(field)

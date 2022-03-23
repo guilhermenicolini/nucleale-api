@@ -1,7 +1,5 @@
 import { BrazilMobilePhoneValidatorAdapter } from '@/infra/validators'
 
-import faker from 'faker'
-
 const makeSut = (): BrazilMobilePhoneValidatorAdapter => {
   return new BrazilMobilePhoneValidatorAdapter()
 }
@@ -21,31 +19,31 @@ describe('BrazilMobilePhoneValidatorAdapter', () => {
 
   test('Should return true if empty phone is not from Brazil', () => {
     const sut = makeSut()
-    const isValid = sut.isValid(faker.phone.phoneNumber('+1########'))
+    const isValid = sut.isValid('+198765432')
     expect(isValid).toBe(true)
   })
 
   test('Should return false if phone do not has 14 characters', () => {
     const sut = makeSut()
-    const isValid = sut.isValid(faker.phone.phoneNumber('+55########'))
+    const isValid = sut.isValid('+5598765432')
     expect(isValid).toBe(false)
   })
 
   test('Should return false if phone do not has a valid area', () => {
     const sut = makeSut()
-    const isValid = sut.isValid('+5500#########')
+    const isValid = sut.isValid('+5500998765432')
     expect(isValid).toBe(false)
   })
 
   test('Should return false if phone do not have 9th digit', () => {
     const sut = makeSut()
-    const isValid = sut.isValid('+55110########')
+    const isValid = sut.isValid('+5511098765432')
     expect(isValid).toBe(false)
   })
 
   test('Should return true if a valid phone is provided', () => {
     const sut = makeSut()
-    const isValid = sut.isValid(faker.phone.phoneNumber('+55119########'))
+    const isValid = sut.isValid('+5519998765432')
     expect(isValid).toBe(true)
   })
 })

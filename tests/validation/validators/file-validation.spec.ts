@@ -1,9 +1,7 @@
 import { FileValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 
-import faker from 'faker'
-
-const field = faker.random.word()
+const field = 'any'
 
 const makeSut = (): FileValidation => {
   return new FileValidation(field, 2, 'xml')
@@ -12,13 +10,13 @@ const makeSut = (): FileValidation => {
 describe('FileValidation', () => {
   test('Should return an error if validation fails', () => {
     const sut = makeSut()
-    const error = sut.validate({ invalidField: faker.random.word() })
+    const error = sut.validate({ invalidField: 'any' })
     expect(error).toEqual(new InvalidParamError(field))
   })
 
   test('Should return an error if field is not array', () => {
     const sut = makeSut()
-    const error = sut.validate({ [field]: faker.random.word() })
+    const error = sut.validate({ [field]: 'any' })
     expect(error).toEqual(new InvalidParamError(field))
   })
 

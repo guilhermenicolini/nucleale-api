@@ -2,7 +2,6 @@ import { MongoHelper } from '@/infra/db'
 import app from '@/main/config/app'
 import { mockAccessToken, mockAdminAccessToken } from '@/tests/main/mocks'
 
-import faker from 'faker'
 import request from 'supertest'
 
 describe('Whatsapp Routes', () => {
@@ -37,8 +36,8 @@ describe('Whatsapp Routes', () => {
         .post('/whatsapp/message')
         .set('authorization', `Bearer ${mockAdminAccessToken()}`)
         .send({
-          mobilePhone: faker.phone.phoneNumber('+55##9########'),
-          message: faker.random.words(10)
+          mobilePhone: '+5519998765432',
+          message: 'any words'
         })
         .expect(204)
     })

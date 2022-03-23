@@ -11,8 +11,6 @@ import {
 } from '@/domain/usecases'
 import { mockInvoice, mockLoadInvoice, mockInvoiceDb } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 export class LoadInvoicesFromBufferSpy implements LoadInvoicesFromBuffer {
   buffer: Buffer
   result: LoadInvoicesFromBuffer.Result = [mockInvoice(), mockInvoice()]
@@ -59,7 +57,7 @@ export class LoadInvoiceSpy implements LoadInvoice {
 export class GenerateInvoiceSpy implements GenerateInvoice {
   model: GenerateInvoice.Model
   result: GenerateInvoice.Result = {
-    fileName: faker.system.commonFileName('pdf'),
+    fileName: 'file.pdf',
     buffer: {}
   }
 
@@ -82,8 +80,8 @@ export class CreateInvoiceSpy implements CreateInvoice {
 export class SendInvoiceSpy implements SendInvoice {
   params: SendInvoice.Params
   result: SendInvoice.Result = {
-    invoiceNo: faker.datatype.number(),
-    verificationCode: faker.random.alphaNumeric(20)
+    invoiceNo: 123,
+    verificationCode: 'abcd1234'
   }
 
   async send (params: SendInvoice.Params): Promise<SendInvoice.Result> {

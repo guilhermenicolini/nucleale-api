@@ -7,8 +7,6 @@ import {
 } from '@/data/protocols'
 import { mockInvoiceDb, mockLoadInvoice } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 export class SaveInvoiceRepositorySpy implements SaveInvoiceRepository {
   param: SaveInvoiceRepository.Param
 
@@ -43,7 +41,7 @@ export class LoadInvoiceRepositorySpy implements LoadInvoiceRepository {
 }
 
 export class LoadNextRpsRepositorySpy implements LoadNextRpsRepository {
-  result = faker.datatype.number()
+  result = 123
 
   async next (): Promise<number> {
     return this.result

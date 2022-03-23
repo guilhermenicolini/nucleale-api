@@ -4,10 +4,8 @@ import { throwError } from '@/tests/domain/mocks'
 import { serverError, ok } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
 
-import faker from 'faker'
-
 const mockRequest = () => {
-  return { accountId: faker.datatype.uuid() }
+  return { accountId: 'any_id' }
 }
 
 type SutTypes = {

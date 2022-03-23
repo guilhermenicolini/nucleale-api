@@ -2,9 +2,7 @@ import { DbLoadInvoices } from '@/data/usecases'
 import { LoadInvoicesRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
-const mockAccountId = (): string => faker.datatype.uuid()
+const mockAccountId = (): string => 'any_id'
 
 type SutTypes = {
   sut: DbLoadInvoices

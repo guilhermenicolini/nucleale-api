@@ -2,11 +2,9 @@ import { RemoteMailInvoice } from '@/data/usecases'
 import { MessagefySpy, SenderSpy } from '@/tests/data/mocks'
 import { mockPerson, mockXmlFileBuffer, throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
 const mockParam = (): RemoteMailInvoice.Param => ({
   to: mockPerson(),
-  invoiceNo: faker.datatype.number(),
+  invoiceNo: 123,
   pdf: mockXmlFileBuffer()
 })
 

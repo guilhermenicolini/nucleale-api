@@ -3,10 +3,8 @@ import { LoadCertificateByHashSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 import { ok } from '@/presentation/helpers'
 
-import faker from 'faker'
-
 const mockRequest = () => {
-  return { hash: faker.random.alphaNumeric(8).toLowerCase() }
+  return { hash: 'abcd1234' }
 }
 
 type SutTypes = {

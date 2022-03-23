@@ -1,6 +1,5 @@
 import { SendInvoiceMessage } from '@/infra/notification'
 import { mockPerson, mockXmlFileBuffer } from '@/tests/domain/mocks'
-import faker from 'faker'
 
 const makeSut = (): SendInvoiceMessage => new SendInvoiceMessage()
 
@@ -9,7 +8,7 @@ describe('SendInvoiceMessage', () => {
     const sut = makeSut()
     const model: SendInvoiceMessage.Model = {
       to: mockPerson(),
-      invoiceNo: faker.datatype.number(),
+      invoiceNo: 123,
       pdf: mockXmlFileBuffer()
     }
     const message = await sut.create(model)

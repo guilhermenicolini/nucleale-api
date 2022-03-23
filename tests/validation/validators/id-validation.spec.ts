@@ -3,9 +3,7 @@ import { InvalidParamError } from '@/presentation/errors'
 import { IdValidatorSpy } from '@/tests/validation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
-import faker from 'faker'
-
-const field = faker.random.word()
+const field = 'any'
 
 type SutTypes = {
   sut: IdValidation
@@ -25,14 +23,14 @@ describe('Id Validation', () => {
   test('Should return an error if IdValidator returns false', () => {
     const { sut, idValidatorSpy } = makeSut()
     idValidatorSpy.isIdValid = false
-    const id = faker.datatype.uuid()
+    const id = 'any_id'
     const error = sut.validate({ [field]: id })
     expect(error).toEqual(new InvalidParamError(field))
   })
 
   test('Should call IdValidator with correct values', () => {
     const { sut, idValidatorSpy } = makeSut()
-    const id = faker.datatype.uuid()
+    const id = 'any_id'
     sut.validate({ [field]: id })
     expect(idValidatorSpy.id).toBe(id)
   })

@@ -1,5 +1,4 @@
 import { CompanyModel, SettingsModel, ServiceModel, ProcedureModel } from '@/domain/models'
-import faker from 'faker'
 import { ObjectId } from 'mongodb'
 
 const mockSettings = (): SettingsModel => ({
@@ -8,64 +7,64 @@ const mockSettings = (): SettingsModel => ({
 })
 
 export const mockCompanyModel = (): CompanyModel => ({
-  id: faker.datatype.uuid(),
+  id: 'any_id',
   taxId: '71532915000196',
-  registryId: faker.address.zipCode('########'),
-  name: faker.company.companyName(),
-  mobilePhone: faker.phone.phoneNumber('+55##9########'),
-  email: faker.internet.email(),
+  registryId: '12345678',
+  name: 'Company',
+  mobilePhone: '+5519998765432',
+  email: 'mail@inbox.me',
   address: {
-    address: faker.address.streetName(),
-    number: faker.datatype.number(1000).toString(),
-    complement: faker.random.word(),
-    district: faker.random.word(),
-    city: faker.address.city(),
-    cityId: faker.datatype.number({ min: 1000, max: 9999 }),
-    state: faker.address.stateAbbr(),
-    country: faker.address.countryCode(),
-    zip: faker.address.zipCode('########')
+    address: 'any_address',
+    number: '1234',
+    complement: 'any',
+    district: 'any',
+    city: 'any_city',
+    cityId: 1234,
+    state: 'SP',
+    country: 'any_country',
+    zip: '12345678'
   },
   settings: mockSettings()
 })
 
 const mockService = (): ServiceModel => ({
-  id: faker.datatype.uuid(),
-  name: faker.random.words(2),
-  activity: faker.random.words(4),
-  aliquote: faker.datatype.number(),
-  cnae: faker.address.zipCode('#########'),
+  id: 'any_id',
+  name: 'any words',
+  activity: 'any words',
+  aliquote: 123,
+  cnae: '123456789',
   operation: 'X',
   pickupType: 'X',
-  service: faker.random.words(3),
+  service: 'any words',
   taxation: 'X',
   taxable: true,
   procedures: null
 })
 
 export const mockProcedureWithService = (): ProcedureModel => ({
-  id: faker.datatype.uuid(),
-  description: faker.random.words(5),
-  name: faker.random.words(2),
-  hours: faker.datatype.number(),
+  id: 'any_id',
+  description: 'any words',
+  name: 'any words',
+  hours: 123,
   service: mockService()
 })
 
 export const mockDbProcedureWithoutService = () => ({
   _id: new ObjectId(),
-  description: faker.random.words(5),
-  name: faker.random.words(2),
-  hours: faker.datatype.number()
+  description: 'any words',
+  name: 'any words',
+  hours: 123
 })
 
 export const mockDbServiceWithProcedure = () => ({
   _id: new ObjectId(),
-  name: faker.random.words(2),
-  activity: faker.random.words(4),
-  aliquote: faker.datatype.number(),
-  cnae: faker.address.zipCode('#########'),
+  name: 'any words',
+  activity: 'any words',
+  aliquote: 123,
+  cnae: '123456789',
   operation: 'A',
   pickupType: 'R',
-  service: faker.random.words(3),
+  service: 'any words',
   taxation: 'H',
   taxable: true,
   procedures: [mockDbProcedureWithoutService()]

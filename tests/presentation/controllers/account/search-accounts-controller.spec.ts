@@ -3,11 +3,10 @@ import { SearchAccountsSpy } from '@/tests/presentation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 import { serverError, ok } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
-import faker from 'faker'
 
 const mockRequest = (): SearchAccountsController.Request => {
   return {
-    term: faker.random.words()
+    term: 'any words'
   }
 }
 

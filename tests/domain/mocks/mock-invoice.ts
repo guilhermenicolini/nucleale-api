@@ -1,33 +1,32 @@
 import { InvoiceModel, InvoicePersonModel, InvoiceItemModel } from '@/domain/models'
 
-import faker from 'faker'
 import fs from 'fs'
 import { ObjectId } from 'mongodb'
 import { mockAddAddressModel } from './mock-address'
 
 export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
-  invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
-  invoiceDate: faker.date.past().valueOf(),
-  issueDate: faker.date.past().valueOf(),
-  rpsNumber: faker.datatype.number({ min: 1, max: 99 }),
-  rpsSerie: faker.random.alphaNumeric(2).toUpperCase(),
-  provideSerie: faker.datatype.number({ min: 1, max: 99 }),
-  verificationCode: faker.random.alphaNumeric(8),
+  invoiceNo: 1234,
+  invoiceDate: 315543600000,
+  issueDate: 315543600000,
+  rpsNumber: 12,
+  rpsSerie: 'ab',
+  provideSerie: 12,
+  verificationCode: 'abcd1234',
   status: 'Normal',
-  description: faker.random.words(3),
-  invoiceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
-  serviceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
-  issValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
-  issAliquot: faker.datatype.float({ min: 1, max: 4, precision: 2 }),
-  competence: faker.random.word(),
-  pickupType: faker.random.word()[0].toUpperCase(),
-  taxation: faker.random.word(),
-  operation: faker.random.word()[0].toUpperCase(),
-  cnae: faker.random.word(),
-  activity: faker.random.word(),
-  service: faker.random.word(),
-  serviceCity: faker.address.city(),
-  serviceState: faker.address.stateAbbr(),
+  description: 'any words',
+  invoiceValue: 123.45,
+  serviceValue: 123.45,
+  issValue: 123.45,
+  issAliquot: 123.45,
+  competence: 'any',
+  pickupType: 'any'[0].toUpperCase(),
+  taxation: 'any',
+  operation: 'any'[0].toUpperCase(),
+  cnae: 'any',
+  activity: 'any',
+  service: 'any',
+  serviceCity: 'any_city',
+  serviceState: 'SP',
   provider: mockPerson(),
   taker: mockPerson(taxId),
   items: [mockItem(), mockItem()]
@@ -35,64 +34,64 @@ export const mockInvoice = (taxId?: string): Omit<InvoiceModel, 'id'> => ({
 
 export const mockInvoiceDb = (taxId?: string): InvoiceModel => ({
   id: new ObjectId().toString(),
-  invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
+  invoiceNo: 123,
   invoiceDate: 1619481600000,
   issueDate: 1619481600000,
-  rpsNumber: faker.datatype.number({ min: 1, max: 99 }),
-  rpsSerie: faker.random.alphaNumeric(2).toUpperCase(),
-  provideSerie: faker.datatype.number({ min: 1, max: 99 }),
-  verificationCode: faker.random.alphaNumeric(8),
-  status: faker.random.word(),
-  description: faker.random.words(3),
-  invoiceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
-  serviceValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
-  issValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
-  issAliquot: faker.datatype.float({ min: 1, max: 4, precision: 2 }),
-  competence: faker.random.word(),
+  rpsNumber: 12,
+  rpsSerie: 'ab',
+  provideSerie: 12,
+  verificationCode: 'abcd1234',
+  status: 'any',
+  description: 'any words',
+  invoiceValue: 123.45,
+  serviceValue: 123.45,
+  issValue: 123.45,
+  issAliquot: 123.45,
+  competence: 'any',
   pickupType: 'A',
-  taxation: faker.random.word(),
-  operation: faker.random.word()[0].toUpperCase(),
-  cnae: faker.random.word(),
-  activity: faker.random.word(),
-  service: faker.random.word(),
-  serviceCity: faker.address.city(),
-  serviceState: faker.address.stateAbbr(),
+  taxation: 'any',
+  operation: 'any'[0].toUpperCase(),
+  cnae: 'any',
+  activity: 'any',
+  service: 'any',
+  serviceCity: 'any_city',
+  serviceState: 'SP',
   provider: mockPerson(),
   taker: mockPerson(taxId),
   items: [mockItem(), mockItem()]
 })
 
 export const mockPerson = (taxId?: string): InvoicePersonModel => ({
-  taxId: taxId || faker.address.zipCode('###########'),
-  name: faker.name.findName(),
-  registryId: faker.address.zipCode('########'),
+  taxId: taxId || '12345678901',
+  name: 'any_name',
+  registryId: '12345678',
   address: mockAddAddressModel(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber('+55##9########')
+  email: 'mail@inbox.me',
+  phone: '+5519998765432'
 })
 
 export const mockItem = (): InvoiceItemModel => ({
   taxable: true,
-  description: faker.random.words(5),
-  quantity: faker.datatype.number({ min: 1, max: 3 }),
-  unitValue: faker.datatype.float({ min: 100, max: 400, precision: 2 }),
-  totalValue: faker.datatype.float({ min: 100, max: 400, precision: 2 })
+  description: 'any words',
+  quantity: 1,
+  unitValue: 123.45,
+  totalValue: 123.45
 })
 
 export const mockXmlFileBuffer = (): any => ({
-  fieldname: faker.system.commonFileName('xml'),
+  fieldname: 'file.xml',
   buffer: fs.readFileSync('tests/main/mocks/mock.xml')
 })
 
 export const mockLoadInvoice = (): Pick<InvoiceModel, 'id' | 'invoiceNo' | 'invoiceDate' | 'description' | 'invoiceValue'> => ({
-  id: faker.datatype.uuid(),
-  invoiceNo: faker.datatype.number({ min: 1, max: 999 }),
-  invoiceDate: faker.date.past().getUTCMilliseconds(),
-  invoiceValue: faker.datatype.float(2),
-  description: faker.random.words(3)
+  id: 'any_id',
+  invoiceNo: 123,
+  invoiceDate: 315543600000,
+  invoiceValue: 123.45,
+  description: 'any words'
 })
 
 export const mockDownloadRequest = () => ({
-  iId: faker.datatype.number(),
+  iId: 123,
   accountId: new ObjectId().toString()
 })
