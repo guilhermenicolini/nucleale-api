@@ -4,9 +4,10 @@ import { Bucket, Storage } from '@google-cloud/storage'
 export class GoogleCloudStorageAdapter implements FileStorage {
   private readonly bucket: Bucket
   constructor (
-    private readonly bucketName: string
+    private readonly bucketName: string,
+    private readonly credentials: any
   ) {
-    this.bucket = new Storage().bucket(this.bucketName)
+    this.bucket = new Storage({ credentials: this.credentials }).bucket(this.bucketName)
   }
 
   async get (fileName: string): Promise<Buffer> {

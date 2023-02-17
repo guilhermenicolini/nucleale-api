@@ -25,6 +25,9 @@ export default {
       return `http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/${method}.xsd`
     }
   },
+  google: {
+    credentials: process.env.GOOGLE_CREDENTIALS
+  },
   gmail: {
     clientId: process.env.GMAIL_CLIENT_ID,
     clientSecret: process.env.GMAIL_CLIENT_SECRET,

@@ -24,7 +24,7 @@ jest.mock('@google-cloud/storage', () => ({
   })
 }))
 
-const makeSut = (): GoogleCloudStorageAdapter => new GoogleCloudStorageAdapter('any_bucket')
+const makeSut = (): GoogleCloudStorageAdapter => new GoogleCloudStorageAdapter('any_bucket', 'any_credential')
 
 describe('GoogleCloudStorage Adapter', () => {
   beforeEach(async () => {
