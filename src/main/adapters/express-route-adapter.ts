@@ -13,7 +13,7 @@ const handleParams = (params: any): any => {
 
 export const adaptRoute = (controller: Controller) => {
   return async (req: Request, res: Response) => {
-    const request = {
+    const httpRequest = {
       ...(req.body),
       ...handleParams(req.params),
       ...(req.query),
@@ -21,7 +21,8 @@ export const adaptRoute = (controller: Controller) => {
       accountId: req.accountId,
       files: req.files
     }
-    const httpResponse = await controller.handle(request)
+    const httpResponse = await controller.handle(httpRequest)
+    console.log(JSON.stringify({ httpRequest, httpResponse }, null, 2))
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       if (httpResponse.body?.fileName) {
         res.setHeader('Content-Disposition', `inline; filename="${httpResponse.body.fileName}"`)
