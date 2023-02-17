@@ -1,15 +1,3 @@
-export const sendMessageStub = jest.fn().mockImplementation(() => null)
-export const sendFileFromBase64Stub = jest.fn().mockImplementation(() => null)
-jest.mock('@wppconnect-team/wppconnect', jest.fn().mockImplementation(() => {
-  return {
-    create: jest.fn().mockImplementation(() => ({
-      sendText: sendMessageStub,
-      sendFileFromBase64: sendFileFromBase64Stub,
-      close: jest.fn()
-    }))
-  }
-}))
-
 export const downloadStub = jest.fn().mockImplementation(() => [Buffer.from(JSON.stringify({ ok: 'ok' }), 'utf8')])
 
 jest.mock('@google-cloud/storage', () => ({

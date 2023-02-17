@@ -4,7 +4,6 @@ import {
   addressesPaths,
   childrensPaths,
   invoicesPaths,
-  whatsappPaths,
   certificatesPaths,
   locationsPaths,
   companiesPaths
@@ -30,7 +29,6 @@ import {
   invoiceSchema,
   invoicesSchema,
   createInvoiceSchema,
-  messageSchema,
   changePasswordSchema,
   createCertificateSchema,
   certificateSchema,
@@ -81,10 +79,6 @@ export const tags = {
     {
       name: 'Certificates',
       description: 'Certificates related APIs'
-    },
-    {
-      name: 'Whatsapp',
-      description: 'Whatsapp related APIs'
     }
   ]
 }
@@ -96,7 +90,6 @@ export const paths = {
   ...childrensPaths,
   ...invoicesPaths,
   ...certificatesPaths,
-  ...whatsappPaths,
   ...locationsPaths,
   ...companiesPaths
 }
@@ -118,7 +111,6 @@ export const components = {
     invoice: invoiceSchema,
     invoices: invoicesSchema,
     createInvoice: createInvoiceSchema,
-    whatsappMessage: messageSchema,
     createCertificate: createCertificateSchema,
     certificate: certificateSchema,
     certificates: certificatesSchema,

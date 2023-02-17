@@ -4,7 +4,7 @@ import { mockAccessToken, mockAdminAccessToken } from '@/tests/main/mocks'
 
 import request from 'supertest'
 
-describe('Whatsapp Routes', () => {
+describe('Company Routes', () => {
   afterAll(async () => {
     await MongoHelper.instance.disconnect()
   })
