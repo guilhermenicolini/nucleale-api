@@ -1,7 +1,13 @@
 export class ServerError extends Error {
-  constructor (stack: string) {
+  private readonly innerError: Error
+
+  constructor (error: Error) {
     super('Erro Interno do Servidor')
     this.name = 'ServerError'
-    this.stack = stack
+    this.innerError = error
+  }
+
+  toJSON (): string {
+    return `${this.message}. Inner error: ${this.innerError?.message as string}. Inner stack: ${this.innerError.stack}`
   }
 }
