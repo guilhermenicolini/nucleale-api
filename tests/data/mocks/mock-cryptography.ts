@@ -92,9 +92,7 @@ export class TransformerSpy implements Transformer {
 
 export class PdfTransformerSpy implements Transformer {
   data: any
-  result: any = {
-    toBuffer: (cb) => cb(null, 'any_buffer')
-  }
+  result: any = 'any_data'
 
   transform (data: any): any {
     this.data = data

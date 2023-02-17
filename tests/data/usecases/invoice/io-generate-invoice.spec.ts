@@ -47,15 +47,6 @@ describe('IoGenerateInvoice Usecase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should reject if toBuffer fails', async () => {
-    const { sut, transformerSpy } = makeSut()
-    transformerSpy.result = {
-      toBuffer: (cb) => cb(new Error(), null)
-    }
-    const promise = sut.generate(mockInvoiceDb())
-    await expect(promise).rejects.toThrow()
-  })
-
   test('Should return object on success', async () => {
     const { sut } = makeSut()
     const data = mockInvoiceDb()
