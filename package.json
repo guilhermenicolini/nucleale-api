@@ -14,7 +14,7 @@
     "build": "tsc -p tsconfig-build.json",
     "start": "node dist/main/server.js",
     "test:coveralls": "npm run test:ci && coveralls -v < coverage/lcov.info",
-    "prepare": "husky install",
+    "husky:prepare": "husky install",
     "check": "npm-check -u -s"
   },
   "repository": {
