@@ -62,7 +62,7 @@
   "dependencies": {
     "@google-cloud/storage": "^5.18.2",
     "bcrypt": "^5.0.1",
-    "email-templates": "^9.0.0",
+    "email-templates": "^11.1.1",
     "express": "^4.17.3",
     "express-multipart-file-parser": "^0.1.2",
     "googleapis": "^97.0.0",
@@ -70,7 +70,7 @@
     "module-alias": "^2.2.2",
     "moment-timezone": "^0.5.34",
     "mongodb": "^4.4.1",
-    "nodemailer": "^6.7.3",
+    "nodemailer": "^6.9.9",
     "pdfkit": "^0.13.0",
     "pug": "^3.0.2",
     "soap": "^0.43.0",
